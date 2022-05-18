@@ -1,0 +1,123 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}  
+body{
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 20%;
+    background-color: #c4c4c4;
+    padding: 6px 14px;
+    transition-duration: 0.5s;
+}
+
+.sidebar.active{
+    width: 9%;
+}
+
+.sidebar .logo{
+    display:flex;
+    width: 100%;
+    align-items: center;
+    color: #bababa;
+    margin: 20px 0;
+}
+
+.sidebar .logo .logoImg{
+    max-width: 100%;
+}
+
+.btnFechar{
+    background-color: #FF0000;
+    width: 1.5em;
+    height: 1.5em;
+    border: none;
+    border-radius: 50%; 
+    padding: 2px 0px;
+    position: absolute;
+    right: -9%;
+    font-size: 20px;
+    color: white;
+    box-shadow: 0px 0px 0px 3px #FFFFFF;
+}
+
+.btnFechar:hover{
+    background-color: #ee0000;
+}
+
+.sidebar.active .logo .btnFechar{
+    right: -25px;
+ }
+
+.sidebar.active .logo .btnFechar i{
+   transform: rotate(180deg);
+}
+
+.sidebar ul{
+    margin: 50px 15px;
+    text-align: center;
+} 
+   
+.sidebar ul li{
+    position: relative;
+    height: 50px;
+    width: 100%;
+    list-style: none;
+    margin: 0 5px;
+    line-height: 50px;
+    
+}
+
+.sidebar ul li a {
+    color: black;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 20px;
+    transition-duration: 0.5s;
+    border-radius: 12px;
+    font-weight: 400;
+    margin: 20px 0; 
+    
+}
+
+.sidebar.active ul li a span{
+    display: none;
+}
+
+.sidebar ul li a{
+    border-bottom: 0px solid black;
+    transition-duration: 0.7s;
+}
+
+.sidebar ul li a:hover{
+    margin-left: 10px;
+}
+
+.sidebar ul li a i{
+    height: 50px;
+    min-width: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+    
+}
+
+.sidebar.active ul li a{
+    width: fit-content; 
+
+}
+
+.sidebar.active ul li a i{
+  margin: auto;
+}

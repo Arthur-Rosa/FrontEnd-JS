@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8" />
+  <link href="lib/main.css" rel="stylesheet" />
+  <script src="lib/main.js"></script>
+  <script src="js/calendar-js/calendarJs.js"></script>
+  <link href="css/style-princial/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style-notification/styleNotification.css">
+  <title>Calendar</title>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style-navbar/sideBarTeste.css">
+  <link rel="stylesheet" href="css/style-navbar/styleNav.css">
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+
+<body>
+  <div class="t">
+    <div class="sidebar">
+      <header class="logo">
+        <img class="logoImg" src="img/logo-senai2.png" alt="Logo Senai">
+        <button class="btnFechar" id="btMenu">
+          <i class='bx bxs-chevron-left' style='color:#ffffff'></i>
+        </button>
+      </header>
+      <ul class="nav_list">
+        <li>
+          <a href="#">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Professores</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-calendar-event'></i>
+            <span class="links_name">Eventos</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-time-five'></i>
+            <span class="links_name">Solicitações</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-log-out'></i>
+            <span class="links_name">Sair</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="bg-calendar">
+      <div id="calendar"></div>
+    </div>
+  </div>
+  <div class="modal fade" id="myModal"  tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" id="bgEvent">
+          <h5 class="modal-title" id="titulo">Registro de Eventos</h5>
+          <button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="formulario" autocomplete="off" method="post">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-floating mb-3">
+                  <input type="hidden" id="id" name="id">
+                  <input id="title" type="text" class="form-control" name="title" required>
+                  <label for="title">Evento</label>
+                </div>
+
+              </div>
+              <div class="col-md-12" onclick="debug()">
+                <div class="form-floating mb-3">
+                  <input id="description" type="text" class="form-control" name="description" required>
+                  <label for="description">Descrição</label>
+                </div>
+
+              </div>
+              <div class="col-md-12">
+                <select class="form-select mb-3" id="periodo" required>
+                  <option id="opt0" value="0" selected>Selecione o Período</option>
+                  <option id="opt1" value="1">Matutino</option>
+                  <option id="opt2" value="2">Vespertino</option>
+                  <option id="opt3" value="3">Noturno</option>
+                  <option id="opt4" value="4">Todo o Período</option>
+                </select>
+              </div>
+              <div class="col-md-12">
+                <div class="form-floating mb-3">
+                  <input class="form-control disable" id="start" value="00/00/0000" type="date" name="start" required disabled>
+                  <label for="" class="form-label">Data</label>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="btnEliminar">Excluir</button>
+            <button type="submit" class="btn btn-primary" id="btnAction">Salvar</button>
+            <button type="submit" class="btn btn-primary" id="btnSalvarEditar" style="display: none;">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Alert -->
+  <div class="alert hide" id="info">
+    <span class="fas fa-exclamation-circle"></span>
+    <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
+    <div class="close-btn">
+       <span class="fas fa-times"></span>
+    </div>
+ </div>
+
+  <script src="js/calendar-js/language.js"></script>
+  <script src="bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="js/calendar-js/sideBarLogica.js"></script>
+  <script>
+    const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+
+
+    toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("close");
+    })
+
+    searchBtn.addEventListener("click", () => {
+      sidebar.classList.remove("close");
+    })
+
+    modeSwitch.addEventListener("click", () => {
+      body.classList.toggle("dark");
+
+      if (body.classList.contains("dark")) {
+        modeText.innerText = "Light mode";
+      } else {
+        modeText.innerText = "Dark mode";
+
+      }
+    });
+  </script>
+
+</body>
+
+</html>

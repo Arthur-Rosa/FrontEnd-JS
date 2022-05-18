@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+#calendar{
+    width: 1000px;
+    display: block;
+}
+#calendar .fc-view{
+    background-color: white;
+}
+
+.fc-day-today{
+    cursor: pointer;
+    background-color: rgba(255, 0, 0, 0.123) !important;
+}
+.fc-day:hover{
+    cursor: pointer;
+    background-color: rgba(255, 0, 0, 0.24) !important;
+}
+.bg-calendar{
+    top: 100px;
+    position: relative;
+    width: 75%;
+    margin-left: auto;
+}
+a{
+    color: #343a40 !important;
+    text-decoration: none !important;
+}
+.t{
+    display: flex;
+}
+ol, ul {
+    padding-left: 0 !important;
+}
+.fc-prev-button, .fc-next-button, .fc-today-button, .fc-dayGridMonth-button, .fc-listWeek-button{
+    background-color: red !important;
+    border: 1px solid rgb(248, 58, 58) !important;
+}
+.fc-col-header-cell:hover{
+    background-color: white !important;
+    cursor: none;
+}
