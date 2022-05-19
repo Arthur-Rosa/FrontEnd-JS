@@ -26,13 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'pt-br',
         navLinks: false,
-
         eventClick: function (info) {
             var myModal = new bootstrap.Modal(document.getElementById('myModal'));
             let idd = info.event.id;
             id = idd;
-
             var data = document.getElementById('start');
+
             let a = transformBgColorInNumber(info.event.backgroundColor);
             if (a == 1) {
                 setOptionSelected(1);
@@ -46,6 +45,18 @@ document.addEventListener('DOMContentLoaded', function () {
             setToEditEvent();
             setDescriptionGetOfDatabase(id);
 
+            var b = document.getElementById('btnEliminar');
+            b.style.display = 'block';
+
+            if (info.event.startStr <= getDataFormat()) {
+                document.getElementById('title').disabled = true;
+                document.getElementById('description').disabled = true;
+                document.getElementById("start").disabled = true;
+                document.getElementById('periodo').disabled = true;
+                getOnNone(document.getElementById('btnEliminar'));
+                getOnNone(document.getElementById('btnSalvarEditar'));
+            }
+
             let btnSalvar = document.getElementById('btnSalvarEditar');
             var data = document.getElementById('start');
             var description = document.getElementById('description');
@@ -55,18 +66,12 @@ document.addEventListener('DOMContentLoaded', function () {
             data.value = info.event.startStr;
             evento.value = info.event.title;
 
-            var b = document.getElementById('btnEliminar');
-            b.style.display = 'block';
-
             btnSalvar.addEventListener('click', editaEvento);
             b.addEventListener('click', deletaEvento)
 
             myModal.show();
         },
 
-        eventDrop: function (info) {
-
-        },
         initialView: 'dayGridMonth',
         selectable: false,
         headerToolbar: {
@@ -90,28 +95,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 url: url,
                 method: 'GET',
                 failure: function () {
-                    exibeErro("Error", "Não foi possível carregar os Eventos...");
+                    exibeErro("Não foi possível carregar os Eventos...");
                 },
             }
         ],
-
         dateClick: function (info) {
-            var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-            setToCreateEvent();
-            if (info.dateStr >= getDataFormat()) {
-                limpar();
-                var b = document.getElementById('btnEliminar');
-                getOnNone(b);
-                setOptionSelected(0);
-                var data = document.getElementById('start');
-                data.value = info.dateStr;
-                // data.value = info.dateStr;
-                myModal.show();
-
-                const btnAction = document.getElementById('btnAction');
-                btnAction.addEventListener('click', criaEvento);
+            var checkDay = new Date(formatDate(info.dateStr, 'yyyy-MM-dd'));
+            // checkDay.getDay() == 4
+            if (checkDay.getDay() == 5) {
+                exibeErro("Indisponivel aos Domingos");
             } else {
-                exibeErro("Data Inválida", "Ooops... a data Selecionada já passou");
+                var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+                setToCreateEvent();
+                if (info.dateStr > getDataFormat()) {
+                    limpar();
+                    var b = document.getElementById('btnEliminar');
+                    getOnNone(b);
+                    setOptionSelected(0);
+                    var data = document.getElementById('start');
+                    data.value = info.dateStr;
+                    // data.value = info.dateStr;
+                    myModal.show();
+
+                    const btnAction = document.getElementById('btnAction');
+                    btnAction.addEventListener('click', criaEvento);
+                } else {
+                    exibeErro("Data Inválida", "Ooops... a data Selecionada já passou");
+                }
             }
         }
     });
@@ -136,6 +146,9 @@ const editaEvento = (e) => {
         erro++;
     } else if (title.value == '') {
         msg = "Por favor, insira um Título !";
+        erro++;
+    } else if (getDataFormat() > data.value) {
+        msg = "Data inserida inválida";
         erro++;
     }
     if (erro > 0) {
@@ -189,6 +202,10 @@ const editaEvento = (e) => {
                         if (resp.status == 200) {
                             window.location.replace('index.html');
                         }
+                        if(resp.status == 400) {
+                            exibeErro("Todo o periodo já está utilizado");
+                            myModal.hide();
+                        }
 
                     });
             })
@@ -199,30 +216,24 @@ const deletaEvento = (e) => {
     var myModal = bootstrap.Modal.getInstance(document.getElementById('myModal'));
     myModal.hide();
 
-    exibeErro(`Você deseja mesmo excluir o Evento ?`);
+    e.preventDefault();
+    const myHeaders = new Headers();
+    let fetchData = {
+        method: 'DELETE',
+        headers: myHeaders
+    }
+    const newUrl = url + "/" + id;
+    fetch(newUrl, fetchData)
+        .then((resposta) => {
+            exibeErro("Excluido com sucesso !")
+            setTimeout(function () {
+                window.location.replace('index.html')
+            }, 2500);
+        })
+        .catch((error) => {
+            exibeErro("Não foi possível excluir o Evento");
+        });
 
-    // decidir
-
-    botaoModalAlert.addEventListener('click', function (e) {
-        e.preventDefault();
-        const myHeaders = new Headers();
-        let fetchData = {
-            method: 'DELETE',
-            headers: myHeaders
-        }
-        const newUrl = url + "/" + id;
-        fetch(newUrl, fetchData)
-            .then((resposta) => {
-                // console.log(resposta);
-                window.location.replace('index.html');
-            })
-            .catch((error) => {
-                // console.log(error);
-                setModalError(modalAlert, "Error", "Não foi possível excluir o Evento");
-            });
-
-        console.log("entro aqui so pra ter certeza")
-    });
 }
 
 const criaEvento = (e) => {
@@ -264,8 +275,6 @@ const criaEvento = (e) => {
             color: color
         }
 
-        myModal.hide();
-
         const myHeaderssS = new Headers();
         myHeaderssS.append("Content-Type", "application/json");
 
@@ -283,19 +292,18 @@ const criaEvento = (e) => {
                     window.location.replace('index.html');
                 })
                     .catch((error) => {
-                        fetchDataa.clear
                         console.log(resp)
                         if (resp.status == 226) {
-                            setModalErrorAfter(myModal, modalAlert, "Error", "O Período já está sendo utilizado");
+                            exibeErro("O Período já está sendo utilizado");
                         } else if (resp.status == 409) {
-                            setModalErrorAfter(myModal, modalAlert, "Error", "Máximo de eventos no dia");
+                            exibeErro("Máximo de eventos no dia");
                         } else if (resp.status == 200) {
                             // limpar();
                             setInterval(window.location.replace('index.html'), 2000);
                         } else if (resp.status == 500) {
-                            setModalErrorAfter(myModal, modalAlert, "Error", "Máximo de eventos no dia");
+                            exibeErro("Máximo de eventos no dia");
                         } else {
-                            setModalError(modalAlert, 'Ocorreu um erro', error);
+                            exibeErro(error);
                         }
                     });
             });
@@ -319,7 +327,7 @@ function getOnNone(a) {
 
 function getSelectColor(z) {
     if (z == 1) {
-        color = '#D99CA7'
+        color = '#FF4F4C'
     } else if (z == 2) {
         color = '#DE0F00'
     } else if (z == 3) {
@@ -340,7 +348,6 @@ function setModalError(modalAlert, name, description) {
 
 function debug() {
     const item = document.getElementById("periodo");
-    // console.log(item.value)
 }
 
 function getDataFormat() {
@@ -378,7 +385,7 @@ function formatDateOther(date) {
 
 
 function transformBgColorInNumber(___c) {
-    if (___c == '#D99CA7') {
+    if (___c == '#FF4F4C') {
         return 1;
     } else if (___c == '#DE0F00') {
         return 2;
@@ -404,7 +411,7 @@ function setModalErrorAfter(myModal, modalAlert, name, description) {
     var myModal = bootstrap.Modal.getInstance(document.querySelector('#myModal'));
     console.log(myModal)
     myModal.hide();
-    
+
     var tituloInput = document.getElementById('staticBackdropLabel');
     var descricaoInput = document.getElementById('description-alert');
 
@@ -446,6 +453,11 @@ function setToCreateEvent() {
     nav.className = 'modal-header bg-success';
     document.getElementById("start").disabled = true;
     document.getElementById("description").value = '';
+
+
+    document.getElementById('title').disabled = false;
+    document.getElementById('description').disabled = false;
+    document.getElementById('periodo').disabled = false;
 }
 
 function setToEditEvent() {
@@ -458,6 +470,9 @@ function setToEditEvent() {
     navText.style.color = 'black';
     nav.className = 'modal-header bg-warning';
     document.getElementById("start").disabled = false;
+    document.getElementById('title').disabled = false;
+    document.getElementById('description').disabled = false;
+    document.getElementById('periodo').disabled = false;
 }
 
 function setDescriptionGetOfDatabase(id) {
@@ -484,12 +499,12 @@ function exibeErro(msg) {
     document.getElementById("mensagem").textContent = msg;
 
     document.getElementById("info").className = 'alert show showAlert';
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById("info").className = 'alert hide showAlert';
     }, 3000);
 
     var btn = document.querySelector(".close-btn");
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function () {
         document.getElementById("info").className = 'alert hide showAlert';
     });
 }
