@@ -136,6 +136,7 @@ const editaEvento = (e) => {
     var title = document.getElementById('title');
     var description = document.getElementById('description');
     var erro = 0;
+    var checkDay = new Date(formatDate(data.value, 'yyyy-MM-dd'));
 
     const select = document.getElementById('periodo').value;
     if (select == 0) {
@@ -147,13 +148,18 @@ const editaEvento = (e) => {
     } else if (title.value == '') {
         msg = "Por favor, insira um Título !";
         erro++;
-    } else if (getDataFormat() > data.value) {
+    } else if (getDataFormatSomOne() > data.value) {
         msg = "Data inserida inválida";
+        erro++;
+    } else if (checkDay.getDay() == 5) {
+        msg = "Indisponivel aos Domingos";
         erro++;
     }
     if (erro > 0) {
         exibeErro(msg);
+        closeModal();
         msg = '';
+
     } else {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -182,6 +188,7 @@ const editaEvento = (e) => {
             .then((resp) => {
                 resp.json().then((resposta) => {
                     if (resp.status == 409) {
+                        closeModal();
                         exibeErro("Periodo já existente");
                     }
                     if (resp.status == 200) {
@@ -191,25 +198,38 @@ const editaEvento = (e) => {
                     .catch((error) => {
                         console.log("catch : " + resp.status)
                         if (resp.status == 409) {
+                            closeModal();
                             exibeErro("Periodo já existente");
                         }
                         if (resp.status == 200) {
                             window.location.replace('index.html');
                         }
                         if (resp.status == 226) {
-                            exibeErro("Periodo já existente");
+                            closeModal();
+                            exibeErro("Todo o Periodo está ocupado");
                         }
                         if (resp.status == 200) {
                             window.location.replace('index.html');
                         }
                         if(resp.status == 400) {
+                            closeModal();
                             exibeErro("Todo o periodo já está utilizado");
-                            myModal.hide();
                         }
 
                     });
             })
     }
+}
+
+function closeModal() {
+    var btn = document.getElementById("btn-cancel");
+    btn.addEventListener('click', function () {
+        window.location.replace('index.html');
+    })
+    var btn1 = document.getElementById("btn-close");
+    btn1.addEventListener("click", function () {
+        window.location.replace('index.html');
+    });
 }
 
 const deletaEvento = (e) => {
@@ -225,12 +245,13 @@ const deletaEvento = (e) => {
     const newUrl = url + "/" + id;
     fetch(newUrl, fetchData)
         .then((resposta) => {
-            exibeErro("Excluido com sucesso !")
+            // exibeErro("Excluido com sucesso !")
             setTimeout(function () {
                 window.location.replace('index.html')
-            }, 2500);
+            }, 0);
         })
         .catch((error) => {
+            closeModal();
             exibeErro("Não foi possível excluir o Evento");
         });
 
@@ -294,15 +315,19 @@ const criaEvento = (e) => {
                     .catch((error) => {
                         console.log(resp)
                         if (resp.status == 226) {
+                            closeModal();
                             exibeErro("O Período já está sendo utilizado");
                         } else if (resp.status == 409) {
+                            closeModal();
                             exibeErro("Máximo de eventos no dia");
                         } else if (resp.status == 200) {
                             // limpar();
                             setInterval(window.location.replace('index.html'), 2000);
                         } else if (resp.status == 500) {
+                            closeModal();
                             exibeErro("Máximo de eventos no dia");
                         } else {
+                            closeModal();
                             exibeErro(error);
                         }
                     });
@@ -353,6 +378,11 @@ function debug() {
 function getDataFormat() {
     const date = new Date().toLocaleDateString();
     return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2);
+}
+
+function getDataFormatSomOne() {
+    const date = new Date().toLocaleDateString();
+    return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2) + 1;
 }
 
 function formatDate(date) {
