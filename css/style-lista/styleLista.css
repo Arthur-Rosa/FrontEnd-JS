@@ -1,0 +1,152 @@
+/* Google Font Import - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    /* ===== Colors ===== */
+    --body-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --primary-color: #E30613;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #707070;
+
+    /* ====== Transition ====== */
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.3s ease;
+    --tran-05: all 0.3s ease;
+}
+
+
+
+/* === login ==== */
+.principal {
+    display: flex;
+    justify-content: center;
+    height: 100vh !important;
+}
+
+.principal h2{
+    margin-bottom: 20px;
+}
+
+.principal .boxModelLista .pagination {
+    display: flex;
+    width: 8%;
+    font-size: 25px;
+    justify-content: space-around;
+}
+
+.principal .boxModelLista .pagination a{
+    text-decoration: none;
+}
+
+
+.left, .right{
+    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    background-color: rgb(237 237 237);
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.5s;
+    color: black;
+}
+
+.left:hover, .right:hover{
+    background-color: var(--primary-color);
+}
+
+.principal .boxModelLista {
+    height: 70%;
+    width: 70%;
+    padding: 50px;
+    display: flex;
+    background-color: var(--toggle-color);
+    flex-direction: column;
+    border-radius: 6px;
+    filter: drop-shadow(0px 5px 4px rgba(0, 0, 0, 0.25));
+    margin: auto;
+}
+
+.principal .boxModelLista .head {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+table{
+    width: 100%;
+    text-align: center;
+
+}
+
+table thead tr th{
+    background-color: rgb(190, 190, 190);
+    border-bottom: #E30613 2px solid;
+}
+
+table tbody tr td{
+    border: var(--toggle-color) 2px solid;
+    padding: 5px;
+}
+
+
+table tbody tr td{
+    background-color: rgb(237 237 237);
+    
+}
+
+
+
+/* botões */
+table tbody td button{
+    width: 40px;
+    height: 40px;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: var(--tran-03);
+    border: none;
+    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.25));
+}
+
+table tbody td button i{
+    font-size: 20px;
+    
+}
+
+table tbody td .delete{
+    background-color: rgb(238, 30, 30);
+}
+
+table tbody td .edit{
+    background-color: rgb(255, 217, 0);
+
+}
+
+table tbody td .delete:hover{
+    background-color: rgba(209, 23, 23, 0.836);
+}
+
+table tbody td .edit:hover{
+    background-color: rgba(223, 190, 4, 0.897);
+
+}
+.bg-lista{
+
+    position: relative;
+    width: 90%;
+    margin-left: auto;
+}
+ol, ul {
+    padding-left: 0 !important;
+}
+
+.alert{
+    top: -150px !important;
+}

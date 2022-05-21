@@ -1,0 +1,33 @@
+/* botões */
+table tbody td button{
+    width: 40px;
+    height: 40px;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: var(--tran-03);
+    border: none;
+    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.25));
+}
+
+table tbody td button i{
+    font-size: 20px;
+    
+}
+
+table tbody td .delete{
+    background-color: rgb(238, 30, 30);
+}
+
+table tbody td .edit{
+    background-color: rgb(255, 217, 0);
+
+}
+
+table tbody td .delete:hover{
+    background-color: rgba(209, 23, 23, 0.836);
+}
+
+table tbody td .edit:hover{
+    background-color: rgba(223, 190, 4, 0.897);
+
+}

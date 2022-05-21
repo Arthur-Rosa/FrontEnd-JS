@@ -1,0 +1,16 @@
+table tbody tr .status{
+    font-weight: 600;
+}
+
+table tbody tr .andamento{
+    background-color: rgba(255, 238, 80, 0.863);
+}
+
+table tbody tr .confirmado{
+    background-color: rgba(121, 255, 80, 0.863);
+}
+
+
+table tbody tr .reprovado{
+    background-color: rgba(255, 27, 27, 0.863);
+}
