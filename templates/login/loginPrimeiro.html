@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="../../css/style-login/stylePAcesso.css">
+    <link rel="stylesheet" href="../../css/style-notification/styleNotification.css">
+
+</head>
+<style>
+    .alert{
+        top: -150px;
+        right: -1500px;
+    }
+</style>
+<body>
+
+    <div class="principal">
+        <div class="boxForm">
+
+
+            <h1>PRIMEIRO ACESSO</h1>
+
+            <form class="formulario" method="post">
+
+                <div class="login">
+
+                    <div class="inputs">
+                        <div class="agrupaInput">
+                            <label>Número da matricula:</label>
+                            <input id="input_matricula" placeholder="Digite o número da matrícula" type="text"
+                                name="numero" required/>
+                            <div class="link">
+                                <a href="login.html">
+                                    <p>Entrar com o Email? <span> Clique Aqui</span>
+                                </a></p>
+                            </div>
+                        </div>
+
+                        <div class="agrupaInput">
+                            <label>Data de nascimento:</label>
+                            <input required id="input_nascimento" placeholder="Digite a data de nascimento" type="date"
+                                name="dataNascimento" />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="btn">
+                    <button id="bt_prosseguir">Prosseguir</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="alert hide" id="info">
+        <span class="fas fa-exclamation-circle"></span>
+        <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
+        <div class="close-btn">
+           <span class="fas fa-times"></span>
+        </div>
+     </div>
+    <script src="../../JS/login-js/login.js"></script>
+</body>
+
+</html>

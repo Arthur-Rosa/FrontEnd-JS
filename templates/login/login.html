@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="../../css/style-login/styleLogin.css">
+    <link rel="stylesheet" href="../../css/style-notification/styleNotification.css">
+ 
+   
+
+</head>
+<style>
+    .alert{
+        top: -150px;
+        right: -1500px;
+    }
+</style>
+<body>
+
+    <div class="principal">
+        <div class="boxForm">
+
+            <h1>BEM VINDO</h1>
+            <h3>Faça seu Login</h3>
+
+            <form class="formulario" method="post">
+
+                <div class="login">
+
+                    <div class="inputs">
+                        <div class="agrupaInput">
+                            <label>E-mail:</label>
+                            <input id="email" placeholder="Digite seu E-mail" type="email" name="email" required>
+                        </div>
+
+                        <div class="agrupaInput">
+                            <label>Senha:</label>
+                            <input id="senha" placeholder="Digite seu senha" type="password" name="senha" required>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="link">
+                    <a>Primeiro acesso ? </a> <a href="loginPrimeiro.html">Clique Aqui</a></p>
+                </div>
+                <button id="bt_acessar">Entrar</button>
+
+            </form>
+        </div>
+        
+    </div>
+
+    <div class="alert hide" id="info">
+        <span class="fas fa-exclamation-circle"></span>
+        <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
+        <div class="close-btn">
+           <span class="fas fa-times"></span>
+        </div>
+     </div>
+    <script src="../../js/login-js/login.js"></script>
+        
+    </body>
+
+</html>

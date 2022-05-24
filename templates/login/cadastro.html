@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="../../css/style-login/styleCadastro.css">
+    <link rel="stylesheet" href="../../css/style-notification/styleNotification.css">
+</head>
+
+<style>
+    .alert{
+        top: -150px;
+        right: -1500px;
+    }
+</style>
+<body>
+
+    <div class="principal">
+        <div class="boxForm">
+
+            <h1>CADASTRE-SE</h1>
+
+            <form class="formulario " >
+
+                <div class="inputs">
+
+                    <div class="agrupaInput">
+                        <label>Senha:</label>
+                        <input id="senha" placeholder="Digite sua senha..." type="password" name="senha" required>
+                    </div>
+
+                    <div class="agrupaInput">
+                        <label>Repita a senha:</label>
+                        <input id="repita_senha" placeholder="Confirme sua senha..." type="password" name="senha" required>
+                    </div>
+
+                </div>
+
+                <button id="bt_cadastrar">Cadastrar</button>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="alert hide" id="info">
+        <span class="fas fa-exclamation-circle"></span>
+        <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
+        <div class="close-btn">
+           <span class="fas fa-times"></span>
+        </div>
+     </div>
+
+    <script src="../../js/login-js/cadastro.js"></script>
+</body>
+</html>

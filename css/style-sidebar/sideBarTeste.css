@@ -106,9 +106,10 @@ body{
     top: 380px;
     background-color: #ee0000;
     border-radius: 12px;
+    cursor: pointer;
 }
 
-.sidebar ul .sair li a i, .sidebar ul .sair li a span {
+.sidebar ul .sair li div i, .sidebar ul .sair li div span {
     color: white;
 }
 

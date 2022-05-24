@@ -1,3 +1,20 @@
+var token = sessionStorage.getItem("token")
+if(token == null){
+    window.location.replace('../login/login.html')
+}
+//Método que faz o decode do token
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+
+const payload = parseJwt(token)
+
 // const url = 'http://api-auditorio.herokuapp.com/api/tarefas';
 const url = 'http://10.92.198.38:8080/api/tarefas';
 let id = '';
@@ -172,7 +189,8 @@ const editaEvento = (e) => {
             periodo: select,
             start: data.value,
             description: description.value,
-            color
+            color,
+            usuario: payload
         }
 
         myModal.dispose();
@@ -219,17 +237,6 @@ const editaEvento = (e) => {
                     });
             })
     }
-}
-
-function closeModal() {
-    var btn = document.getElementById("btn-cancel");
-    btn.addEventListener('click', function () {
-        window.location.replace('index.html');
-    })
-    var btn1 = document.getElementById("btn-close");
-    btn1.addEventListener("click", function () {
-        window.location.replace('index.html');
-    });
 }
 
 const deletaEvento = (e) => {
@@ -293,7 +300,8 @@ const criaEvento = (e) => {
             periodo: select.value,
             start: data.value,
             description: description.value,
-            color: color
+            color: color,
+            usuario: payload
         }
 
         const myHeaderssS = new Headers();
@@ -333,6 +341,17 @@ const criaEvento = (e) => {
                     });
             });
     }
+}
+
+function closeModal() {
+    var btn = document.getElementById("btn-cancel");
+    btn.addEventListener('click', function () {
+        window.location.replace('index.html');
+    })
+    var btn1 = document.getElementById("btn-close");
+    btn1.addEventListener("click", function () {
+        window.location.replace('index.html');
+    });
 }
 
 function limpar() {

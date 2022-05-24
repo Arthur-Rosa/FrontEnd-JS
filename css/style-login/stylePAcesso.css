@@ -1,0 +1,142 @@
+/* Google Font Import - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    /* ===== Colors ===== */
+    --body-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --primary-color: #E30613;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #707070;
+
+    /* ====== Transition ====== */
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.3s ease;
+    --tran-05: all 0.3s ease;
+}
+
+
+
+/* === login ==== */
+.principal {
+    display: flex;
+    justify-content: center;
+    height: 100vh !important;
+
+}
+
+.principal .boxForm {
+    height: 450px;
+    width: 50%;
+    padding: 50px;
+    display: flex;
+    background-color: var(--toggle-color);
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    filter: drop-shadow(0px 5px 4px rgba(0, 0, 0, 0.25));
+    margin: auto;
+}
+
+.principal .boxForm .formulario {
+    margin: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 25px 0;
+
+}
+
+.principal h1 {
+    padding: 10px;
+    border-bottom: 2px var(--primary-color) solid;
+    color: black;
+}
+
+.principal h3 {
+    padding: 10px;
+    color: black;
+    font-weight: 600;
+
+}
+
+.login .inputs .agrupaInput input {
+    width: 100%;
+    border-radius: 10px;
+    border-style: none;
+    padding: 10px 15px;
+    filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
+
+}
+
+.login .inputs .agrupaInput input:focus {
+    box-shadow: 0 0 0 0;
+    border-bottom: #E30613 2px solid;
+    outline: 0;
+
+}
+
+.login .inputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    padding-top: 50px;
+}
+
+.principal .boxForm a {
+    text-decoration: none;
+}
+
+.principal .boxForm button {
+    padding: 10px 30px;
+    margin: 60px auto;
+    border: none;
+    width: 15%;
+    background: var(--primary-color);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 15px;
+    color: var(--primary-color-light);
+    cursor: pointer;
+    transition-duration: 0.5s;
+}
+
+.principal .boxForm button:hover {
+    background-color: #b1030f;
+}
+
+.login .inputs .agrupaInput {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+}
+
+.login .inputs .agrupaInput label {
+    margin-left: 5px;
+}
+
+.link {
+    margin: 8px;
+}
+
+.link a{    
+    font-size: 15px;
+    color: black;
+}
+
+.link a span{
+    font-weight: 500;
+    color: var(--primary-color);
+    text-decoration: underline;
+}

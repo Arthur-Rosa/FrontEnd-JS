@@ -5,7 +5,7 @@ if (token == null) {
 const paginaAtual = window.location.href
 const atributosUrl = paginaAtual.split('?')
 // let url = 'http://localhost:8080/api/tarefas';
-let url = 'http://10.92.198.38:8080/api/tarefas';
+let url = 'http://10.92.198.38:8080/api/usuarios';
 var idd = '';
 if (atributosUrl[1] !== undefined) {
     url = url + "/page/" + atributosUrl[1]
@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var ModalNotBoot = document.getElementById('myModal');
     ModalNotBoot.addEventListener('hidden.bs.modal', function (event) {
         var b = document.getElementById('btnEliminar');
-        b.removeEventListener('click', deletaEvento);
+        b.removeEventListener('click', deletarProfModal);
         let btnSalvar = document.getElementById('btnSalvarEditar');
-        btnSalvar.removeEventListener('click', editarEventoModal);
+        btnSalvar.removeEventListener('click', editarProfModal);
     });
 });
 
@@ -50,7 +50,7 @@ function getOfDatabase() {
     fetch(url, fetchData)
         .then((resp) => {
             resp.json().then((info) => {
-                let eventos = info.content;
+                let profs = info.content;
                 console.log(info)
                 if (info.length == 0) {
                     document.getElementById("error").style.display = "block";
@@ -65,9 +65,10 @@ function getOfDatabase() {
                 if (atributosUrl[1] == 1) {
                     bt_back.removeEventListener('click', listenerBack)
                 }
-                return eventos.map((evento) => {
-                    id = evento.id;
-                    criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, id);
+                return profs.map((prof) => {
+                    id = prof.id;
+                    console.log(prof)
+                    criarLinha(prof.nome, prof.matricula, prof.email, prof.ativo, id);
                 })
             })
                 .catch((error) => {
@@ -75,27 +76,31 @@ function getOfDatabase() {
                     exibeErro("Falha na Conexão");
                 });
         })
-
-
 }
 
-function criarLinha(nome, nomeEvent, desc, data, id) {
+function criarLinha(nome, numMat, email, on, id) {
     const tbody = document.querySelector('tbody');
     let tr = document.createElement('tr');
     tr.id = id;
     let tdNomeProf = document.createElement('td');
-    let tdNomeEvento = document.createElement('td');
-    let tdDesc = document.createElement('td');
-    let tdData = document.createElement('td');
+    let tdMat = document.createElement('td');
+    let tdEmail = document.createElement('td');
+    let tdOnOff = document.createElement('td');
     let tdBtn = document.createElement('td');
     let tdBtnDel = document.createElement('td');
 
     tbody.appendChild(tr);
 
+    if(on === true) {
+        on = 'Cadastrado';
+    } else {
+        on = 'Não Cadastrado';
+    }
+
     tdNomeProf.innerText = nome;
-    tdNomeEvento.innerText = nomeEvent;
-    tdDesc.innerText = desc;
-    tdData.innerText = data;
+    tdMat.innerText = numMat;
+    tdEmail.innerText = email;
+    tdOnOff.innerText = on;
 
     const btnEdit = document.createElement('button');
     arrumaEdtBtn(btnEdit);
@@ -103,52 +108,37 @@ function criarLinha(nome, nomeEvent, desc, data, id) {
     btnEdit.addEventListener('click', function (e) {
         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
         getElementsByEdit(id);
-        if (data > getDataFormat()) {
-            myModal.show();
-        }
-
+        myModal.show();
+        
         idd = id;
 
         const btnSalvar = document.getElementById('btnSalvarEditar');
-        btnSalvar.addEventListener('click', editarEventoModal);
+        btnSalvar.addEventListener('click', editarProfModal);
 
         const btnDeletar = document.getElementById('btnEliminar');
-        btnDeletar.addEventListener('click', deletarEventoModal);
+        btnDeletar.addEventListener('click', deletarProfModal);
     });
 
     const btnDel = document.createElement('button');
     arrumaExclBtn(btnDel);
     btnDel.addEventListener('click', function (e) {
         e.preventDefault();
-        if (data > getDataFormat()) {
-            deletaEvento(id);
-        } else {
-            exibeErro('Evento Antigo');
-        }
+
+        deletaEvento(id);
     });
 
-
-    if (data > getDataFormat()) {
-
-    } else {
-        btnEdit.disabled = true;
-        btnEdit.className = "editt";
-        btnDel.disabled = true;
-        btnDel.className = "deletee";
-    }
-
     tr.appendChild(tdNomeProf);
-    tr.appendChild(tdNomeEvento);
-    tr.appendChild(tdDesc);
-    tr.appendChild(tdData);
+    tr.appendChild(tdMat);
+    tr.appendChild(tdEmail);
+    tr.appendChild(tdOnOff);
     tr.appendChild(tdBtn);
     tdBtn.appendChild(btnEdit);
     tr.appendChild(tdBtnDel);
     tdBtnDel.appendChild(btnDel);
 }
 
-const editarEventoModal = (e) => {
-    var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+const editarProfModal = (e) => {
+    /* var myModal = new bootstrap.Modal(document.getElementById('myModal'));
     e.preventDefault();
 
     var data = document.getElementById('start');
@@ -238,10 +228,22 @@ const editarEventoModal = (e) => {
 
                     });
             })
-    }
+    } */
 }
 
-const deletarEventoModal = (e) => {
+function arrumaEdtBtn(b) {
+    b.className = 'edit';
+    b.innerHTML = '<i class="bx bx-edit"></i>';
+    return b;
+}
+
+function arrumaExclBtn(b) {
+    b.className = 'delete';
+    b.innerHTML = '<i class="bx bx-trash"></i>';
+    return b;
+}
+
+const deletarProfModal = (e) => {
     var myModal = bootstrap.Modal.getInstance(document.getElementById('myModal'));
     myModal.hide();
 
@@ -267,92 +269,7 @@ const deletarEventoModal = (e) => {
         });
 }
 
-function arrumaEdtBtn(b) {
-    b.className = 'edit';
-    b.innerHTML = '<i class="bx bx-edit"></i>';
-    return b;
-}
 
-function arrumaExclBtn(b) {
-    b.className = 'delete';
-    b.innerHTML = '<i class="bx bx-trash"></i>';
-    return b;
-}
-
-function deletaEvento(id) {
-
-    const myHeaders = new Headers();
-    let fetchData = {
-        method: 'DELETE',
-        headers: myHeaders
-    }
-    // url = 'http://localhost:8080/api/tarefas';
-    url = 'http://10.92.198.38:8080/api/tarefas';
-    const newUrl = url + "/" + id;
-    fetch(newUrl, fetchData)
-        .then((resposta) => {
-            window.location.replace('listaEventos.html')
-        })
-        .catch((error) => {
-            closeModal();
-            exibeErro("Não foi possível excluir o Evento");
-        });
-}
-
-function getDataFormat() {
-    const date = new Date().toLocaleDateString();
-    return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2);
-}
-
-function exibeErro(msg) {
-    document.getElementById("mensagem").textContent = msg;
-
-    document.getElementById("info").className = 'alert show showAlert';
-    setTimeout(function () {
-        document.getElementById("info").className = 'alert hide showAlert';
-    }, 3000);
-
-    var btn = document.querySelector(".close-btn");
-    btn.addEventListener('click', function () {
-        document.getElementById("info").className = 'alert hide showAlert';
-    });
-}
-
-function getElementsByEdit(id) {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    // url = 'http://localhost:8080/api/tarefas';
-    url = 'http://10.92.198.38:8080/api/tarefas';
-    let fetchData = {
-        method: 'GET',
-        headers: myHeaders
-    }
-
-    const newUrl = url + "/" + id;
-    fetch(newUrl, fetchData)
-        .then((resp) => {
-            resp.json().then((info) => {
-                console.log(info.title)
-                document.getElementById('title').value = info.title;
-                document.getElementById('description').value = info.description;
-                var data = document.getElementById('start');
-                data.value = info.start;
-                let a = transformBgColorInNumber(info.color);
-                if (a == 1) {
-                    setOptionSelected(1);
-                } else if (a == 2) {
-                    setOptionSelected(2);
-                } else if (a == 3) {
-                    setOptionSelected(3);
-                } else {
-                    setOptionSelected(4);
-                }
-            })
-                .catch((error) => {
-                    exibeErro(error);
-                });
-        })
-}
 
 function transformBgColorInNumber(___c) {
     if (___c == '#FF4F4C') {
@@ -414,4 +331,23 @@ function formatDate(date) {
 function getDataFormatSomOne() {
     const date = new Date().toLocaleDateString();
     return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2) + 1;
+}
+
+function getDataFormat() {
+    const date = new Date().toLocaleDateString();
+    return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2);
+}
+
+function exibeErro(msg) {
+    document.getElementById("mensagem").textContent = msg;
+
+    document.getElementById("info").className = 'alert show showAlert';
+    setTimeout(function () {
+        document.getElementById("info").className = 'alert hide showAlert';
+    }, 3000);
+
+    var btn = document.querySelector(".close-btn");
+    btn.addEventListener('click', function () {
+        document.getElementById("info").className = 'alert hide showAlert';
+    });
 }

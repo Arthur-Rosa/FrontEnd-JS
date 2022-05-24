@@ -2,42 +2,27 @@
 <html lang="pt-br">
   <head>
     <meta charset="utf-8" />
-
+    <link href="../../lib/main.css" rel="stylesheet" />
     <title>Calendar</title>
-
-    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-
-    <link
-      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-
-    <link
-      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- CSS Nav -->
-    <link rel="stylesheet" href="../../css/style-sidebar/sideBarTeste.css" />
-
-    <!-- CSS Lista-->
-    <link rel="stylesheet" href="../../css/style-lista/styleLista.css" />
-
+    <link href="../../css/style-princial/style.css" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="../../css/style-notification/styleNotification.css"
     />
-
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../css/style-sidebar/sideBarTeste.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
-
-    <style>
-      .alert {
-        top: 100px;
-      }
-    </style>
   </head>
 
   <body>
@@ -62,12 +47,7 @@
               <span class="links_name">Calendário</span>
             </a>
           </li>
-          <li>
-            <a href="listaProf.html">
-              <i class="bx bx-user"></i>
-              <span class="links_name">Professores</span>
-            </a>
-          </li>
+
           <li>
             <a href="listaEventos.html">
               <i class="bx bx-calendar-event"></i>
@@ -91,65 +71,10 @@
           </div>
         </ul>
       </div>
-
-      <div class="bg-lista">
-        <div class="principal">
-          <div class="boxModelLista">
-            <div class="head">
-              <h2 onclick="criarLinha()">Eventos</h2>
-
-              <div class="pagination">
-                <div href="#" id="bt_back">
-                  <div class="left"><i class="bx bx-left-arrow-alt"></i></div>
-                </div>
-
-                <div href="#" id="bt_next">
-                  <div class="right"><i class="bx bx-right-arrow-alt"></i></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="listaTarefa">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Professor</th>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Data</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <!-- <tr>
-                            <td>Chile</td>
-                            <td>Evento</td>
-                            <td>Evento ceo</td>
-                            <td>11/05/2022</td>
-                            <td><button id="edit" class="edit"><i class='bx bx-edit'></i></button></td>
-                            <td><button id="del" class="delete"><i class='bx bx-trash' ></i></button></td>
-                        </tr> -->
-                </tbody>
-              </table>
-              <h2 id="error" style="padding: 20px; display: none">
-                Sem eventos cadastrados
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Alert -->
-      <div class="alert hide" id="info">
-        <span class="fas fa-exclamation-circle"></span>
-        <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
-        <div class="close-btn">
-          <span class="fas fa-times"></span>
-        </div>
+      <div class="bg-calendar">
+        <div id="calendar"></div>
       </div>
     </div>
-    <!-- MODAL -->
     <div
       class="modal fade"
       id="myModal"
@@ -159,8 +84,8 @@
     >
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header bg-warning" id="bgEvent">
-            <h5 class="modal-title" id="titulo">Editar Eventos</h5>
+          <div class="modal-header" id="bgEvent">
+            <h5 class="modal-title" id="titulo">Registro de Eventos</h5>
             <button
               type="button"
               class="btn-close"
@@ -236,10 +161,14 @@
               <button type="button" class="btn btn-danger" id="btnEliminar">
                 Excluir
               </button>
+              <button type="submit" class="btn btn-primary" id="btnAction">
+                Salvar
+              </button>
               <button
                 type="submit"
                 class="btn btn-primary"
                 id="btnSalvarEditar"
+                style="display: none"
               >
                 Salvar
               </button>
@@ -248,10 +177,18 @@
         </div>
       </div>
     </div>
+    <!-- Alert -->
+    <div class="alert hide" id="info">
+      <span class="fas fa-exclamation-circle"></span>
+      <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
+      <div class="close-btn">
+        <span class="fas fa-times"></span>
+      </div>
+    </div>
 
+    <script src="../../js/calendar-js/language.js"></script>
     <script src="../../bootstrap/js/bootstrap.bundle.js"></script>
     <script src="../../js/sidebar/sideBarLogica.js"></script>
-    <script src="../../js/listar-eventos/listar-eventos.js"></script>
     <script>
       const body = document.querySelector("body"),
         sidebar = body.querySelector("nav"),
@@ -277,5 +214,9 @@
         }
       });
     </script>
+    <script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
+    <script src="../../lib/main.js"></script>
+    <script src="../../js/calendar-js/calendarJs.js"></script>
+    <script src="../../js/calendar-js/language.js"></script>
   </body>
 </html>

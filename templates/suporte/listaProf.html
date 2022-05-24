@@ -20,7 +20,6 @@
     <!-- CSS Lista-->
     <link rel="stylesheet" href="../../css/style-lista/styleLista.css">
     <link rel="stylesheet" href="../../css/style-lista-prof/styleListaProf.css">
-    <link rel="stylesheet" href="../../css/style-notification/styleNotification.css">
   
   
   </head>
@@ -89,13 +88,9 @@
                 <h2>Professores</h2>
 
                 <div class="pagination">
-                  <div href="#" id="bt_back">
-                    <div class="left"><i class="bx bx-left-arrow-alt"></i></div>
-                  </div>
-  
-                  <div href="#" id="bt_next">
-                    <div class="right"><i class="bx bx-right-arrow-alt"></i></div>
-                  </div>
+
+                    <a href="#"><div class="left"><i class='bx bx-left-arrow-alt'></i></div></a>
+                    <a href="#"><div class="right"><i class='bx bx-right-arrow-alt'></i></div></a>
                 </div>
             </div>
 
@@ -108,21 +103,27 @@
                             <th>Nome</th>
                             <th>Número da Matricula</th>
                             <th>Email</th>
-                            <th>Situação</th>
                             <th>Editar</th>
                             <th>Excluir</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <!-- <tr>
+                        <tr>
                             <td>Chile</td>
                             <td>464165121351</td>
                             <td>chile@gmail.com</td>
                             <td><button class="edit"><i class='bx bx-edit'></i></button></td>
                             <td><button class="delete"><i class='bx bx-trash' ></i></button></td>
                         </tr>
- -->
+
+                        <tr>
+                            <td>Chile</td>
+                            <td>464165121351</td>
+                            <td>chile@gmail.com</td>
+                            <td><button class="edit"><i class='bx bx-edit'></i></button></td>
+                            <td><button class="delete"><i class='bx bx-trash' ></i></button></td>
+                        </tr>
                     </tbody>
 
                 </table>
@@ -132,118 +133,11 @@
                 
 
     </div>   
+    </div>   
   </div>
-  <!-- Alert -->
-  <div class="alert hide" id="info">
-    <span class="fas fa-exclamation-circle"></span>
-    <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
-    <div class="close-btn">
-      <span class="fas fa-times"></span>
-    </div>
-  </div>
-</div>
-<!-- MODAL -->
-<div
-  class="modal fade"
-  id="myModal"
-  tabindex="-1"
-  aria-labelledby="Label"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-warning" id="bgEvent">
-        <h5 class="modal-title" id="titulo">Editar Eventos</h5>
-        <button
-          type="button"
-          class="btn-close"
-          id="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <form id="formulario" autocomplete="off" method="post">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-floating mb-3">
-                <input type="hidden" id="id" name="id" />
-                <input
-                  id="title"
-                  type="text"
-                  class="form-control"
-                  name="title"
-                  required
-                />
-                <label for="title">Evento</label>
-              </div>
-            </div>
-            <div class="col-md-12" onclick="debug()">
-              <div class="form-floating mb-3">
-                <input
-                  id="description"
-                  type="text"
-                  class="form-control"
-                  name="description"
-                  required
-                />
-                <label for="description">Descrição</label>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <select class="form-select mb-3" id="periodo" required>
-                <option id="opt0" value="0" selected>
-                  Selecione o Período
-                </option>
-                <option id="opt1" value="1">Matutino</option>
-                <option id="opt2" value="2">Vespertino</option>
-                <option id="opt3" value="3">Noturno</option>
-                <option id="opt4" value="4">Todo o Período</option>
-              </select>
-            </div>
-            <div class="col-md-12">
-              <div class="form-floating mb-3">
-                <input
-                  class="form-control disable"
-                  id="start"
-                  value="00/00/0000"
-                  type="date"
-                  name="start"
-                  required
-                  disabled
-                />
-                <label for="" class="form-label">Data</label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            id="btn-cancel"
-            data-bs-dismiss="modal"
-          >
-            Cancelar
-          </button>
-          <button type="button" class="btn btn-danger" id="btnEliminar">
-            Excluir
-          </button>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            id="btnSalvarEditar"
-          >
-            Salvar
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
   <script src="../../bootstrap/js/bootstrap.bundle.js"></script>
   <script src="../../js/sidebar/sideBarLogica.js"></script>
-  <script src="../../js/listar-profs/listar-profs.js"></script>
+
   <script>
     const body = document.querySelector('body'),
       sidebar = body.querySelector('nav'),
