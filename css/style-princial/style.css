@@ -1,43 +1,211 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-*{
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-#calendar{
-    width: 1000px;
+
+#calendar {
+    width: 800px;
     display: block;
 }
-#calendar .fc-view{
+
+#calendar .fc-view {
     background-color: white;
 }
 
-.fc-day-today{
+.fc-day-today {
     cursor: pointer;
     background-color: rgba(255, 0, 0, 0.123) !important;
 }
-.fc-day:hover{
+
+.fc-day:hover {
     cursor: pointer;
     background-color: rgba(255, 0, 0, 0.24) !important;
 }
-.bg-calendar{
+
+.bg-calendar {
     top: 100px;
     position: relative;
-    width: 75%;
+    width: 70%;
     margin-left: auto;
+    display: flex;
+    flex-direction: row;
 }
-a{
+
+a {
     color: #343a40 !important;
     text-decoration: none !important;
 }
-.t{
+
+.t {
     display: flex;
 }
-ol, ul {
+
+ol,
+ul {
     padding-left: 0 !important;
 }
-.fc-prev-button, .fc-next-button, .fc-today-button, .fc-dayGridMonth-button, .fc-listWeek-button{
+
+.fc-prev-button,
+.fc-next-button,
+.fc-today-button,
+.fc-dayGridMonth-button,
+.fc-listWeek-button {
     background-color: red !important;
     border: 1px solid rgb(248, 58, 58) !important;
 }
+
+
+/* leganda e solicitacoes */
+.divs {
+    position: relative;
+    left: 5%;
+
+}
+
+.legenda {
+    position: relative;
+    top: 3%;
+    left: 5%;
+    background-color: #FFF;
+    width: 200px;
+    height: 250px;
+    border-radius: 10px;
+    list-style: none;
+    filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
+    margin-bottom: 30px;
+}
+
+.legenda ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+
+}
+
+.legenda h5 {
+    border-bottom: #E30613 2px solid;
+    text-align: center;
+    padding: 5px;
+    margin-left: 30px;
+    margin-right: 30px;
+
+}
+
+.legenda ul li {
+    display: flex;
+    margin-top: 20px;
+
+}
+
+.legenda div {
+    display: flex;
+   
+    width: 20px;
+    height: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 2px;
+    filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
+    color: black;
+}
+
+.solicitacoes {
+    overflow-x: hidden;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    top: 3%;
+    left: 5%;
+    padding-top: 10px;
+    background-color: #FFF;
+    width: 200px;
+    height: 306px;
+    border-radius: 10px;
+    filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
+}
+.matutino{background-color: #D99CA7;}
+.vespertino{background-color: #DE0F00;}
+.noturno{background-color: #A60A27;}
+.todoperiodo{background-color: #83818C;}
+
+::-webkit-scrollbar-track {
+    background-color: #F4F4F4;
+    
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+    background: #F4F4F4;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #E30613;
+}
+h2{
+    text-align: center;
+    margin-left: 5%;
+
+
+}
+.solicitacoes h5 {
+    border-bottom: #E30613 2px solid;
+    padding: 5px;
+    margin-left: 30px;
+    margin-right: 30px;
+
+}
+
+.blocos {
+    display: flex;
+    margin-top: 20px !important;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(224, 224, 224);
+    width: 90%;
+    padding:20px;
+    border-radius: 5px;
+    filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
+    justify-content: space-around;
+    box-sizing: border-box;
+    overflow: hidden;
+    box-shadow: rgba(122, 121, 121, 0.15) 0px 2px 10px 1px;
+    
+}
+
+.linha {
+    padding-top: -10px;
+    align-items: center;
+    justify-content: space-between;
+    display: flex !important;
+    text-align: center;
+    
+}
+
+.linha ul {
+    margin-left: 25px;
+    list-style: none;
+    font-size: small;
+    margin-top: 15px;
+    
+
+
+
+}
+
+.blocos div {
+    position: relative;
+    left: -75px;
+    margin-inline: 10px;
+    background-color: rgba(255, 238, 80, 0.863);
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
+
+}
+

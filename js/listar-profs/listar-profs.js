@@ -2,6 +2,18 @@ var token = sessionStorage.getItem("token")
 if (token == null) {
     window.location.replace('../login/login.html')
 }
+//Método que faz o decode do token
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+const payload = parseJwt(token)
+
 const paginaAtual = window.location.href
 const atributosUrl = paginaAtual.split('?')
 // let url = 'http://localhost:8080/api/tarefas';
@@ -25,6 +37,8 @@ function listenerBack() {
     window.location.href = atributosUrl.toString().replace(/,/g, "?")
 }
 var idd = '';
+var globalTipo = '';
+var globalOn = '';
 
 document.addEventListener('DOMContentLoaded', function () {
     getOfDatabase();
@@ -67,6 +81,8 @@ function getOfDatabase() {
                 }
                 return profs.map((prof) => {
                     id = prof.id;
+                    globalTipo = prof.tipoUsuario;
+                    globalOn = prof.ativo;
                     console.log(prof)
                     criarLinha(prof.nome, prof.matricula, prof.email, prof.ativo, id);
                 })
@@ -91,7 +107,7 @@ function criarLinha(nome, numMat, email, on, id) {
 
     tbody.appendChild(tr);
 
-    if(on === true) {
+    if (on === true) {
         on = 'Cadastrado';
     } else {
         on = 'Não Cadastrado';
@@ -108,8 +124,17 @@ function criarLinha(nome, numMat, email, on, id) {
     btnEdit.addEventListener('click', function (e) {
         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
         getElementsByEdit(id);
+
+        if (on == 'Não Cadastrado') {
+            exibeErro("Usuário não cadastrado");
+            document.getElementById('senha').disabled = true;
+            document.getElementById('senha-cnf').disabled = true;
+        } else {
+            document.getElementById('senha').disabled = false;
+            document.getElementById('senha-cnf').disabled = false;
+        }
         myModal.show();
-        
+
         idd = id;
 
         const btnSalvar = document.getElementById('btnSalvarEditar');
@@ -126,7 +151,7 @@ function criarLinha(nome, numMat, email, on, id) {
 
         deletaEvento(id);
     });
-
+    console.log(payload)
     tr.appendChild(tdNomeProf);
     tr.appendChild(tdMat);
     tr.appendChild(tdEmail);
@@ -137,31 +162,52 @@ function criarLinha(nome, numMat, email, on, id) {
     tdBtnDel.appendChild(btnDel);
 }
 
+function getElementsByEdit(id) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    // url = 'http://localhost:8080/api/tarefas';
+    url = 'http://10.92.198.38:8080/api/usuarios';
+    let fetchData = {
+        method: 'GET',
+        headers: myHeaders
+    }
+
+    const newUrl = url + "/" + id;
+    fetch(newUrl, fetchData)
+        .then((resp) => {
+            resp.json().then((info) => {
+                console.log(info)
+                document.getElementById('email').value = info.email;
+                document.getElementById('nome').value = info.nome;
+                document.getElementById('matricula').value = info.matricula;
+
+                document.getElementById('email').disabled = true;
+                document.getElementById('nome').disabled = true;
+                document.getElementById('matricula').disabled = true;
+
+            })
+                .catch((error) => {
+                    exibeErro(error);
+                });
+        })
+}
+
 const editarProfModal = (e) => {
-    /* var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    var myModal = new bootstrap.Modal(document.getElementById('myModal'));
     e.preventDefault();
 
-    var data = document.getElementById('start');
-    var title = document.getElementById('title');
-    var description = document.getElementById('description');
     var erro = 0;
-    var checkDay = new Date(formatDate(data.value, 'yyyy-MM-dd'));
+    var senha = document.getElementById('senha');
+    var senhacf = document.getElementById('senha-cnf'); 
 
-    const select = document.getElementById('periodo').value;
-    if (select == 0) {
-        msg = "Por favor, selecione um periodo"
+    if (senha.value == '') {
+        msg = "Por favor, digite a Senha !";
         erro++;
-    } else if (description.value == '') {
-        msg = "Por favor, insira uma Descrição !";
+    } else if (senhacf.value == '') {
+        msg = "Por favor, Confirme a senha";
         erro++;
-    } else if (title.value == '') {
-        msg = "Por favor, insira um Título !";
-        erro++;
-    } else if (getDataFormatSomOne() > data.value) {
-        msg = "Data inserida inválida";
-        erro++;
-    } else if (checkDay.getDay() == 5) {
-        msg = "Indisponivel aos Domingos";
+    } else if (!(senha.value == senhacf.value)) {
+        msg = "Senhas diferentes !";
         erro++;
     }
     if (erro > 0) {
@@ -172,24 +218,22 @@ const editarProfModal = (e) => {
     } else {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        const select = document.getElementById('periodo').value;
-        var color = getSelectColor(select);
 
-        let evento_editar = {
+        // var nome = document.getElementById('nome');
+        // var email = document.getElementById('email');
+        // var matricula = document.getElementById('matricula');
+
+        let usuario_editar = {
             id,
-            title: title.value,
-            periodo: select,
-            start: data.value,
-            description: description.value,
-            color
+            senha: senha.value
         }
 
         myModal.dispose();
         // url = 'http://localhost:8080/api/tarefas';
-        url = 'http://10.92.198.38:8080/api/tarefas';
+        url = 'http://10.92.198.38:8080/api/usuarios';
         let fetchData = {
             method: 'PUT',
-            body: JSON.stringify(evento_editar),
+            body: JSON.stringify(usuario_editar),
             headers: myHeaders
         }
         const newUrl = url + "/" + id;
@@ -202,7 +246,7 @@ const editarProfModal = (e) => {
                         exibeErro("Periodo já existente");
                     }
                     if (resp.status == 200) {
-                        window.location.replace('listaEventos.html');
+                        window.location.replace('listaProf.html');
                     }
                 })
                     .catch((error) => {
@@ -212,14 +256,11 @@ const editarProfModal = (e) => {
                             exibeErro("Periodo já existente");
                         }
                         if (resp.status == 200) {
-                            window.location.replace('listaEventos.html');
+                            window.location.replace('listaProf.html');
                         }
                         if (resp.status == 226) {
                             closeModal();
                             exibeErro("Todo o Periodo está ocupado");
-                        }
-                        if (resp.status == 200) {
-                            window.location.replace('listaEventos.html');
                         }
                         if (resp.status == 400) {
                             closeModal();
@@ -228,7 +269,7 @@ const editarProfModal = (e) => {
 
                     });
             })
-    } */
+    }
 }
 
 function arrumaEdtBtn(b) {

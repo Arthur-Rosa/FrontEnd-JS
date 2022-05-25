@@ -1,4 +1,19 @@
 var token = sessionStorage.getItem("token")
+if(token == null){
+    window.location.replace('../login/login.html')
+}
+//Método que faz o decode do token
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};
+const payload = parseJwt(token)
+var token = sessionStorage.getItem("token")
 if (token == null) {
     window.location.replace('../login/login.html')
 }
@@ -67,7 +82,7 @@ function getOfDatabase() {
                 }
                 return eventos.map((evento) => {
                     id = evento.id;
-                    criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, id);
+                    criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, evento.periodo, id);
                 })
             })
                 .catch((error) => {
@@ -79,7 +94,7 @@ function getOfDatabase() {
 
 }
 
-function criarLinha(nome, nomeEvent, desc, data, id) {
+function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
     const tbody = document.querySelector('tbody');
     let tr = document.createElement('tr');
     tr.id = id;
@@ -87,15 +102,31 @@ function criarLinha(nome, nomeEvent, desc, data, id) {
     let tdNomeEvento = document.createElement('td');
     let tdDesc = document.createElement('td');
     let tdData = document.createElement('td');
+    let tdPeriodo = document.createElement('td');
     let tdBtn = document.createElement('td');
     let tdBtnDel = document.createElement('td');
 
     tbody.appendChild(tr);
 
+    if(periodo == 1){
+        tdPeriodo.className = 'mat';
+        periodo = 'Matutino';
+    } else if(periodo == 2){
+        tdPeriodo.className = 'ves';
+        periodo = 'Vespertino';
+    } else if(periodo == 3){
+        tdPeriodo.className = 'not';
+        periodo = 'Noturno';
+    } else {
+        tdPeriodo.className = 'diaT';
+        periodo = 'O Dia Todo';
+    }
+
     tdNomeProf.innerText = nome;
     tdNomeEvento.innerText = nomeEvent;
     tdDesc.innerText = desc;
     tdData.innerText = data;
+    tdPeriodo.innerText = periodo;
 
     const btnEdit = document.createElement('button');
     arrumaEdtBtn(btnEdit);
@@ -141,6 +172,7 @@ function criarLinha(nome, nomeEvent, desc, data, id) {
     tr.appendChild(tdNomeEvento);
     tr.appendChild(tdDesc);
     tr.appendChild(tdData);
+    tr.appendChild(tdPeriodo);
     tr.appendChild(tdBtn);
     tdBtn.appendChild(btnEdit);
     tr.appendChild(tdBtnDel);
@@ -191,7 +223,8 @@ const editarEventoModal = (e) => {
             periodo: select,
             start: data.value,
             description: description.value,
-            color
+            color,
+            usuario: payload
         }
 
         myModal.dispose();

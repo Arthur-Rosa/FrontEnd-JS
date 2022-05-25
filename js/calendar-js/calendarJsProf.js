@@ -16,7 +16,7 @@ function parseJwt(token) {
 const payload = parseJwt(token)
 
 // const url = 'http://api-auditorio.herokuapp.com/api/tarefas';
-const url = 'http://10.92.198.38:8080/api/tarefas';
+const url = 'http://10.92.198.38:8080/api/solic';
 let id = '';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -294,14 +294,16 @@ const criaEvento = (e) => {
     } else {
         let select = document.getElementById('periodo');
         var color = getSelectColor(select.value);
-
+        var status = "2";
+    
         let evento_criar = {
             title: title.value,
             periodo: select.value,
             start: data.value,
             description: description.value,
             color: color,
-            usuario: payload
+            usuario: payload,
+            status: status
         }
 
         const myHeaderssS = new Headers();
@@ -525,7 +527,7 @@ function setToEditEvent() {
 }
 
 function setDescriptionGetOfDatabase(id) {
-    var urlFindObject = 'http://10.92.198.38:8080/api/tarefas' + "/" + id;
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic' + "/" + id;
 
     const bsq = new Headers();
     bsq.append("Content-Type", "application/json");
@@ -536,7 +538,7 @@ function setDescriptionGetOfDatabase(id) {
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
-            // console.log(resposta)
+            console.log(resposta)
             document.getElementById('description').value = resposta.description;
         })
         .catch((error) => {

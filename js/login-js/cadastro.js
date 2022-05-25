@@ -10,12 +10,28 @@ const input_repita = document.getElementById('repita_senha')
 
 var url = 'http://10.92.198.38:8080/api/usuarios'
 
-bt_cadastrar.addEventListener("click", async function (e) {
+bt_cadastrar.addEventListener("click", function exec (e) {
     e.preventDefault()
-    const msg = "Insira uma senha";
+    var msg = "Insira uma senha";
+    var erro = '';
 
+    
 
-    if (input_senha.value == input_repita.value) {
+    if (input_senha.value == '') {
+        msg = "Por favor, digite a Senha !";
+        erro++;
+    } else if (input_repita.value == '') {
+        msg = "Por favor, Confirme a senha";
+        erro++;
+    } else if (!(input_senha.value == input_repita.value)) {
+        msg = "Senhas diferentes !";
+        erro++;
+    }
+
+    if (erro > 0) {
+        exibeErro(msg);
+        msg = '';
+    } else {
 
         let usuario1 = {
             id: user.id,
@@ -39,8 +55,15 @@ bt_cadastrar.addEventListener("click", async function (e) {
         fetch(url, fetchData)
             .then((resp) => {
                 resp.json().then((resposta) => {
-                    alert("Conta cadastra com sucesso realize o login")
-                    window.location.replace("../../templates/login/login.html");
+                    // alert("Conta cadastra com sucesso realize o login")
+                    document.querySelector('#bt_cadastrar').disabled = true;
+                    document.querySelector('#bt_cadastrar').className = 'colorBotton';
+                    exibeErro("Salvo com sucesso!")
+                    setTimeout(function () {
+                        window.location.replace("../../templates/login/login.html");
+                    }, 5000)
+
+                    
                 }).catch((error) => {
                     console.log(error)
                     if (resp.status == 401) {
@@ -48,8 +71,6 @@ bt_cadastrar.addEventListener("click", async function (e) {
                     }
                 })
             })
-    } else {
-        alert("As senhas não coincidem")
     }
 
 })
@@ -63,6 +84,7 @@ function exibeErro(msg) {
     }, 3000);
 
     var btn = document.querySelector(".close-btn");
+    btn.className = 'close-btn';
     btn.addEventListener('click', function () {
         document.getElementById("info").className = 'alert hide showAlert';
     });

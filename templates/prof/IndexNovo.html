@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8" />
+
+  <link href="lib/main.css" rel="stylesheet" />
+  <!-- JavaScripts -->
+  <script src="lib/main.js"></script>
+  <script src="calendarJs.js"></script>
+
+  <title>Calendar</title>
+
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+
+  <!-- CSS Nav -->
+  <link href="style.css" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/sideBarTeste.css">
+</head>
+
+<body>
+  <div class="t">
+    <div class="sidebar">
+      <header class="logo">
+        <img class="logoImg" src="IMG/logo-senai2.png" alt="Logo Senai">
+
+        <button class="btnFechar" id="btMenu">
+          <i class='bx bxs-chevron-left' style='color:#ffffff'></i>
+        </button>
+
+      </header>
+
+      <ul class="nav_list">
+        <li>
+          <a href="#">
+            <i class='bx bxs-calendar'></i>
+            <span class="links_name">Calendário</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Professores</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-calendar-event'></i>
+            <span class="links_name">Eventos</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-bell'></i>
+            <span class="links_name">Solicitações</span>
+          </a>
+        </li>
+        <div class="sair">
+          <li>
+            <a href="#">
+              <i class='bx bx-log-out'></i>
+              <span class="links_name">Sair</span>
+            </a>
+          </li>
+        </div>
+      </ul>
+    </div>
+
+
+    <div class="bg-calendar">
+      <div id="calendar"></div>
+      <div class="divs">
+        <span><h2>Olá Chille</h2></span>
+        <div class="legenda">
+
+          <h5>Legenda</h5>
+
+          <ul>
+            <li>
+              <div class="matutino"></div> Matutino
+            </li>
+            <li>
+              <div class="vespertino"></div> Vespertino
+            </li>
+            <li>
+              <div class="noturno"></div> Noturno
+            </li>
+            <li>
+              <div class="todoperiodo"></div> Todo o periodo
+            </li>
+          </ul>
+
+        </div>
+
+        <div class="solicitacoes">
+
+          <div class="h4">
+          <h5>Solicitações</h5>
+        </div>
+          <div class="blocos">
+            <div class="linha">
+              <div></div>
+              <ul>
+                <li>Dia da apresentação</li>
+                <li>23/06/2022</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="blocos">
+            <div class="linha">
+              <div></div>
+              <ul>
+                <li>Aula Teorica</li>
+                <li>23/06/2022</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="blocos" >
+            <div class="linha">
+              <div ></div>
+              <ul>
+                <li>Salgadão do bom</li>
+                <li>23/06/2022</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="blocos">
+            <div class="linha">
+              <div ></div>
+              <ul>
+                <li>Teste do teste teste</li>
+                <li>23/06/2022</li>
+              </ul>
+            </div>
+          </div>
+          
+
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" id="bgEvent">
+          <h5 class="modal-title" id="titulo">Registro de Eventos</h5>
+          <button type="button" class="btn-close" id="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="formulario" autocomplete="off" method="post">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-floating mb-3">
+                  <input type="hidden" id="id" name="id">
+                  <input id="title" type="text" class="form-control" name="title" required>
+                  <label for="title">Evento</label>
+                </div>
+
+              </div>
+              <div class="col-md-12" onclick="debug()">+
+                <div class="form-floating mb-3">
+                  <input id="description" type="text" class="form-control" name="description" required>
+                  <label for="description">Descrição</label>
+                </div>
+
+              </div>
+              <div class="col-md-12">
+                <select class="form-select mb-3" id="periodo" required>
+                  <option id="opt0" value="0" selected>Selecione o Período</option>
+                  <option id="opt1" value="1">Matutino</option>
+                  <option id="opt2" value="2">Vespertino</option>
+                  <option id="opt3" value="3">Noturno</option>
+                  <option id="opt4" value="4">Todo o Período</option>
+                </select>
+              </div>
+              <div class="col-md-12">
+                <div class="form-floating mb-3">
+                  <input class="form-control disable" id="start" type="date" name="start" required disabled>
+                  <label for="" class="form-label">Data</label>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="btnEliminar">Excluir</button>
+            <button type="submit" class="btn btn-primary" id="btnAction">Salvar</button>
+            <button type="submit" class="btn btn-primary" id="btnSalvarEditar" style="display: none;">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Alert -->
+  <div class="modal fade" id="modalAlert" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="description-alert">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="fecharBotao" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-success" id="confirmarAcao" data-bs-dismiss="modal">Confirmar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="language.js"></script>
+  <script src="bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="JS/sideBarLogica.js"></script>
+
+  <script>
+    const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+
+
+    toggle.addEventListener("click", () => {
+      sidebar.classList.toggle("close");
+    })
+
+    searchBtn.addEventListener("click", () => {
+      sidebar.classList.remove("close");
+    })
+
+    modeSwitch.addEventListener("click", () => {
+      body.classList.toggle("dark");
+
+      if (body.classList.contains("dark")) {
+        modeText.innerText = "Light mode";
+      } else {
+        modeText.innerText = "Dark mode";
+
+      }
+    });
+  </script>
+
+</body>
+
+</html>

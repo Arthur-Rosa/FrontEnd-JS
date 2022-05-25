@@ -158,3 +158,23 @@ ol, ul {
 .alert{
     top: -150px !important;
 }
+
+.mat{
+    background-color: #FF4F4C;
+    color: white;
+}
+
+.ves{
+    background-color: #DE0F00;
+    color: white;
+}
+
+.not{
+    background-color: #A60A27;
+    color: white;
+}
+
+.diaT{
+    background-color: #707070;
+    color: white;
+}

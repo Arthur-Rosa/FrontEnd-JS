@@ -20,10 +20,20 @@
     <!-- CSS Lista-->
     <link rel="stylesheet" href="../../css/style-lista/styleLista.css">
     <link rel="stylesheet" href="../../css/style-lista-prof/styleListaProf.css">
+    <link rel="stylesheet" href="../../css/style-notification/styleNotification.css">
   
-  
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
   </head>
 
+  <style>
+    .alert {
+      top: 100px;
+      right: -1310px;
+    }
+  </style>
 <body>
   <div class="t">
     <div class="sidebar">
@@ -88,9 +98,13 @@
                 <h2>Professores</h2>
 
                 <div class="pagination">
-
-                    <a href="#"><div class="left"><i class='bx bx-left-arrow-alt'></i></div></a>
-                    <a href="#"><div class="right"><i class='bx bx-right-arrow-alt'></i></div></a>
+                  <div href="#" id="bt_back">
+                    <div class="left"><i class="bx bx-left-arrow-alt"></i></div>
+                  </div>
+  
+                  <div href="#" id="bt_next">
+                    <div class="right"><i class="bx bx-right-arrow-alt"></i></div>
+                  </div>
                 </div>
             </div>
 
@@ -103,27 +117,22 @@
                             <th>Nome</th>
                             <th>Número da Matricula</th>
                             <th>Email</th>
+                            <th>Situação</th>
                             <th>Editar</th>
                             <th>Excluir</th>
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody><!-- 
                         <tr>
-                            <td>Chile</td>
+                            <td>Arthur Rosa Alves Andrade</td>
                             <td>464165121351</td>
                             <td>chile@gmail.com</td>
+                            <td>aa</td>
                             <td><button class="edit"><i class='bx bx-edit'></i></button></td>
                             <td><button class="delete"><i class='bx bx-trash' ></i></button></td>
-                        </tr>
+                        </tr> -->
 
-                        <tr>
-                            <td>Chile</td>
-                            <td>464165121351</td>
-                            <td>chile@gmail.com</td>
-                            <td><button class="edit"><i class='bx bx-edit'></i></button></td>
-                            <td><button class="delete"><i class='bx bx-trash' ></i></button></td>
-                        </tr>
                     </tbody>
 
                 </table>
@@ -133,11 +142,129 @@
                 
 
     </div>   
-    </div>   
   </div>
+  <!-- Alert -->
+  <div class="alert hide" id="info">
+    <span class="fas fa-exclamation-circle"></span>
+    <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
+    <div class="close-btn">
+      <span class="fas fa-times"></span>
+    </div>
+  </div>
+</div>
+<!-- MODAL -->
+<div
+  class="modal fade"
+  id="myModal"
+  tabindex="-1"
+  aria-labelledby="Label"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning" id="bgEvent">
+        <h5 class="modal-title" id="titulo">Editar Eventos</h5>
+        <button
+          type="button"
+          class="btn-close"
+          id="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form id="formulario" autocomplete="off" method="post">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-floating mb-3">
+                <input type="hidden" id="id" name="id" />
+                <input
+                  id="email"
+                  type="text"
+                  class="form-control"
+                  name="email"
+                  required
+                />
+                <label for="email">E-mail</label>
+              </div>
+            </div>
+            <div class="col-md-12" onclick="debug()">
+              <div class="form-floating mb-3">
+                <input
+                  id="nome"
+                  type="text"
+                  class="form-control"
+                  name="nome"
+                  required
+                />
+                <label for="nome">Nome</label>
+              </div>
+            </div>
+            <div class="col-md-12" onclick="debug()">
+              <div class="form-floating mb-3">
+                <input
+                  id="matricula"
+                  type="text"
+                  class="form-control"
+                  name="matricula"
+                  required
+                />
+                <label for="matricula">Matricula</label>
+              </div>
+            </div>
+            <div class="col-md-12" onclick="debug()">
+              <div class="form-floating mb-3">
+                <input
+                  id="senha"
+                  type="password"
+                  class="form-control"
+                  name="senha"
+                  required
+                />
+                <label for="senha">Senha</label>
+              </div>
+            </div>
+            <div class="col-md-12" onclick="debug()">
+              <div class="form-floating mb-3">
+                <input
+                  id="senha-cnf"
+                  type="password"
+                  class="form-control"
+                  name="senha-cnf"
+                  required
+                />
+                <label for="senha-cnf">Confime a senha</label>
+              </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="btn-cancel"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-danger" id="btnEliminar">
+            Excluir
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="btnSalvarEditar"
+          >
+            Salvar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
   <script src="../../bootstrap/js/bootstrap.bundle.js"></script>
   <script src="../../js/sidebar/sideBarLogica.js"></script>
-
+  <script src="../../js/listar-profs/listar-profs.js"></script>
   <script>
     const body = document.querySelector('body'),
       sidebar = body.querySelector('nav'),

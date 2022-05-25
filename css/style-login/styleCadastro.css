@@ -112,6 +112,10 @@
     transition-duration: 0.5s;
 }
 
+.colorBotton {
+    background-color: #b1030f !important;
+}
+
 .principal .boxForm button:hover {
     background-color: #b1030f;
 }

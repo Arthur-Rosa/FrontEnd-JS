@@ -9,7 +9,7 @@ const bt_prosseguir = document.getElementById('bt_prosseguir')
 
 const myHeaders = new Headers();
 const url = 'http://10.92.198.38:8080/api/usuarios/login'
-const urlPrimeiroAcesso ='http://10.92.198.38:8080/api/usuarios/cadastra'
+const urlPrimeiroAcesso ='http://10.92.198.38:8080/api/usuarios/acessar'
 
 myHeaders.append("Content-Type", "application/json");
 let msg = "OPsss"
