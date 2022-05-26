@@ -1,5 +1,5 @@
 var token = sessionStorage.getItem("token")
-if(token == null){
+if (token == null) {
     window.location.replace('../login/login.html')
 }
 //Método que faz o decode do token
@@ -14,9 +14,13 @@ function parseJwt(token) {
 };
 
 const payload = parseJwt(token)
+document.getElementById('nameSpt').textContent = "Olá " + payload.name;
 
 // const url = 'http://api-auditorio.herokuapp.com/api/tarefas';
+// const url = 'http://10.92.198.38:8080/api/solic';
+const urlTarefas = 'http://10.92.198.38:8080/api/solic';
 const url = 'http://10.92.198.38:8080/api/solic';
+setSolicitacoes(payload.id);
 let id = '';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -43,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'pt-br',
         navLinks: false,
+
         eventClick: function (info) {
             var myModal = new bootstrap.Modal(document.getElementById('myModal'));
             let idd = info.event.id;
@@ -109,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         eventSources: [
             {
-                url: url,
+                url: urlTarefas,
                 method: 'GET',
                 failure: function () {
                     exibeErro("Não foi possível conectar a API");
@@ -229,7 +234,7 @@ const editaEvento = (e) => {
                         if (resp.status == 200) {
                             window.location.replace('index.html');
                         }
-                        if(resp.status == 400) {
+                        if (resp.status == 400) {
                             closeModal();
                             exibeErro("Todo o periodo já está utilizado");
                         }
@@ -295,7 +300,7 @@ const criaEvento = (e) => {
         let select = document.getElementById('periodo');
         var color = getSelectColor(select.value);
         var status = "2";
-    
+
         let evento_criar = {
             title: title.value,
             periodo: select.value,
@@ -527,7 +532,7 @@ function setToEditEvent() {
 }
 
 function setDescriptionGetOfDatabase(id) {
-    var urlFindObject = 'http://10.92.198.38:8080/api/solic' + "/" + id;
+    var urlFindObject = 'http://10.92.198.38:8080/api/tarefas' + "/" + id;
 
     const bsq = new Headers();
     bsq.append("Content-Type", "application/json");
@@ -539,6 +544,117 @@ function setDescriptionGetOfDatabase(id) {
         .then((resp) => resp.json())
         .then((resposta) => {
             console.log(resposta)
+            document.getElementById('description').value = resposta.description;
+        })
+        .catch((error) => {
+            exibeErro('Ooops ... ocorreu um erro');
+        });
+}
+
+function setSolicitacoes(id) {
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic/buscar' + "/" + id;
+
+    const bsq = new Headers();
+    bsq.append("Content-Type", "application/json");
+    let fetchData = {
+        method: 'GET',
+        headers: bsq
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            console.log(resposta)
+            return resposta.map((solicitacao) => {
+                const solic = document.querySelector('.solicitacoes');
+                const bloco = document.createElement('div');
+                bloco.className = 'blocos';
+                bloco.id = solicitacao.id;
+                bloco.addEventListener('click', function () {
+                    var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+                    let idd = solicitacao.id;
+                    id = idd;
+                    var data = document.getElementById('start');
+
+                    /* if (a == 1) {
+                        setOptionSelected(1);
+                    } else if (a == 2) {
+                        setOptionSelected(2);
+                    } else if (a == 3) {
+                        setOptionSelected(3);
+                    } else {
+                        setOptionSelected(4);
+                    } */
+                    setToEditEvent();
+                    setDescriptionGetOfDatabaseOther(id);
+
+                    var b = document.getElementById('btnEliminar');
+                    b.style.display = 'block';
+
+                    if (solicitacao.start <= getDataFormat()) {
+                        document.getElementById('title').disabled = true;
+                        document.getElementById('description').disabled = true;
+                        document.getElementById("start").disabled = true;
+                        document.getElementById('periodo').disabled = true;
+                        getOnNone(document.getElementById('btnEliminar'));
+                        getOnNone(document.getElementById('btnSalvarEditar'));
+                    }
+
+                    let btnSalvar = document.getElementById('btnSalvarEditar');
+                    var data = document.getElementById('start');
+                    var description = document.getElementById('description');
+                    var evento = document.getElementById('title');
+                    var nav = document.getElementById('bgEvent');
+                    nav.className = 'modal-header bg-warning';
+
+                    data.value = solicitacao.start;
+                    evento.value = solicitacao.title;
+
+                    btnSalvar.addEventListener('click', editaEvento);
+                    b.addEventListener('click', deletaEvento)
+
+                    myModal.show();
+                });
+                const linha = document.createElement('div');
+                linha.className = 'linha';
+                const divClose = document.createElement('div');
+                const ul = document.createElement('ul');
+                const liNome = document.createElement('li');
+                liNome.textContent = solicitacao.title;
+                const liData = document.createElement('li');
+                liData.textContent = formatDateOther(solicitacao.start);
+
+                solic.appendChild(bloco);
+                bloco.appendChild(linha);
+                linha.appendChild(divClose);
+                linha.appendChild(ul);
+                ul.appendChild(liNome);
+                ul.appendChild(liData);
+            })
+        })
+        .catch((error) => {
+            const solic = document.querySelector('.solicitacoes');
+            const errorDiv = document.createElement('h6');
+            errorDiv.style.padding = '10px';
+            errorDiv.style.marginLeft = '10px';
+            errorDiv.textContent = 'Sem Solicitações...';
+            solic.appendChild(errorDiv);
+            exibeErro('Ooops ... ocorreu um erro');
+        });
+}
+
+function setDescriptionGetOfDatabaseOther(id) {
+    var urlFindObject = 'http://10.92.198.38:8080/api/selic' + "/" + id;
+
+    const bsq = new Headers();
+    bsq.append("Content-Type", "application/json");
+    let fetchData = {
+        method: 'GET',
+        headers: bsq
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            // console.log(resposta)
             document.getElementById('description').value = resposta.description;
         })
         .catch((error) => {

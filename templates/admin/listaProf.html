@@ -22,9 +22,18 @@
     <link rel="stylesheet" href="../../css/style-lista-prof/styleListaProf.css">
     <link rel="stylesheet" href="../../css/style-notification/styleNotification.css">
   
-  
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
   </head>
 
+  <style>
+    .alert {
+      top: 100px;
+      right: -1310px;
+    }
+  </style>
 <body>
   <div class="t">
     <div class="sidebar">
@@ -114,15 +123,16 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <!-- <tr>
-                            <td>Chile</td>
+                    <tbody><!-- 
+                        <tr>
+                            <td>Arthur Rosa Alves Andrade</td>
                             <td>464165121351</td>
                             <td>chile@gmail.com</td>
+                            <td>aa</td>
                             <td><button class="edit"><i class='bx bx-edit'></i></button></td>
                             <td><button class="delete"><i class='bx bx-trash' ></i></button></td>
-                        </tr>
- -->
+                        </tr> -->
+
                     </tbody>
 
                 </table>
@@ -169,53 +179,64 @@
               <div class="form-floating mb-3">
                 <input type="hidden" id="id" name="id" />
                 <input
-                  id="title"
+                  id="email"
                   type="text"
                   class="form-control"
-                  name="title"
+                  name="email"
                   required
                 />
-                <label for="title">Evento</label>
+                <label for="email">E-mail</label>
               </div>
             </div>
             <div class="col-md-12" onclick="debug()">
               <div class="form-floating mb-3">
                 <input
-                  id="description"
+                  id="nome"
                   type="text"
                   class="form-control"
-                  name="description"
+                  name="nome"
                   required
                 />
-                <label for="description">Descrição</label>
+                <label for="nome">Nome</label>
               </div>
             </div>
-            <div class="col-md-12">
-              <select class="form-select mb-3" id="periodo" required>
-                <option id="opt0" value="0" selected>
-                  Selecione o Período
-                </option>
-                <option id="opt1" value="1">Matutino</option>
-                <option id="opt2" value="2">Vespertino</option>
-                <option id="opt3" value="3">Noturno</option>
-                <option id="opt4" value="4">Todo o Período</option>
-              </select>
-            </div>
-            <div class="col-md-12">
+            <div class="col-md-12" onclick="debug()">
               <div class="form-floating mb-3">
                 <input
-                  class="form-control disable"
-                  id="start"
-                  value="00/00/0000"
-                  type="date"
-                  name="start"
+                  id="matricula"
+                  type="text"
+                  class="form-control"
+                  name="matricula"
                   required
-                  disabled
                 />
-                <label for="" class="form-label">Data</label>
+                <label for="matricula">Matricula</label>
               </div>
             </div>
-          </div>
+            <div class="col-md-12" onclick="debug()">
+              <div class="form-floating mb-3">
+                <input
+                  id="senha"
+                  type="password"
+                  class="form-control"
+                  name="senha"
+                  required
+                />
+                <label for="senha">Senha</label>
+              </div>
+            </div>
+            <div class="col-md-12" onclick="debug()">
+              <div class="form-floating mb-3">
+                <input
+                  id="senha-cnf"
+                  type="password"
+                  class="form-control"
+                  name="senha-cnf"
+                  required
+                />
+                <label for="senha-cnf">Confime a senha</label>
+              </div>
+            </div>
+
         </div>
         <div class="modal-footer">
           <button

@@ -14,7 +14,9 @@ function parseJwt(token) {
 };
 
 const payload = parseJwt(token)
+console.log(payload)
 
+document.getElementById('nameSpt').textContent = "Olá " + payload.name;
 // const url = 'http://api-auditorio.herokuapp.com/api/tarefas';
 const url = 'http://10.92.198.38:8080/api/tarefas';
 let id = '';

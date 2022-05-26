@@ -20,7 +20,7 @@ if (token == null) {
 const paginaAtual = window.location.href
 const atributosUrl = paginaAtual.split('?')
 // let url = 'http://localhost:8080/api/tarefas';
-var url = 'http://10.92.198.38:8080/api/tarefas';
+var url = 'http://10.92.198.38:8080/api/solic';
 var idd = '';
 if (atributosUrl[1] !== undefined) {
 
@@ -70,7 +70,6 @@ function getOfDatabase() {
         .then((resp) => {
             resp.json().then((info) => {
                 let eventos = info.content;
-                console.log(info)
                 if (info.length == 0) {
                     document.getElementById("error").style.display = "block";
                 }
@@ -86,8 +85,9 @@ function getOfDatabase() {
                     bt_back.removeEventListener('click', listenerBack)
                 }
                 return eventos.map((evento) => {
+                    console.log(evento)
                     id = evento.id;
-                    criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, evento.periodo, id);
+                    criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, evento.periodo, evento.status, id);
                 })
             })
                 .catch((error) => {
@@ -99,7 +99,7 @@ function getOfDatabase() {
 
 }
 
-function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
+function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     const tbody = document.querySelector('tbody');
     let tr = document.createElement('tr');
     tr.id = id;
@@ -107,31 +107,28 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
     let tdNomeEvento = document.createElement('td');
     let tdDesc = document.createElement('td');
     let tdData = document.createElement('td');
-    let tdPeriodo = document.createElement('td');
-    let tdBtn = document.createElement('td');
-    let tdBtnDel = document.createElement('td');
+    let tdStatus = document.createElement('td');
+    let tdDetalhes = document.createElement('td');
+
+    if(status == 1){
+        tdStatus.className = 'status confirmado';
+        tdStatus.textContent = 'Confirmado';
+    } else if(status == 2){
+        tdStatus.className = 'status andamento';
+        tdStatus.textContent = 'Andamento';
+    } else {
+        tdStatus.className = 'status reprovado';
+        tdStatus.textContent = 'Reprovado';
+    }
+    // let tdBtn = document.createElement('td');
+    // let tdBtnDel = document.createElement('td');
 
     tbody.appendChild(tr);
-
-    if (periodo == 1) {
-        tdPeriodo.className = 'mat';
-        periodo = 'Matutino';
-    } else if (periodo == 2) {
-        tdPeriodo.className = 'ves';
-        periodo = 'Vespertino';
-    } else if (periodo == 3) {
-        tdPeriodo.className = 'not';
-        periodo = 'Noturno';
-    } else {
-        tdPeriodo.className = 'diaT';
-        periodo = 'O Dia Todo';
-    }
 
     tdNomeProf.innerText = nome;
     tdNomeEvento.innerText = nomeEvent;
     tdDesc.innerText = desc;
     tdData.innerText = data;
-    tdPeriodo.innerText = periodo;
 
     const btnEdit = document.createElement('button');
     arrumaEdtBtn(btnEdit);
@@ -177,11 +174,8 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
     tr.appendChild(tdNomeEvento);
     tr.appendChild(tdDesc);
     tr.appendChild(tdData);
-    tr.appendChild(tdPeriodo);
-    tr.appendChild(tdBtn);
-    tdBtn.appendChild(btnEdit);
-    tr.appendChild(tdBtnDel);
-    tdBtnDel.appendChild(btnDel);
+    tr.appendChild(tdStatus);
+    tr.appendChild(tdDetalhes);
 }
 
 const editarEventoModal = (e) => {
@@ -234,7 +228,7 @@ const editarEventoModal = (e) => {
         myModal.dispose();
         // url = 'http://localhost:8080/api/tarefas';
         // url = 'http://10.92.198.38:8080/api/tarefas';
-        url = 'http://10.92.198.38:8080/api/tarefas';
+        url = 'http://10.92.198.38:8080/api/solic';
         let fetchData = {
             method: 'PUT',
             body: JSON.stringify(evento_editar),
@@ -290,13 +284,13 @@ const deletarEventoModal = (e) => {
         headers: myHeaders
     }
     // url = 'http://localhost:8080/api/tarefas';
-    url = 'http://10.92.198.38:8080/api/tarefas';
+    url = 'http://10.92.198.38:8080/api/solic';
     const newUrl = url + "/" + id;
     fetch(newUrl, fetchData)
         .then((resposta) => {
             // exibeErro("Excluido com sucesso !")
             setTimeout(function () {
-                window.location.replace('listaEventos.html')
+                window.location.replace('listaSolicitacoes.html')
             }, 0);
         })
         .catch((error) => {
@@ -325,11 +319,11 @@ function deletaEvento(id) {
         headers: myHeaders
     }
     // url = 'http://localhost:8080/api/tarefas';
-    url = 'http://10.92.198.38:8080/api/tarefas';
+    url = 'http://10.92.198.38:8080/api/solic';
     const newUrl = url + "/" + id;
     fetch(newUrl, fetchData)
         .then((resposta) => {
-            window.location.replace('listaEventos.html')
+            window.location.replace('listaSolicitacoes.html')
         })
         .catch((error) => {
             closeModal();
@@ -360,7 +354,7 @@ function getElementsByEdit(id) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     // url = 'http://localhost:8080/api/tarefas';
-    url = 'http://10.92.198.38:8080/api/tarefas';
+    url = 'http://10.92.198.38:8080/api/solic';
     let fetchData = {
         method: 'GET',
         headers: myHeaders
