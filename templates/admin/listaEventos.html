@@ -96,16 +96,25 @@
         <div class="principal">
           <div class="boxModelLista">
             <div class="head">
-              <h2 onclick="criarLinha()">Eventos</h2>
-
+              <div class="titulo">
+              <h2>Eventos</h2>
+              </div>
+              
+              <div class="boxPesquisa">
+              <input type="text" class="pesquisa" placeholder="Buscar...">
+              <a href="#" class="btnPesquisar">
+              <i class='bx bx-search' style="color:#ffffff"></i>
+              </a>
+              </div>
+              
               <div class="pagination">
-                <div href="#" id="bt_back">
-                  <div class="left"><i class="bx bx-left-arrow-alt"></i></div>
-                </div>
-
-                <div href="#" id="bt_next">
-                  <div class="right"><i class="bx bx-right-arrow-alt"></i></div>
-                </div>
+              <a href="#"><div class="left" id="bt_back" style="display: none;"><i class='bx bx-left-arrow-alt'></i></div></a>
+              
+              <div class="contaPagina selecionada">
+              <span class="numeroPagina" id="numPage">1</span>
+              </div>
+              
+              <a href="#"><div class="right" id="bt_next" style="display: none;"><i class='bx bx-right-arrow-alt'></i></div></a>
               </div>
             </div>
 
@@ -115,7 +124,6 @@
                   <tr>
                     <th>Professor</th>
                     <th>Nome</th>
-                    <th>Descrição</th>
                     <th>Data</th>
                     <th>Periodo</th>
                     <th>Editar</th>
@@ -134,9 +142,8 @@
                         </tr> -->
                 </tbody>
               </table>
-              <h2 id="error" style="padding: 20px; display: none">
-                Sem eventos cadastrados
-              </h2>
+              
+              <h2 id="notEvent" style="display: none;padding: 20px;">Sem eventos</h1>
             </div>
           </div>
         </div>

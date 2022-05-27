@@ -195,6 +195,7 @@ const editaEvento = (e) => {
             start: data.value,
             description: description.value,
             color,
+            status: 2,
             usuario: payload
         }
 
@@ -428,7 +429,7 @@ function formatDate(date) {
 function formatDateOther(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
+        day = '' + (d.getDate() + 1),
         year = d.getFullYear();
 
     if (month.length < 2)
@@ -436,7 +437,7 @@ function formatDateOther(date) {
     if (day.length < 2)
         day = '0' + day;
 
-    return [year, month, day].join('/');
+    return [day, month, year].join('/');
 }
 
 
@@ -532,7 +533,7 @@ function setToEditEvent() {
 }
 
 function setDescriptionGetOfDatabase(id) {
-    var urlFindObject = 'http://10.92.198.38:8080/api/tarefas' + "/" + id;
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic' + "/" + id;
 
     const bsq = new Headers();
     bsq.append("Content-Type", "application/json");
@@ -621,6 +622,7 @@ function setSolicitacoes(id) {
                 const liNome = document.createElement('li');
                 liNome.textContent = solicitacao.title;
                 const liData = document.createElement('li');
+                liData.className = 'data';
                 liData.textContent = formatDateOther(solicitacao.start);
 
                 solic.appendChild(bloco);

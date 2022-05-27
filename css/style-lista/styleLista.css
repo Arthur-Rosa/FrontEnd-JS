@@ -28,26 +28,69 @@
     display: flex;
     justify-content: center;
     height: 100vh !important;
-}
-
-.principal h2{
-    margin-bottom: 20px;
-}
-
-.principal .boxModelLista .pagination {
+    }
+    
+    
+    
+    .head .boxPesquisa{
+    padding: 5px 10px;
+    height: 2.5em;
+    width: 40%;
+    background-color: #ededed;
+    border-radius: 40px;
     display: flex;
-    width: 8%;
-    font-size: 25px;
-    justify-content: space-around;
-}
-
-.principal .boxModelLista .pagination a{
+    justify-content: space-between;
+    align-items: center;
+    }
+    
+    
+    
+    .head .boxPesquisa .pesquisa{
+    border: none;
+    background: none;
+    outline: none;
+    width: 92%;
+    font-size: 16px;
+    line-height: 40px;
+    }
+    
+    
+    
+    .boxPesquisa .btnPesquisar{
+    background-color: #E30613;
+    border-radius: 50%;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
-}
-
-
-.left, .right{
+    height: 30px;
+    box-shadow: rgb(255 0 0 / 70%) 0px 0px 5px;
+    }
+    
+    
+    
+    .principal .boxModelLista .pagination {
+    display: flex;
+    font-size: 25px;
+    align-items: center;
+    justify-content: space-evenly;
+    }
+    
+    
+    
+    
+    
+    .principal .boxModelLista .pagination a{
+    text-decoration: none;
+    }
+    
+    
+    
+    
+    .left, .right{
     border-radius: 100%;
+    text-align: center;
     height: 40px;
     width: 40px;
     display: flex;
@@ -56,13 +99,50 @@
     align-items: center;
     transition-duration: 0.5s;
     color: black;
-}
-
-.left:hover, .right:hover{
+    margin: 0 5px;
+    }
+    
+    
+    
+    .contaPagina{
+    border-radius: 100%;
+    height: 25px;
+    width: 25px;
+    font-size: 18px;
+    display: flex;
+    background-color: rgb(237 237 237);
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.5s;
+    color: black;
+    margin: 0 3px;
+    
+    
+    
+    }
+    
+    
+    
+    .contaPagina:hover{
+    background-color: rgb(192, 192, 192);
+    }
+    
+    
+    
+    .contaPagina.selecionada {
     background-color: var(--primary-color);
-}
-
-.principal .boxModelLista {
+    color: #FFF;
+    }
+    
+    
+    
+    .left:hover, .right:hover{
+    background-color: var(--primary-color);
+    }
+    
+    
+    
+    .principal .boxModelLista {
     height: 70%;
     width: 70%;
     padding: 50px;
@@ -72,13 +152,23 @@
     border-radius: 6px;
     filter: drop-shadow(0px 5px 4px rgba(0, 0, 0, 0.25));
     margin: auto;
-}
-
-.principal .boxModelLista .head {
+    }
+    
+    
+    
+    .principal .boxModelLista .head {
     display: flex;
     width: 100%;
     justify-content: space-between;
-}
+    }
+    
+    
+    
+    .listaTarefa{
+    margin-top: 2em;
+    }
+
+
 
 table{
     width: 100%;
@@ -128,6 +218,17 @@ table tbody td .edit{
     background-color: rgb(255, 217, 0);
 }
 
+table tbody td .success{
+    background-color: rgb(32, 179, 12);
+}
+
+table tbody td .successs{
+    background-color: rgb(24, 110, 13);
+}
+
+table tbody td .success:hover{
+    background-color: rgb(35, 139, 21);
+}
 
 table tbody td .editt{
     background-color: rgb(255, 217, 0);
@@ -162,19 +263,23 @@ ol, ul {
 .mat{
     background-color: #FF4F4C;
     color: white;
+    font-weight: bold;
 }
 
 .ves{
     background-color: #DE0F00;
     color: white;
+    font-weight: bold;
 }
 
 .not{
     background-color: #A60A27;
     color: white;
+    font-weight: bold;
 }
 
 .diaT{
     background-color: #707070;
     color: white;
+    font-weight: bold;
 }

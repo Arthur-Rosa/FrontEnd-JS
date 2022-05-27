@@ -99,20 +99,31 @@ function getOfDatabase() {
 
 }
 
+function formatVerMais(b){
+    b.className = 'success';
+    b.innerHTML = '<i class="fas fa-plus-circle"></i>';
+    b.style.color = 'white';
+    return b;
+}
+
 function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     const tbody = document.querySelector('tbody');
     let tr = document.createElement('tr');
     tr.id = id;
     let tdNomeProf = document.createElement('td');
     let tdNomeEvento = document.createElement('td');
-    let tdDesc = document.createElement('td');
     let tdData = document.createElement('td');
     let tdStatus = document.createElement('td');
     let tdDetalhes = document.createElement('td');
+    let buttonAdc = document.createElement('button');
+    formatVerMais(buttonAdc);
 
     if(status == 1){
         tdStatus.className = 'status confirmado';
         tdStatus.textContent = 'Confirmado';
+
+        buttonAdc.disabled = 'true';
+        buttonAdc.className = 'successs';
     } else if(status == 2){
         tdStatus.className = 'status andamento';
         tdStatus.textContent = 'Andamento';
@@ -127,55 +138,26 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
 
     tdNomeProf.innerText = nome;
     tdNomeEvento.innerText = nomeEvent;
-    tdDesc.innerText = desc;
     tdData.innerText = data;
 
-    const btnEdit = document.createElement('button');
-    arrumaEdtBtn(btnEdit);
-
-    btnEdit.addEventListener('click', function (e) {
+    buttonAdc.addEventListener('click', function () {
         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
         getElementsByEdit(id);
-        if (data > getDataFormat()) {
-            myModal.show();
-        }
-
-        idd = id;
-
-        const btnSalvar = document.getElementById('btnSalvarEditar');
-        btnSalvar.addEventListener('click', editarEventoModal);
-
-        const btnDeletar = document.getElementById('btnEliminar');
-        btnDeletar.addEventListener('click', deletarEventoModal);
-    });
-
-    const btnDel = document.createElement('button');
-    arrumaExclBtn(btnDel);
-    btnDel.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (data > getDataFormat()) {
-            deletaEvento(id);
-        } else {
-            exibeErro('Evento Antigo');
-        }
-    });
+        myModal.show();
+    })
 
 
     if (data > getDataFormat()) {
 
     } else {
-        btnEdit.disabled = true;
-        btnEdit.className = "editt";
-        btnDel.disabled = true;
-        btnDel.className = "deletee";
     }
 
     tr.appendChild(tdNomeProf);
     tr.appendChild(tdNomeEvento);
-    tr.appendChild(tdDesc);
     tr.appendChild(tdData);
     tr.appendChild(tdStatus);
     tr.appendChild(tdDetalhes);
+    tdDetalhes.appendChild(buttonAdc);
 }
 
 const editarEventoModal = (e) => {

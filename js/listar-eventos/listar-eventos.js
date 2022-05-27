@@ -25,7 +25,7 @@ var idd = '';
 if (atributosUrl[1] !== undefined) {
 
     // colocar pagina
-
+    document.getElementById('numPage').textContent = atributosUrl[1];
     // alert(atributosUrl[1])
     url = url + "/page/" + atributosUrl[1]
 } else {
@@ -77,17 +77,28 @@ function getOfDatabase() {
                 if (info.totalPages > atributosUrl[1]) {
                     bt_next.addEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
+                    bt_back.style.display = 'block';
+                    bt_next.style.display = 'block';
                     // bt_next.classList.remove(".hover")
                 } else {
                     bt_next.removeEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
+                    bt_back.style.display = 'block';
+                    
                 }
                 if (atributosUrl[1] == 1) {
                     bt_back.removeEventListener('click', listenerBack)
+                    
+                    bt_back.style.display = 'none';
+                    
+                }
+                if(eventos.length == 0){
+                    document.getElementById('notEvent').style.display = 'block';    
                 }
                 return eventos.map((evento) => {
                     id = evento.id;
                     criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, evento.periodo, id);
+                    
                 })
             })
                 .catch((error) => {
@@ -105,11 +116,14 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
     tr.id = id;
     let tdNomeProf = document.createElement('td');
     let tdNomeEvento = document.createElement('td');
-    let tdDesc = document.createElement('td');
     let tdData = document.createElement('td');
     let tdPeriodo = document.createElement('td');
     let tdBtn = document.createElement('td');
     let tdBtnDel = document.createElement('td');
+
+    if(nomeEvent.length > 40) {
+        nomeEvent = nomeEvent.slice(0, -20) + "...";
+    }
 
     tbody.appendChild(tr);
 
@@ -129,7 +143,6 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
 
     tdNomeProf.innerText = nome;
     tdNomeEvento.innerText = nomeEvent;
-    tdDesc.innerText = desc;
     tdData.innerText = data;
     tdPeriodo.innerText = periodo;
 
@@ -163,7 +176,6 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
         }
     });
 
-
     if (data > getDataFormat()) {
 
     } else {
@@ -175,7 +187,6 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
 
     tr.appendChild(tdNomeProf);
     tr.appendChild(tdNomeEvento);
-    tr.appendChild(tdDesc);
     tr.appendChild(tdData);
     tr.appendChild(tdPeriodo);
     tr.appendChild(tdBtn);
