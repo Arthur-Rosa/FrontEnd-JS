@@ -25,7 +25,7 @@ var idd = '';
 if (atributosUrl[1] !== undefined) {
 
     // colocar pagina
-
+    document.getElementById('numPage').textContent = atributosUrl[1];
     // alert(atributosUrl[1])
     url = url + "/page/" + atributosUrl[1]
 } else {
@@ -76,13 +76,20 @@ function getOfDatabase() {
                 if (info.totalPages > atributosUrl[1]) {
                     bt_next.addEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
+                    bt_back.style.display = 'block';
+                    bt_next.style.display = 'block';
                     // bt_next.classList.remove(".hover")
                 } else {
                     bt_next.removeEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
+                    bt_back.style.display = 'block';
                 }
                 if (atributosUrl[1] == 1) {
                     bt_back.removeEventListener('click', listenerBack)
+                    bt_back.style.display = 'none';
+                }
+                if(eventos.length == 0){
+                    document.getElementById('notEvent').style.display = 'block';    
                 }
                 return eventos.map((evento) => {
                     console.log(evento)
@@ -138,7 +145,7 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
 
     tdNomeProf.innerText = nome;
     tdNomeEvento.innerText = nomeEvent;
-    tdData.innerText = data;
+    tdData.innerText = formatDateOther(data);
 
     buttonAdc.addEventListener('click', function () {
         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
@@ -158,6 +165,18 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     tr.appendChild(tdStatus);
     tr.appendChild(tdDetalhes);
     tdDetalhes.appendChild(buttonAdc);
+}
+
+function formatDateOther(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + (d.getDate() + 1),
+        year = d.getFullYear();
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+    return [day, month, year].join('/');
 }
 
 const editarEventoModal = (e) => {

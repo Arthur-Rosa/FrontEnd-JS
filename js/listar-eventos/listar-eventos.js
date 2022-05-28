@@ -84,21 +84,21 @@ function getOfDatabase() {
                     bt_next.removeEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
                     bt_back.style.display = 'block';
-                    
+
                 }
                 if (atributosUrl[1] == 1) {
                     bt_back.removeEventListener('click', listenerBack)
-                    
+
                     bt_back.style.display = 'none';
-                    
+
                 }
-                if(eventos.length == 0){
-                    document.getElementById('notEvent').style.display = 'block';    
+                if (eventos.length == 0) {
+                    document.getElementById('notEvent').style.display = 'block';
                 }
                 return eventos.map((evento) => {
                     id = evento.id;
                     criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, evento.periodo, id);
-                    
+
                 })
             })
                 .catch((error) => {
@@ -121,7 +121,7 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
     let tdBtn = document.createElement('td');
     let tdBtnDel = document.createElement('td');
 
-    if(nomeEvent.length > 40) {
+    if (nomeEvent.length > 40) {
         nomeEvent = nomeEvent.slice(0, -20) + "...";
     }
 
@@ -143,7 +143,7 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
 
     tdNomeProf.innerText = nome;
     tdNomeEvento.innerText = nomeEvent;
-    tdData.innerText = data;
+    tdData.innerText = formatDateOther(data);
     tdPeriodo.innerText = periodo;
 
     const btnEdit = document.createElement('button');
@@ -463,4 +463,16 @@ function formatDate(date) {
 function getDataFormatSomOne() {
     const date = new Date().toLocaleDateString();
     return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2) + 1;
+}
+
+function formatDateOther(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + (d.getDate() + 1),
+        year = d.getFullYear();
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+    return [day, month, year].join('/');
 }

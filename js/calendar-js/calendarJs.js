@@ -1,5 +1,5 @@
 var token = sessionStorage.getItem("token")
-if(token == null){
+if (token == null) {
     window.location.replace('../login/login.html')
 }
 //Método que faz o decode do token
@@ -15,8 +15,9 @@ function parseJwt(token) {
 
 const payload = parseJwt(token)
 console.log(payload)
-
+setSolicitacoes(payload.id);
 document.getElementById('nameSpt').textContent = "Olá " + payload.name;
+
 // const url = 'http://api-auditorio.herokuapp.com/api/tarefas';
 const url = 'http://10.92.198.38:8080/api/tarefas';
 let id = '';
@@ -35,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
         btnSalvar.removeEventListener('click', editaEvento);
         let btnAction = document.getElementById('btnAction');
         btnAction.removeEventListener('click', criaEvento);
+        var aprovar = document.getElementById('btnAprovar');
+        aprovar.removeEventListener('click', aprovarSolicit);
     });
 
     var nav = document.getElementById('bgEvent');
@@ -231,7 +234,7 @@ const editaEvento = (e) => {
                         if (resp.status == 200) {
                             window.location.replace('index.html');
                         }
-                        if(resp.status == 400) {
+                        if (resp.status == 400) {
                             closeModal();
                             exibeErro("Todo o periodo já está utilizado");
                         }
@@ -423,11 +426,12 @@ function formatDate(date) {
 function formatDateOther(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
+        day = '' + (d.getDate() + 1),
         year = d.getFullYear();
 
     if (month.length < 2)
         month = '0' + month;
+        
     if (day.length < 2)
         day = '0' + day;
 
@@ -517,7 +521,7 @@ function setToEditEvent() {
 
     var nav = document.getElementById('bgEvent');
     var navText = document.getElementById('titulo');
-    navText.textContent = 'Editar Evento'
+    navText.textContent = 'Editar Evento';
     navText.style.color = 'black';
     nav.className = 'modal-header bg-warning';
     document.getElementById("start").disabled = false;
@@ -650,4 +654,167 @@ function setSolicitacoes(id) {
             solic.appendChild(errorDiv);
             exibeErro('Ooops ... ocorreu um erro');
         });
+}
+
+let idd = '';
+
+function setSolicitacoes(id) {
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic';
+
+    const bsq = new Headers();
+    bsq.append("Content-Type", "application/json");
+    let fetchData = {
+        method: 'GET',
+        headers: bsq
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            console.log(resposta)
+            if(resposta.length == 0){
+                document.getElementById('ErrorH6').style.display = 'block';
+            }
+            return resposta.map((solicitacao) => {   
+                if (solicitacao.status == '2') {
+                    const solic = document.querySelector('.solicitacoes');
+                    const bloco = document.createElement('div');
+                    bloco.className = 'blocos';
+                    bloco.id = solicitacao.id;
+                    bloco.addEventListener('click', function () {
+                        setToEditEvent();
+                        clearBtns();
+
+                        var reprovar = document.getElementById('btnReprovar');
+                        var aprovar = document.getElementById('btnAprovar');
+
+                        reprovar.addEventListener('click', reprovarSolicit);
+                        aprovar.addEventListener('click', aprovarSolicit);
+
+                        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+                        idd = solicitacao.id;
+                        id = idd;
+                        var data = document.getElementById('start');
+
+                        /* if (a == 1) {
+                            setOptionSelected(1);
+                        } else if (a == 2) {
+                            setOptionSelected(2);
+                        } else if (a == 3) {
+                            setOptionSelected(3);
+                        } else {
+                            setOptionSelected(4);
+                        } */
+
+                        setDescriptionGetOfDatabaseOther(id);
+                        setOptionSelected(solicitacao.periodo);
+
+                        // var b = document.getElementById('btnEliminar');
+                        // b.style.display = 'block';
+
+                        if (solicitacao.start <= getDataFormat()) {
+                            document.getElementById('title').disabled = true;
+                            document.getElementById('description').disabled = true;
+                            document.getElementById("start").disabled = true;
+                            document.getElementById('periodo').disabled = true;
+                            getOnNone(document.getElementById('btnEliminar'));
+                            getOnNone(document.getElementById('btnSalvarEditar'));
+                        }
+
+                        let btnSalvar = document.getElementById('btnSalvarEditar');
+                        var data = document.getElementById('start');
+                        var description = document.getElementById('description');
+                        var evento = document.getElementById('title');
+                        var nav = document.getElementById('bgEvent');
+                        nav.className = 'modal-header bg-warning';
+
+                        data.value = solicitacao.start;
+                        evento.value = solicitacao.title;
+
+                        btnSalvar.addEventListener('click', editaEvento);
+                        // b.addEventListener('click', deletaEvento)
+
+                        myModal.show();
+                    });
+                    const linha = document.createElement('div');
+                    linha.className = 'linha';
+                    const divClose = document.createElement('div');
+                    const ul = document.createElement('ul');
+                    const liNome = document.createElement('li');
+                    liNome.textContent = solicitacao.title;
+                    const liData = document.createElement('li');
+                    liData.className = 'data';
+                    liData.textContent = formatDateOther(solicitacao.start);
+
+                    solic.appendChild(bloco);
+                    bloco.appendChild(linha);
+                    linha.appendChild(divClose);
+                    linha.appendChild(ul);
+                    ul.appendChild(liNome);
+                    ul.appendChild(liData);
+                }
+            })
+        })
+        .catch((error) => {
+            const solic = document.querySelector('.solicitacoes');
+            const errorDiv = document.createElement('h6');
+            errorDiv.style.padding = '5px';
+            errorDiv.textContent = 'Sem Solicitações';
+            errorDiv.style.textAlign = 'center';
+            solic.appendChild(errorDiv);
+        });
+}
+
+const reprovarSolicit = (e) => {
+
+}
+
+const aprovarSolicit = (e) => {
+    e.preventDefault();
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic/aprovar' + "/" + idd;
+    let fetchData = {
+        method: 'POST'
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            window.location.replace('index.html');
+        })
+        .catch((error) => {
+            setModalError(modalAlert, 'Ooops ... ocorreu um erro', error);
+        });
+}
+
+function setDescriptionGetOfDatabaseOther(id) {
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic' + "/" + id;
+
+    const bsq = new Headers();
+    bsq.append("Content-Type", "application/json");
+    let fetchData = {
+        method: 'GET',
+        headers: bsq
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            // console.log(resposta)
+            document.getElementById('description').value = resposta.description;
+        })
+        .catch((error) => {
+            setModalError(modalAlert, 'Ooops ... ocorreu um erro', error);
+        });
+}
+
+function clearBtns() {
+    console.log('batatinha')
+    var nav = document.getElementById('bgEvent');
+    var navText = document.getElementById('titulo');
+    navText.textContent = 'Aprovar Solicitação';
+    navText.style.color = 'black';
+    nav.className = 'modal-header bg-warning';
+
+    document.getElementById('btnEliminar').style.display = 'none';
+    document.getElementById('btnSalvarEditar').style.display = 'none';
+
+    document.getElementById('btnReprovar').style.display = 'block';
+    document.getElementById('btnAprovar').style.display = 'block';
 }

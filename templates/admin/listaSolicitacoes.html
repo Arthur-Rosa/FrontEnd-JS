@@ -1,181 +1,287 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
   <head>
     <meta charset="utf-8" />
 
-    
     <title>Calendar</title>
-    
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-    
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-  
+
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
     <!-- CSS Nav -->
-    <link rel="stylesheet" href="../../css/style-sidebar/sideBarTeste.css">
-   
-  
+    <link rel="stylesheet" href="../../css/style-sidebar/sideBarTeste.css" />
+
     <!-- CSS Lista-->
-    <link rel="stylesheet" href="../../css/style-lista/styleLista.css">
-    <link rel="stylesheet" href="../../css/style-lista-solit/styleListaSolicitacao.css">
-  
-  
+    <link rel="stylesheet" href="../../css/style-lista/styleLista.css" />
+    <link
+      rel="stylesheet"
+      href="../../css/style-lista-solit/styleListaSolicitacao.css"
+    />
+    <link rel="stylesheet" href="../../css/style-notification/styleNotification.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
   </head>
+  <style>
+    .alert {
+      top: 100px;
+      right: -1310px;
+    }
+  </style>
+  <body>
+    <div class="t">
+      <div class="sidebar">
+        <header class="logo">
+          <img
+            class="logoImg"
+            src="../../img/logo-senai22.png"
+            alt="Logo Senai"
+          />
 
-<body>
-  <div class="t">
-    <div class="sidebar">
-      <header class="logo">
-        <img class="logoImg" src="../../img/logo-senai22.png" alt="Logo Senai">
-        
-        <button class="btnFechar" id="btMenu">
-          <i class='bx bxs-chevron-left' style='color:#ffffff'></i>
-        </button>
-        
-      </header>
-      
-      <ul class="nav_list">
-        <li>
-          <a href="index.html">
-            <i class='bx bxs-calendar'></i>
-            <span class="links_name">Calendário</span>
-          </a>
-        </li>
-        <li>
-          <a href="listaProf.html">
-            <i class='bx bx-user'></i>
-            <span class="links_name">Professores</span>
-          </a>
-        </li>
-        <li>
-          <a href="listaEventos.html">
-            <i class='bx bx-calendar-event'></i>
-            <span class="links_name">Eventos</span>
-          </a>
-        </li>
-        <li>
-          <a href="listaSolicitacoes.html">
-            <i class='bx bx-bell'></i>
-            <span class="links_name">Solicitações</span>
-          </a>
-        </li>
-        <div id="bt_sair" class="sair">
+          <button class="btnFechar" id="btMenu">
+            <i class="bx bxs-chevron-left" style="color: #ffffff"></i>
+          </button>
+        </header>
 
+        <ul class="nav_list">
           <li>
-
-            <div>
-
-              <i class='bx bx-log-out'></i>
-
-              <span class="links_name">Sair</span>
-
-            </div>
-
+            <a href="index.html">
+              <i class="bx bxs-calendar icon"></i>
+              <span class="links_name">Calendário</span>
+            </a>
           </li>
+          <li>
+            <a href="listaProf.html">
+              <i class="bx bx-user icon"></i>
+              <span class="links_name">Professores</span>
+            </a>
+          </li>
+          <li>
+            <a href="listaEventos.html">
+              <i class="bx bx-calendar-event icon"></i>
+              <span class="links_name">Eventos</span>
+            </a>
+          </li>
+          <li>
+            <a href="listaSolicitacoes.html">
+              <i class="bx bx-bell icon"></i>
+              <span class="links_name">Solicitações</span>
+            </a>
+          </li>
+          <div id="bt_sair" class="sair">
+            <li>
+              <div>
+                <i class="bx bx-log-out"></i>
 
-        </div>
-      </ul>
-    </div>
+                <span class="links_name">Sair</span>
+              </div>
+            </li>
+          </div>
+        </ul>
+      </div>
 
-    <div class="bg-lista">
-      <div class="principal">
-        <div class="boxModelLista">
-            
+      <div class="bg-lista">
+        <div class="principal">
+          <div class="boxModelLista">
             <div class="head">
-                <h2>Solicitações</h2>
-
-                <div class="pagination">
-
-                    <a href="#"><div class="left"><i class='bx bx-left-arrow-alt'></i></div></a>
-                    <a href="#"><div class="right"><i class='bx bx-right-arrow-alt'></i></div></a>
-                </div>
+              <div class="titulo">
+              <h2>Solicitações</h2>
+              </div>
+              
+              <div class="boxPesquisa">
+              <input type="text" class="pesquisa" placeholder="Buscar...">
+              <a href="#" class="btnPesquisar">
+              <i class='bx bx-search' style="color:#ffffff"></i>
+              </a>
+              </div>
+              
+              <div class="pagination">
+              <a href="#"><div class="left" id="bt_back" style="display: none;"><i class='bx bx-left-arrow-alt'></i></div></a>
+              
+              <div class="contaPagina selecionada">
+              <span class="numeroPagina" id="numPage">1</span>
+              </div>
+              
+              <a href="#"><div class="right" id="bt_next" style="display: none;"><i class='bx bx-right-arrow-alt'></i></div></a>
+              </div>
             </div>
 
             <div class="listaTarefa">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Professor</th>
+                    <th>Nome</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th>Detalhes</th>
+                  </tr>
+                </thead>
 
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Professor</th>
-                            <th>Nome</th>
-                            <th>Descrição</th>
-                            <th>Data</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
+                <tbody>
+                  <!-- <tr>
                             <td>Chile</td>
                             <td>Evento</td>
                             <td>Evento ceo</td>
                             <td>11/05/2022</td>
                             <td class="status confirmado">Confirmado</td>
                         </tr>
-
-                        <tr>
-                            <td>Chile</td>
-                            <td>Evento</td>
-                            <td>Evento ceo</td>
-                            <td>11/05/2022</td>
-                            <td class="status andamento">Andamento</td>
-                        </tr>
-                        
-                        <tr>
-                            <td>Chile</td>
-                            <td>Evento</td>
-                            <td>Evento ceo</td>
-                            <td>11/05/2022</td>
-                            <td class="status reprovado">Reprovado</td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
+ -->
+                </tbody>
+              </table>
+              <h2 id="notEvent" style="display: none;padding: 20px;">Sem Solicitações</h1>
             </div>
-
+          </div>
         </div>
-    </div>   
-   
+        <!-- Alert -->
+        <div class="alert hide" id="info">
+          <span class="fas fa-exclamation-circle"></span>
+          <span class="msg" id="mensagem"
+            >Warning: This is a warning alert!</span
+          >
+          <div class="close-btn">
+            <span class="fas fa-times"></span>
+          </div>
+        </div>
+      </div>
+      <!-- MODAL -->
+      <div
+        class="modal fade"
+        id="myModal"
+        tabindex="-1"
+        aria-labelledby="Label"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header bg-warning" id="bgEvent">
+              <h5 class="modal-title" id="titulo">Editar Eventos</h5>
+              <button
+                type="button"
+                class="btn-close"
+                id="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form id="formulario" autocomplete="off" method="post">
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <input type="hidden" id="id" name="id" />
+                      <input
+                        id="title"
+                        type="text"
+                        class="form-control"
+                        name="title"
+                        required
+                      />
+                      <label for="title">Evento</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12" onclick="debug()">
+                    <div class="form-floating mb-3">
+                      <input
+                        id="description"
+                        type="text"
+                        class="form-control"
+                        name="description"
+                        required
+                      />
+                      <label for="description">Descrição</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <select class="form-select mb-3" id="periodo" required>
+                      <option id="opt0" value="0" selected>
+                        Selecione o Período
+                      </option>
+                      <option id="opt1" value="1">Matutino</option>
+                      <option id="opt2" value="2">Vespertino</option>
+                      <option id="opt3" value="3">Noturno</option>
+                      <option id="opt4" value="4">Todo o Período</option>
+                    </select>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <input
+                        class="form-control disable"
+                        id="start"
+                        value="00/00/0000"
+                        type="date"
+                        name="start"
+                        required
+                        disabled
+                      />
+                      <label for="" class="form-label">Data</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="btn-cancel"
+                  data-bs-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="btnEliminar">
+                  Excluir
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  id="btnSalvarEditar"
+                >
+                  Salvar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-  </div>
-  <script src="../../bootstrap/js/bootstrap.bundle.js"></script>
-  <script src="../../js/sidebar/sideBarLogica.js"></script>
-  <script src="../../js/listar-solicitacao/listar-solicitacao.js"></script>
+    <script src="../../bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../../js/sidebar/sideBarLogica.js"></script>
+    <script src="../../js/listar-solicitacao/listar-solicitacao.js"></script>
+    <script>
+      const body = document.querySelector("body"),
+        sidebar = body.querySelector("nav"),
+        toggle = body.querySelector(".toggle"),
+        modeSwitch = body.querySelector(".toggle-switch"),
+        modeText = body.querySelector(".mode-text");
 
-  <script>
-    const body = document.querySelector('body'),
-      sidebar = body.querySelector('nav'),
-      toggle = body.querySelector(".toggle"),
-      modeSwitch = body.querySelector(".toggle-switch"),
-      modeText = body.querySelector(".mode-text");
+      toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+      });
 
+      searchBtn.addEventListener("click", () => {
+        sidebar.classList.remove("close");
+      });
 
-    toggle.addEventListener("click", () => {
-      sidebar.classList.toggle("close");
-    })
+      modeSwitch.addEventListener("click", () => {
+        body.classList.toggle("dark");
 
-    searchBtn.addEventListener("click", () => {
-      sidebar.classList.remove("close");
-    })
-
-    modeSwitch.addEventListener("click", () => {
-      body.classList.toggle("dark");
-
-      if (body.classList.contains("dark")) {
-        modeText.innerText = "Light mode";
-      } else {
-        modeText.innerText = "Dark mode";
-
-      }
-    });
-  </script>
-
-</body>
-
+        if (body.classList.contains("dark")) {
+          modeText.innerText = "Light mode";
+        } else {
+          modeText.innerText = "Dark mode";
+        }
+      });
+    </script>
+  </body>
 </html>

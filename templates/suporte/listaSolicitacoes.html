@@ -57,25 +57,25 @@
         <ul class="nav_list">
           <li>
             <a href="index.html">
-              <i class="bx bxs-calendar"></i>
+              <i class="bx bxs-calendar icon"></i>
               <span class="links_name">Calendário</span>
             </a>
           </li>
           <li>
             <a href="listaProf.html">
-              <i class="bx bx-user"></i>
+              <i class="bx bx-user icon"></i>
               <span class="links_name">Professores</span>
             </a>
           </li>
           <li>
             <a href="listaEventos.html">
-              <i class="bx bx-calendar-event"></i>
+              <i class="bx bx-calendar-event icon"></i>
               <span class="links_name">Eventos</span>
             </a>
           </li>
           <li>
             <a href="listaSolicitacoes.html">
-              <i class="bx bx-bell"></i>
+              <i class="bx bx-bell icon"></i>
               <span class="links_name">Solicitações</span>
             </a>
           </li>
@@ -95,16 +95,25 @@
         <div class="principal">
           <div class="boxModelLista">
             <div class="head">
+              <div class="titulo">
               <h2>Solicitações</h2>
-
+              </div>
+              
+              <div class="boxPesquisa">
+              <input type="text" class="pesquisa" placeholder="Buscar...">
+              <a href="#" class="btnPesquisar">
+              <i class='bx bx-search' style="color:#ffffff"></i>
+              </a>
+              </div>
+              
               <div class="pagination">
-                <div href="#" id="bt_back">
-                  <div class="left"><i class="bx bx-left-arrow-alt"></i></div>
-                </div>
-
-                <div href="#" id="bt_next">
-                  <div class="right"><i class="bx bx-right-arrow-alt"></i></div>
-                </div>
+              <a href="#"><div class="left" id="bt_back" style="display: none;"><i class='bx bx-left-arrow-alt'></i></div></a>
+              
+              <div class="contaPagina selecionada">
+              <span class="numeroPagina" id="numPage">1</span>
+              </div>
+              
+              <a href="#"><div class="right" id="bt_next" style="display: none;"><i class='bx bx-right-arrow-alt'></i></div></a>
               </div>
             </div>
 
@@ -131,6 +140,7 @@
  -->
                 </tbody>
               </table>
+              <h2 id="notEvent" style="display: none;padding: 20px;">Sem Solicitações</h1>
             </div>
           </div>
         </div>

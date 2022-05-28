@@ -20,6 +20,7 @@ const atributosUrl = paginaAtual.split('?')
 let url = 'http://10.92.198.38:8080/api/usuarios';
 var idd = '';
 if (atributosUrl[1] !== undefined) {
+    document.getElementById('numPage').textContent = atributosUrl[1];
     url = url + "/page/" + atributosUrl[1]
 } else {
     window.location.href = paginaAtual + "?1"
@@ -73,12 +74,19 @@ function getOfDatabase() {
                 if (info.totalPages > atributosUrl[1]) {
                     bt_next.addEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
+                    bt_back.style.display = 'block';
+                    bt_next.style.display = 'block';
                     // bt_next.classList.remove(".hover")
                 } else
                     bt_next.removeEventListener('click', listenerNext)
                 bt_back.addEventListener('click', listenerBack)
+                bt_back.style.display = 'block';
                 if (atributosUrl[1] == 1) {
                     bt_back.removeEventListener('click', listenerBack)
+                    bt_back.style.display = 'none';
+                }
+                if(profs.length == 0){
+                    document.getElementById('notEvent').style.display = 'block';    
                 }
                 return profs.map((prof) => {
                     id = prof.id;

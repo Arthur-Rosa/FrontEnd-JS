@@ -16,9 +16,9 @@ function parseJwt(token) {
 const payload = parseJwt(token)
 document.getElementById('nameSpt').textContent = "Olá " + payload.name;
 
-// const url = 'http://api-auditorio.herokuapp.com/api/tarefas';
+const urlTarefas = 'http://10.92.198.38:8080/api/tarefas';
 // const url = 'http://10.92.198.38:8080/api/solic';
-const urlTarefas = 'http://10.92.198.38:8080/api/solic';
+// const urlTarefas = 'http://10.92.198.38:8080/api/solic';
 const url = 'http://10.92.198.38:8080/api/solic';
 setSolicitacoes(payload.id);
 let id = '';
@@ -564,7 +564,10 @@ function setSolicitacoes(id) {
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
-            console.log(resposta)
+            // console.log(resposta)
+            if(resposta.length == 0){
+                document.getElementById('ErrorH6').style.display = 'block';
+            }
             return resposta.map((solicitacao) => {
                 const solic = document.querySelector('.solicitacoes');
                 const bloco = document.createElement('div');
@@ -587,6 +590,7 @@ function setSolicitacoes(id) {
                     } */
                     setToEditEvent();
                     setDescriptionGetOfDatabaseOther(id);
+                    setOptionSelected(solicitacao.periodo);
 
                     var b = document.getElementById('btnEliminar');
                     b.style.display = 'block';
@@ -645,7 +649,7 @@ function setSolicitacoes(id) {
 }
 
 function setDescriptionGetOfDatabaseOther(id) {
-    var urlFindObject = 'http://10.92.198.38:8080/api/selic' + "/" + id;
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic' + "/" + id;
 
     const bsq = new Headers();
     bsq.append("Content-Type", "application/json");

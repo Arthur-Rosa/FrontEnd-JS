@@ -94,19 +94,28 @@
       <div class="principal">
         <div class="boxModelLista">
             
-            <div class="head">
-                <h2>Professores</h2>
-
-                <div class="pagination">
-                  <div href="#" id="bt_back">
-                    <div class="left"><i class="bx bx-left-arrow-alt"></i></div>
-                  </div>
-  
-                  <div href="#" id="bt_next">
-                    <div class="right"><i class="bx bx-right-arrow-alt"></i></div>
-                  </div>
-                </div>
+          <div class="head">
+            <div class="titulo">
+            <h2>Professores</h2>
             </div>
+            
+            <div class="boxPesquisa">
+            <input type="text" class="pesquisa" placeholder="Buscar...">
+            <a href="#" class="btnPesquisar">
+            <i class='bx bx-search' style="color:#ffffff"></i>
+            </a>
+            </div>
+            
+            <div class="pagination">
+            <a href="#"><div class="left" id="bt_back" style="display: none;"><i class='bx bx-left-arrow-alt'></i></div></a>
+            
+            <div class="contaPagina selecionada">
+            <span class="numeroPagina" id="numPage">1</span>
+            </div>
+            
+            <a href="#"><div class="right" id="bt_next" style="display: none;"><i class='bx bx-right-arrow-alt'></i></div></a>
+            </div>
+          </div>
 
             <div class="listaTarefa">
 
@@ -136,7 +145,7 @@
                     </tbody>
 
                 </table>
-
+                <h2 id="notEvent" style="display: none;padding: 20px;">Sem Professores</h1>
             </div>
 
                 
