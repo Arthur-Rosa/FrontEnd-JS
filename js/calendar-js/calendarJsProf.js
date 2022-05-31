@@ -19,6 +19,8 @@ document.getElementById('nameSpt').textContent = "Olá " + payload.name;
 const urlTarefas = 'http://10.92.198.38:8080/api/tarefas';
 // const url = 'http://10.92.198.38:8080/api/solic';
 // const urlTarefas = 'http://10.92.198.38:8080/api/solic';
+const urlSolic = 'http://10.92.198.38:8080/api/solic/buscar/' + payload.id;
+const urlSolicAll = 'http://10.92.198.38:8080/api/solic/semId/' + payload.id;
 const url = 'http://10.92.198.38:8080/api/solic';
 setSolicitacoes(payload.id);
 let id = '';
@@ -52,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var myModal = new bootstrap.Modal(document.getElementById('myModal'));
             let idd = info.event.id;
             id = idd;
+            document.getElementById('id').textContent = idd;
             var data = document.getElementById('start');
 
             let a = transformBgColorInNumber(info.event.backgroundColor);
@@ -77,6 +80,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('periodo').disabled = true;
                 getOnNone(document.getElementById('btnEliminar'));
                 getOnNone(document.getElementById('btnSalvarEditar'));
+            }
+
+            if (info.el.className == 'fc-daygrid-event fc-daygrid-block-event fc-h-event fc-event fc-event-start fc-event-end fc-event-future solictAll') {
+                document.getElementById('title').disabled = true;
+                document.getElementById('description').disabled = true;
+                document.getElementById("start").disabled = true;
+                document.getElementById('periodo').disabled = true;
+                getOnNone(document.getElementById('btnEliminar'));
+                getOnNone(document.getElementById('btnSalvarEditar'));
+                document.getElementById('bgProf').style.display = 'block';
+                getUser(info.event.id);
+            } else {
+                document.getElementById('bgProf').style.display = 'none';
             }
 
             let btnSalvar = document.getElementById('btnSalvarEditar');
@@ -119,8 +135,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 failure: function () {
                     exibeErro("Não foi possível conectar a API");
                 },
-            }
+            },
+            {
+                url: urlSolicAll,
+                method: 'GET',
+                failure: function () {
+                    exibeErro("Não foi possível conectar a API");
+                },
+                className: 'solictAll',   // a non-ajax option
+                textColor: 'white' // a non-ajax option
+            },
+            {
+                url: urlSolic,
+                method: 'GET',
+                failure: function () {
+                    exibeErro("Não foi possível conectar a API");
+                },
+                className: 'solict',   // a non-ajax option
+                textColor: 'white' // a non-ajax option
+            },
         ],
+        // googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
+        // events: 'pt-br.usa#holiday@group.v.calendar.google.com',
         dateClick: function (info) {
             var checkDay = new Date(formatDate(info.dateStr, 'yyyy-MM-dd'));
             // checkDay.getDay() == 4
@@ -150,9 +186,18 @@ document.addEventListener('DOMContentLoaded', function () {
     calendar.render();
 });
 
-const editaEvento = (e) => {
+
+var iddd;
+
+const editaEvento = (e) => {    
+    if(iddd != null){
+        id = iddd;
+    }
+
+    var id = document.getElementById('id').textContent;
     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
     e.preventDefault();
+
 
     var data = document.getElementById('start');
     var title = document.getElementById('title');
@@ -189,7 +234,7 @@ const editaEvento = (e) => {
         var color = getSelectColor(select);
 
         let evento_editar = {
-            id,
+            id: id,
             title: title.value,
             periodo: select,
             start: data.value,
@@ -206,7 +251,7 @@ const editaEvento = (e) => {
             body: JSON.stringify(evento_editar),
             headers: myHeaders
         }
-        const newUrl = url + "/" + id;
+        const newUrl = url + "/" + iddd;
 
         fetch(newUrl, fetchData)
             .then((resp) => {
@@ -248,7 +293,6 @@ const editaEvento = (e) => {
 const deletaEvento = (e) => {
     var myModal = bootstrap.Modal.getInstance(document.getElementById('myModal'));
     myModal.hide();
-
     e.preventDefault();
     const myHeaders = new Headers();
     let fetchData = {
@@ -552,6 +596,26 @@ function setDescriptionGetOfDatabase(id) {
         });
 }
 
+async function getUser(id) {
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic' + "/" + id;
+
+    const bsq = new Headers();
+    bsq.append("Content-Type", "application/json");
+    let fetchData = {
+        method: 'GET',
+        headers: bsq
+    }
+    return await fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            console.log(resposta.usuario.nome)
+            document.getElementById('professor').value = resposta.usuario.nome;
+        })
+        .catch((error) => {
+            exibeErro('Ooops ... ocorreu um erro');
+        });
+}
+
 function setSolicitacoes(id) {
     var urlFindObject = 'http://10.92.198.38:8080/api/solic/buscar' + "/" + id;
 
@@ -565,7 +629,7 @@ function setSolicitacoes(id) {
         .then((resp) => resp.json())
         .then((resposta) => {
             // console.log(resposta)
-            if(resposta.length == 0){
+            if (resposta.length == 0) {
                 document.getElementById('ErrorH6').style.display = 'block';
             }
             return resposta.map((solicitacao) => {
@@ -577,6 +641,7 @@ function setSolicitacoes(id) {
                     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
                     let idd = solicitacao.id;
                     id = idd;
+                    iddd = id;
                     var data = document.getElementById('start');
 
                     /* if (a == 1) {
@@ -646,6 +711,21 @@ function setSolicitacoes(id) {
             solic.appendChild(errorDiv);
             exibeErro('Ooops ... ocorreu um erro');
         });
+}
+
+function formatDateOther(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getUTCDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) {
+        month = '0' + month;
+    }
+    if (day.length < 2) {
+        day = '0' + day;
+    }
+    return [day, month, year].join('/');
 }
 
 function setDescriptionGetOfDatabaseOther(id) {
