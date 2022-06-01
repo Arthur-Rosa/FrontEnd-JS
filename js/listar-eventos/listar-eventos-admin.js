@@ -149,21 +149,6 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
     const btnEdit = document.createElement('button');
     arrumaEdtBtn(btnEdit);
 
-    const btnExibir = document.createElement('button');
-    arrumaBtnExibe(btnExibir);
-
-    btnExibir.addEventListener('click', function (e) {
-        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        myModal.show();
-        getElementsByEdit(id);
-        document.getElementById('start').disabled = true;
-        document.getElementById('title').disabled = true;
-        document.getElementById('description').disabled = true;
-        document.getElementById('periodo').disabled = true;
-        document.getElementById('btnEliminar').style.display = 'none';
-        document.getElementById('btnSalvarEditar').style.display = 'none';
-    })
-
     btnEdit.addEventListener('click', function (e) {
         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
         getElementsByEdit(id);
@@ -200,27 +185,14 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
         btnDel.className = "deletee";
     }
 
-    if (!(nome == payload.name)) {
-        btnEdit.disabled = true;
-        btnEdit.className = "editt";
-        btnDel.disabled = true;
-        btnDel.className = "deletee";
-    }
-
     tr.appendChild(tdNomeProf);
     tr.appendChild(tdNomeEvento);
     tr.appendChild(tdData);
-    tr.appendChild(tdPeriodo);/* 
+    tr.appendChild(tdPeriodo);
     tr.appendChild(tdBtn);
-    tdBtn.appendChild(btnEdit); */
+    tdBtn.appendChild(btnEdit);
     tr.appendChild(tdBtnDel);
-    tdBtnDel.appendChild(btnExibir);
-}
-
-function arrumaBtnExibe(b){
-    b.className = 'info';
-    b.innerHTML = "<i class='bx bx-info-circle'></i>";
-    return b;
+    tdBtnDel.appendChild(btnDel);
 }
 
 const editarEventoModal = (e) => {

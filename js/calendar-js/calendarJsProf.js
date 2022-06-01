@@ -24,6 +24,7 @@ const urlSolicAll = 'http://10.92.198.38:8080/api/solic/semId/' + payload.id;
 const url = 'http://10.92.198.38:8080/api/solic';
 setSolicitacoes(payload.id);
 let id = '';
+let globalOne = '';
 
 document.addEventListener('DOMContentLoaded', function () {
     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
         navLinks: false,
 
         eventClick: function (info) {
+
             var myModal = new bootstrap.Modal(document.getElementById('myModal'));
             let idd = info.event.id;
             id = idd;
@@ -68,21 +70,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 setOptionSelected(4);
             }
             setToEditEvent();
-            setDescriptionGetOfDatabase(id);
 
             var b = document.getElementById('btnEliminar');
             b.style.display = 'block';
 
-            if (info.event.startStr <= getDataFormat()) {
-                document.getElementById('title').disabled = true;
-                document.getElementById('description').disabled = true;
-                document.getElementById("start").disabled = true;
-                document.getElementById('periodo').disabled = true;
-                getOnNone(document.getElementById('btnEliminar'));
-                getOnNone(document.getElementById('btnSalvarEditar'));
-            }
-
-            if (info.el.className == 'fc-daygrid-event fc-daygrid-block-event fc-h-event fc-event fc-event-start fc-event-end fc-event-future solictAll') {
+            if (info.event.startStr <= getDataFormat() || info.el.className == 'fc-daygrid-event fc-daygrid-block-event fc-h-event fc-event fc-event-start fc-event-end fc-event-future' || info.el.className == 'fc-daygrid-event fc-daygrid-block-event fc-h-event fc-event fc-event-start fc-event-end fc-event-future solictAll' || info.el.className == 'fc-list-event  fc-event fc-event-start fc-event-end fc-event-future solictAll') {
                 document.getElementById('title').disabled = true;
                 document.getElementById('description').disabled = true;
                 document.getElementById("start").disabled = true;
@@ -90,9 +82,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 getOnNone(document.getElementById('btnEliminar'));
                 getOnNone(document.getElementById('btnSalvarEditar'));
                 document.getElementById('bgProf').style.display = 'block';
-                getUser(info.event.id);
+                if (info.el.className == 'fc-daygrid-event fc-daygrid-block-event fc-h-event fc-event fc-event-start fc-event-end fc-event-future') {
+                    getUserByEvent(info.event.id);
+                    setDescriptionGetOfDatabaseEvent(id);
+                } else if (info.event.startStr <= getDataFormat()) {
+                    getUserByEvent(info.event.id);
+                    setDescriptionGetOfDatabaseEvent(id);
+                } else {
+                    getUser(info.event.id);
+                    setDescriptionGetOfDatabase(id);
+                }
             } else {
                 document.getElementById('bgProf').style.display = 'none';
+                getUser(info.event.id);
+                setDescriptionGetOfDatabase(id);
             }
 
             let btnSalvar = document.getElementById('btnSalvarEditar');
@@ -189,12 +192,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var iddd;
 
-const editaEvento = (e) => {    
-    if(iddd != null){
-        id = iddd;
+const editaEvento = (e) => {
+    if (!(globalOne == '')) {
+        id = globalOne;
+    } else {
+        var id = document.getElementById('id').textContent;
     }
-
-    var id = document.getElementById('id').textContent;
     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
     e.preventDefault();
 
@@ -251,7 +254,7 @@ const editaEvento = (e) => {
             body: JSON.stringify(evento_editar),
             headers: myHeaders
         }
-        const newUrl = url + "/" + iddd;
+        const newUrl = url + "/" + id;
 
         fetch(newUrl, fetchData)
             .then((resp) => {
@@ -596,8 +599,48 @@ function setDescriptionGetOfDatabase(id) {
         });
 }
 
+function setDescriptionGetOfDatabaseEvent(id) {
+    var urlFindObject = 'http://10.92.198.38:8080/api/tarefas' + "/" + id;
+
+    const bsq = new Headers();
+    bsq.append("Content-Type", "application/json");
+    let fetchData = {
+        method: 'GET',
+        headers: bsq
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            console.log(resposta)
+            document.getElementById('description').value = resposta.description;
+        })
+        .catch((error) => {
+            exibeErro('Ooops ... ocorreu um erro');
+        });
+}
+
 async function getUser(id) {
     var urlFindObject = 'http://10.92.198.38:8080/api/solic' + "/" + id;
+
+    const bsq = new Headers();
+    bsq.append("Content-Type", "application/json");
+    let fetchData = {
+        method: 'GET',
+        headers: bsq
+    }
+    return await fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            console.log(resposta.usuario.nome)
+            document.getElementById('professor').value = resposta.usuario.nome;
+        })
+        .catch((error) => {
+            exibeErro('Ooops ... ocorreu um erro');
+        });
+}
+
+async function getUserByEvent(id) {
+    var urlFindObject = 'http://10.92.198.38:8080/api/tarefas' + "/" + id;
 
     const bsq = new Headers();
     bsq.append("Content-Type", "application/json");
@@ -641,7 +684,7 @@ function setSolicitacoes(id) {
                     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
                     let idd = solicitacao.id;
                     id = idd;
-                    iddd = id;
+                    globalOne = id;
                     var data = document.getElementById('start');
 
                     /* if (a == 1) {

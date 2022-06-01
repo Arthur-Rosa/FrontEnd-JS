@@ -88,8 +88,8 @@ function getOfDatabase() {
                     bt_back.removeEventListener('click', listenerBack)
                     bt_back.style.display = 'none';
                 }
-                if(eventos.length == 0){
-                    document.getElementById('notEvent').style.display = 'block';    
+                if (eventos.length == 0) {
+                    document.getElementById('notEvent').style.display = 'block';
                 }
                 return eventos.map((evento) => {
                     console.log(evento)
@@ -106,7 +106,7 @@ function getOfDatabase() {
 
 }
 
-function formatVerMais(b){
+function formatVerMais(b) {
     b.className = 'success';
     b.innerHTML = '<i class="fas fa-plus-circle"></i>';
     b.style.color = 'white';
@@ -123,18 +123,17 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     let tdStatus = document.createElement('td');
     let tdDetalhes = document.createElement('td');
     let buttonAdc = document.createElement('button');
-    formatVerMais(buttonAdc);
+    arrumaBtnExibe(buttonAdc);
 
-    if(status == 1){
-        tdStatus.className = 'status confirmado';
-        tdStatus.textContent = 'Confirmado';
-
-        buttonAdc.disabled = 'true';
-        buttonAdc.className = 'successs';
-    } else if(status == 2){
+    if (status == 2) {
         tdStatus.className = 'status andamento';
         tdStatus.textContent = 'Andamento';
-    } else {
+    }
+
+    if (status == 1) {
+        tdStatus.className = 'status confirmado';
+        tdStatus.textContent = 'Confirmado';
+    } else if (status == 0) {
         tdStatus.className = 'status reprovado';
         tdStatus.textContent = 'Reprovado';
     }
@@ -145,19 +144,35 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
 
     tdNomeProf.innerText = nome;
     tdNomeEvento.innerText = nomeEvent;
-    tdData.innerText = formatDateOther(data);
+    tdData.textContent = formatDateOther(data);
 
     buttonAdc.addEventListener('click', function () {
+        if (status == 2) {
+            document.getElementById('start').disabled = false;
+            document.getElementById('title').disabled = false;
+            document.getElementById('description').disabled = false;
+            document.getElementById('periodo').disabled = false;
+            document.getElementById('btnEliminar').style.display = 'block';
+            document.getElementById('btnSalvarEditar').style.display = 'block';
+        } else {
+            document.getElementById('start').disabled = true;
+            document.getElementById('title').disabled = true;
+            document.getElementById('description').disabled = true;
+            document.getElementById('periodo').disabled = true;
+            document.getElementById('btnEliminar').style.display = 'none';
+            document.getElementById('btnSalvarEditar').style.display = 'none';
+        }
+
         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
         getElementsByEdit(id);
         myModal.show();
+
+        const btnSalvar = document.getElementById('btnSalvarEditar');
+        btnSalvar.addEventListener('click', editarEventoModal);
+
+        const btnDeletar = document.getElementById('btnEliminar');
+        btnDeletar.addEventListener('click', deletarEventoModal);
     })
-
-
-    if (data > getDataFormat()) {
-
-    } else {
-    }
 
     tr.appendChild(tdNomeProf);
     tr.appendChild(tdNomeEvento);
@@ -167,15 +182,24 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     tdDetalhes.appendChild(buttonAdc);
 }
 
+function arrumaBtnExibe(b) {
+    b.className = 'info';
+    b.innerHTML = "<i class='bx bx-info-circle'></i>";
+    return b;
+}
+
 function formatDateOther(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
-        day = '' + (d.getDate() + 1),
+        day = '' + d.getUTCDate(),
         year = d.getFullYear();
-    if (month.length < 2)
+
+    if (month.length < 2) {
         month = '0' + month;
-    if (day.length < 2)
+    }
+    if (day.length < 2) {
         day = '0' + day;
+    }
     return [day, month, year].join('/');
 }
 
@@ -223,6 +247,7 @@ const editarEventoModal = (e) => {
             start: data.value,
             description: description.value,
             color,
+            status: 2,
             usuario: payload
         }
 
@@ -245,7 +270,7 @@ const editarEventoModal = (e) => {
                         exibeErro("Periodo já existente");
                     }
                     if (resp.status == 200) {
-                        window.location.replace('listaEventos.html');
+                        window.location.replace('listaSolicitacoes.html');
                     }
                 })
                     .catch((error) => {
@@ -255,14 +280,14 @@ const editarEventoModal = (e) => {
                             exibeErro("Periodo já existente");
                         }
                         if (resp.status == 200) {
-                            window.location.replace('listaEventos.html');
+                            window.location.replace('listaSolicitacoes.html');
                         }
                         if (resp.status == 226) {
                             closeModal();
                             exibeErro("Todo o Periodo está ocupado");
                         }
                         if (resp.status == 200) {
-                            window.location.replace('listaEventos.html');
+                            window.location.replace('listaSolicitacoes.html');
                         }
                         if (resp.status == 400) {
                             closeModal();
@@ -442,6 +467,21 @@ function formatDate(date) {
         day = '0' + day;
 
     return [year, month, day].join('-');
+}
+
+function formatDateOther(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getUTCDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) {
+        month = '0' + month;
+    }
+    if (day.length < 2) {
+        day = '0' + day;
+    }
+    return [day, month, year].join('/');
 }
 
 function getDataFormatSomOne() {

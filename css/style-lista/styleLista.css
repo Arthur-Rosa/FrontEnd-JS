@@ -283,3 +283,8 @@ ol, ul {
     color: white;
     font-weight: bold;
 }
+
+table tbody td .info{background-color: rgb(17, 190, 17);color: white;}
+table tbody td .info:hover{
+     background-color: rgb(10, 134, 10);
+    }

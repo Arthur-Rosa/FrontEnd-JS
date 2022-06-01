@@ -17,7 +17,10 @@ const payload = parseJwt(token)
 console.log(payload)
 setSolicitacoes(payload.id);
 document.getElementById('nameSpt').textContent = "Olá " + payload.name;
-
+const urlTarefas = 'http://10.92.198.38:8080/api/tarefas';
+// const url = 'http://10.92.198.38:8080/api/solic';
+// const urlTarefas = 'http://10.92.198.38:8080/api/solic';
+const urlSolicAllEDT = 'http://10.92.198.38:8080/api/solic/semId/' + payload.id;
 // const url = 'http://api-auditorio.herokuapp.com/api/tarefas';
 const url = 'http://10.92.198.38:8080/api/tarefas';
 let id = '';
@@ -114,12 +117,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         eventSources: [
             {
-                url: url,
+                url: urlTarefas,
                 method: 'GET',
                 failure: function () {
                     exibeErro("Não foi possível conectar a API");
                 },
-            }
+            },
+            {
+                url: urlSolicAllEDT,
+                method: 'GET',
+                failure: function () {
+                    exibeErro("Não foi possível conectar a API");
+                },
+                className: 'solictAll',   // a non-ajax option
+                textColor: 'white' // a non-ajax option
+            },
         ],
         dateClick: function (info) {
             var checkDay = new Date(formatDate(info.dateStr, 'yyyy-MM-dd'));
