@@ -20,7 +20,7 @@ if (token == null) {
 const paginaAtual = window.location.href
 const atributosUrl = paginaAtual.split('?')
 // let url = 'http://localhost:8080/api/tarefas';
-var url = 'http://10.92.198.38:8080/api/tarefas';
+var url = 'http://10.92.198.38:8080/api/solic/buscar/' + payload.id;
 var idd = '';
 if (atributosUrl[1] !== undefined) {
 
@@ -65,15 +65,10 @@ function getOfDatabase() {
         method: 'GET',
         headers: myHeaders
     }
-
     fetch(url, fetchData)
         .then((resp) => {
             resp.json().then((info) => {
-                let eventos = info.content;
-                console.log(info)
-                if (info.length == 0) {
-                    document.getElementById("error").style.display = "block";
-                }
+                var eventos = info.content;
                 if (info.totalPages > atributosUrl[1]) {
                     bt_next.addEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
@@ -84,21 +79,18 @@ function getOfDatabase() {
                     bt_next.removeEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
                     bt_back.style.display = 'block';
-
                 }
                 if (atributosUrl[1] == 1) {
                     bt_back.removeEventListener('click', listenerBack)
-
                     bt_back.style.display = 'none';
-
                 }
                 if (eventos.length == 0) {
                     document.getElementById('notEvent').style.display = 'block';
                 }
                 return eventos.map((evento) => {
+                    console.log(evento)
                     id = evento.id;
-                    criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, evento.periodo, id);
-
+                    criarLinha(evento.usuario?.nome, evento.title, evento.description, evento.start, evento.periodo, evento.status, id);
                 })
             })
                 .catch((error) => {
@@ -110,102 +102,101 @@ function getOfDatabase() {
 
 }
 
-function arrumaBtnExibe(b){
-    b.className = 'info';
-    b.innerHTML = "<i class='bx bx-info-circle'></i>";
+function formatVerMais(b) {
+    b.className = 'success';
+    b.innerHTML = '<i class="fas fa-plus-circle"></i>';
+    b.style.color = 'white';
     return b;
 }
 
-function criarLinha(nome, nomeEvent, desc, data, periodo, id) {
+function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     const tbody = document.querySelector('tbody');
     let tr = document.createElement('tr');
     tr.id = id;
     let tdNomeProf = document.createElement('td');
     let tdNomeEvento = document.createElement('td');
     let tdData = document.createElement('td');
-    let tdPeriodo = document.createElement('td');
-    let tdBtn = document.createElement('td');
-    let tdBtnDel = document.createElement('td');
+    let tdStatus = document.createElement('td');
+    let tdDetalhes = document.createElement('td');
+    let buttonAdc = document.createElement('button');
+    arrumaBtnExibe(buttonAdc);
 
-    if (nomeEvent.length > 40) {
-        nomeEvent = nomeEvent.slice(0, -20) + "...";
+    if (status == 2) {
+        tdStatus.className = 'status andamento';
+        tdStatus.textContent = 'Andamento';
     }
+
+    if (status == 1) {
+        tdStatus.className = 'status confirmado';
+        tdStatus.textContent = 'Confirmado';
+    } else if (status == 0) {
+        tdStatus.className = 'status reprovado';
+        tdStatus.textContent = 'Reprovado';
+    }
+    // let tdBtn = document.createElement('td');
+    // let tdBtnDel = document.createElement('td');
 
     tbody.appendChild(tr);
 
-    const btnEdit = document.createElement('button');
-    arrumaEdtBtn(btnEdit);
-
-    if (periodo == 1) {
-        tdPeriodo.className = 'mat';
-        periodo = 'Matutino';
-    } else if (periodo == 2) {
-        tdPeriodo.className = 'ves';
-        periodo = 'Vespertino';
-    } else if (periodo == 3) {
-        tdPeriodo.className = 'not';
-        periodo = 'Noturno';
-    } else {
-        tdPeriodo.className = 'diaT';
-        periodo = 'O Dia Todo';
-    }
-
     tdNomeProf.innerText = nome;
     tdNomeEvento.innerText = nomeEvent;
-    tdData.innerText = formatDateOther(data);
-    tdPeriodo.innerText = periodo;
+    tdData.textContent = formatDateOther(data);
 
-
-    btnEdit.addEventListener('click', function (e) {
-        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-        getElementsByEdit(id);
-        if (data > getDataFormat()) {
-            myModal.show();
+    buttonAdc.addEventListener('click', function () {
+        if (status == 2) {
+            document.getElementById('start').disabled = false;
+            document.getElementById('title').disabled = false;
+            document.getElementById('description').disabled = false;
+            document.getElementById('periodo').disabled = false;
+            document.getElementById('btnEliminar').style.display = 'block';
+            document.getElementById('btnSalvarEditar').style.display = 'block';
+        } else {
+            document.getElementById('start').disabled = true;
+            document.getElementById('title').disabled = true;
+            document.getElementById('description').disabled = true;
+            document.getElementById('periodo').disabled = true;
+            document.getElementById('btnEliminar').style.display = 'none';
+            document.getElementById('btnSalvarEditar').style.display = 'none';
         }
 
-        var nm = document.getElementById('bgProf');
-        nm.style.display = 'block';
-        console.log(payload)
-
-        idd = id;
+        var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        getElementsByEdit(id);
+        myModal.show();
 
         const btnSalvar = document.getElementById('btnSalvarEditar');
         btnSalvar.addEventListener('click', editarEventoModal);
 
         const btnDeletar = document.getElementById('btnEliminar');
         btnDeletar.addEventListener('click', deletarEventoModal);
-    });
-
-    const btnDel = document.createElement('button');
-    arrumaExclBtn(btnDel);
-    btnDel.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (data > getDataFormat()) {
-            deletaEvento(id);
-        } else {
-            exibeErro('Evento Antigo');
-        }
-    });
-
-    if (data > getDataFormat()) {
-        
-    } else {
-        btnEdit.disabled = true;
-        btnEdit.className = "editt";
-        btnDel.disabled = true;
-        btnDel.className = "deletee";
-
-        arrumaBtnExibe(btnEdit);
-    }
+    })
 
     tr.appendChild(tdNomeProf);
     tr.appendChild(tdNomeEvento);
     tr.appendChild(tdData);
-    tr.appendChild(tdPeriodo);
-    tr.appendChild(tdBtn);
-    tdBtn.appendChild(btnEdit);
-    tr.appendChild(tdBtnDel);
-    tdBtnDel.appendChild(btnDel);
+    tr.appendChild(tdStatus);
+    tr.appendChild(tdDetalhes);
+    tdDetalhes.appendChild(buttonAdc);
+}
+
+function arrumaBtnExibe(b) {
+    b.className = 'info';
+    b.innerHTML = "<i class='bx bx-info-circle'></i>";
+    return b;
+}
+
+function formatDateOther(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getUTCDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) {
+        month = '0' + month;
+    }
+    if (day.length < 2) {
+        day = '0' + day;
+    }
+    return [day, month, year].join('/');
 }
 
 const editarEventoModal = (e) => {
@@ -216,9 +207,6 @@ const editarEventoModal = (e) => {
     var description = document.getElementById('description');
     var erro = 0;
     var checkDay = new Date(formatDate(data.value, 'yyyy-MM-dd'));
-    var nome = '';
-
-    
 
     const select = document.getElementById('periodo').value;
     if (select == 0) {
@@ -255,13 +243,14 @@ const editarEventoModal = (e) => {
             start: data.value,
             description: description.value,
             color,
-            usuario: nome
+            status: 2,
+            usuario: payload
         }
 
         myModal.dispose();
         // url = 'http://localhost:8080/api/tarefas';
         // url = 'http://10.92.198.38:8080/api/tarefas';
-        url = 'http://10.92.198.38:8080/api/tarefas';
+        url = 'http://10.92.198.38:8080/api/solic';
         let fetchData = {
             method: 'PUT',
             body: JSON.stringify(evento_editar),
@@ -277,7 +266,7 @@ const editarEventoModal = (e) => {
                         exibeErro("Periodo já existente");
                     }
                     if (resp.status == 200) {
-                        window.location.replace('listaEventos.html');
+                        window.location.replace('listaSolicitacoes.html');
                     }
                 })
                     .catch((error) => {
@@ -287,14 +276,14 @@ const editarEventoModal = (e) => {
                             exibeErro("Periodo já existente");
                         }
                         if (resp.status == 200) {
-                            window.location.replace('listaEventos.html');
+                            window.location.replace('listaSolicitacoes.html');
                         }
                         if (resp.status == 226) {
                             closeModal();
                             exibeErro("Todo o Periodo está ocupado");
                         }
                         if (resp.status == 200) {
-                            window.location.replace('listaEventos.html');
+                            window.location.replace('listaSolicitacoes.html');
                         }
                         if (resp.status == 400) {
                             closeModal();
@@ -317,13 +306,13 @@ const deletarEventoModal = (e) => {
         headers: myHeaders
     }
     // url = 'http://localhost:8080/api/tarefas';
-    url = 'http://10.92.198.38:8080/api/tarefas';
+    url = 'http://10.92.198.38:8080/api/solic';
     const newUrl = url + "/" + id;
     fetch(newUrl, fetchData)
         .then((resposta) => {
             // exibeErro("Excluido com sucesso !")
             setTimeout(function () {
-                window.location.replace('listaEventos.html')
+                window.location.replace('listaSolicitacoes.html')
             }, 0);
         })
         .catch((error) => {
@@ -352,11 +341,11 @@ function deletaEvento(id) {
         headers: myHeaders
     }
     // url = 'http://localhost:8080/api/tarefas';
-    url = 'http://10.92.198.38:8080/api/tarefas';
+    url = 'http://10.92.198.38:8080/api/solic';
     const newUrl = url + "/" + id;
     fetch(newUrl, fetchData)
         .then((resposta) => {
-            window.location.replace('listaEventos.html')
+            window.location.replace('listaSolicitacoes.html')
         })
         .catch((error) => {
             closeModal();
@@ -387,7 +376,7 @@ function getElementsByEdit(id) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     // url = 'http://localhost:8080/api/tarefas';
-    url = 'http://10.92.198.38:8080/api/tarefas';
+    url = 'http://10.92.198.38:8080/api/solic';
     let fetchData = {
         method: 'GET',
         headers: myHeaders
@@ -476,19 +465,22 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-function getDataFormatSomOne() {
-    const date = new Date().toLocaleDateString();
-    return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2) + 1;
-}
-
 function formatDateOther(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
-        day = '' + d.getUTCDay(),
+        day = '' + d.getUTCDate(),
         year = d.getFullYear();
-    if (month.length < 2)
+
+    if (month.length < 2) {
         month = '0' + month;
-    if (day.length < 2)
+    }
+    if (day.length < 2) {
         day = '0' + day;
+    }
     return [day, month, year].join('/');
+}
+
+function getDataFormatSomOne() {
+    const date = new Date().toLocaleDateString();
+    return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2) + 1;
 }

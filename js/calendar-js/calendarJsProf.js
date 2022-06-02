@@ -47,6 +47,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
     setMyModalCreate(myModal);
 
+    setTimeout(function () { 
+        var a = document.querySelectorAll('.solict'); 
+        for (let i = 0; i < a.length; i++) { 
+            console.log(a[i]); 
+            a[i].className = a[i].className + ' lKjaEsdw'; 
+            a[i].innerHTML = "<i style='font-size: 12px !important; margin-top: 5px; margin-right: 5px;' class='bx bx-user'></i>" + a[i].textContent; 
+        } 
+    }, 100);
+
     var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'pt-br',
         navLinks: false,
@@ -294,6 +303,10 @@ const editaEvento = (e) => {
 }
 
 const deletaEvento = (e) => {
+    if (!(globalOne == '')) {
+        id = globalOne;
+    }
+    
     var myModal = bootstrap.Modal.getInstance(document.getElementById('myModal'));
     myModal.hide();
     e.preventDefault();
@@ -552,7 +565,7 @@ function setToCreateEvent() {
     document.getElementById('btnSalvarEditar').style.display = 'none';
     var nav = document.getElementById('bgEvent');
     var navText = document.getElementById('titulo');
-    navText.textContent = 'Criar Evento'
+    navText.textContent = 'Criar Solicitação'
     navText.style.color = 'white';
     nav.className = 'modal-header bg-success';
     document.getElementById("start").disabled = true;
@@ -570,7 +583,7 @@ function setToEditEvent() {
 
     var nav = document.getElementById('bgEvent');
     var navText = document.getElementById('titulo');
-    navText.textContent = 'Editar Evento'
+    navText.textContent = 'Editar Solicitação'
     navText.style.color = 'black';
     nav.className = 'modal-header bg-warning';
     document.getElementById("start").disabled = false;

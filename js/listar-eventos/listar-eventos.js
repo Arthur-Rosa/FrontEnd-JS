@@ -496,7 +496,7 @@ function getDataFormatSomOne() {
 function formatDateOther(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
-        day = '' + (d.getDate() + 1),
+        day = '' + d.getUTCDay(),
         year = d.getFullYear();
     if (month.length < 2)
         month = '0' + month;

@@ -147,7 +147,7 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     tdData.textContent = formatDateOther(data);
 
     buttonAdc.addEventListener('click', function () {
-        if (status == 2) {
+        if(false) {
             document.getElementById('start').disabled = false;
             document.getElementById('title').disabled = false;
             document.getElementById('description').disabled = false;

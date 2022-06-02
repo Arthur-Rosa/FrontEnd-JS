@@ -24,6 +24,7 @@ const urlSolicAllEDT = 'http://10.92.198.38:8080/api/solic/semId/' + payload.id;
 // const url = 'http://api-auditorio.herokuapp.com/api/tarefas';
 const url = 'http://10.92.198.38:8080/api/tarefas';
 let id = '';
+var idSolic = '';
 
 document.addEventListener('DOMContentLoaded', function () {
     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
@@ -52,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
         locale: 'pt-br',
         navLinks: false,
         eventClick: function (info) {
+            console.log(info.el.className)
+
             var myModal = new bootstrap.Modal(document.getElementById('myModal'));
             let idd = info.event.id;
             id = idd;
@@ -68,18 +71,44 @@ document.addEventListener('DOMContentLoaded', function () {
                 setOptionSelected(4);
             }
             setToEditEvent();
-            setDescriptionGetOfDatabase(id);
+            
 
             var b = document.getElementById('btnEliminar');
             b.style.display = 'block';
+            document.getElementById('btnReprovar').style.display = 'none';
+            document.getElementById('btnAprovar').style.display = 'none';
+            document.getElementById('bgProf').style.display = 'none';
 
             if (info.event.startStr <= getDataFormat()) {
+                setDescriptionGetOfDatabase(id);
                 document.getElementById('title').disabled = true;
                 document.getElementById('description').disabled = true;
                 document.getElementById("start").disabled = true;
                 document.getElementById('periodo').disabled = true;
                 getOnNone(document.getElementById('btnEliminar'));
                 getOnNone(document.getElementById('btnSalvarEditar'));
+                document.getElementById('btnReprovar').style.display = 'none';
+                document.getElementById('btnAprovar').style.display = 'none';
+                document.getElementById('bgProf').style.display = 'none';
+            } else if (info.el.className == 'fc-daygrid-event fc-daygrid-block-event fc-h-event fc-event fc-event-start fc-event-end fc-event-future solictAll') {
+                document.getElementById('title').disabled = true;
+                document.getElementById('description').disabled = true;
+                document.getElementById("start").disabled = true;
+                document.getElementById('periodo').disabled = true;
+                getOnNone(document.getElementById('btnEliminar'));
+                clearBtns();
+                
+                idSolic = idd;
+
+                setDescriptionGetOfDatabaseOther(idSolic);
+
+                var reprovar = document.getElementById('btnReprovar');
+                var aprovar = document.getElementById('btnAprovar');
+
+                reprovar.addEventListener('click', reprovarSolicit);
+                aprovar.addEventListener('click', aprovarSolicit);
+            } else {
+                setDescriptionGetOfDatabase(id);
             }
 
             let btnSalvar = document.getElementById('btnSalvarEditar');
@@ -576,6 +605,7 @@ function exibeErro(msg) {
     });
 }
 
+var o = 0;
 function setSolicitacoes(id) {
     var urlFindObject = 'http://10.92.198.38:8080/api/solic/buscar' + "/" + id;
 
@@ -588,7 +618,7 @@ function setSolicitacoes(id) {
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
-            console.log(resposta)
+            // console.log(resposta);
             return resposta.map((solicitacao) => {
                 const solic = document.querySelector('.solicitacoes');
                 const bloco = document.createElement('div');
@@ -671,6 +701,7 @@ function setSolicitacoes(id) {
 let idd = '';
 
 function setSolicitacoes(id) {
+    // buscar where andamento = 2
     var urlFindObject = 'http://10.92.198.38:8080/api/solic';
 
     const bsq = new Headers();
@@ -683,10 +714,16 @@ function setSolicitacoes(id) {
         .then((resp) => resp.json())
         .then((resposta) => {
             console.log(resposta)
-            if(resposta.length == 0){
+            if(resposta.status == 2){
+                o++;
+            }
+            if(o == 0){
                 document.getElementById('ErrorH6').style.display = 'block';
             }
-            return resposta.map((solicitacao) => {   
+            if (resposta.length == 0) {
+                document.getElementById('ErrorH6').style.display = 'block';
+            }
+            return resposta.map((solicitacao) => {
                 if (solicitacao.status == '2') {
                     const solic = document.querySelector('.solicitacoes');
                     const bloco = document.createElement('div');
@@ -723,7 +760,7 @@ function setSolicitacoes(id) {
                         // var b = document.getElementById('btnEliminar');
                         // b.style.display = 'block';
 
-                        if (solicitacao.start <= getDataFormat()) {
+                        if (true) {
                             document.getElementById('title').disabled = true;
                             document.getElementById('description').disabled = true;
                             document.getElementById("start").disabled = true;
@@ -777,10 +814,28 @@ function setSolicitacoes(id) {
 }
 
 const reprovarSolicit = (e) => {
-
+    if(!(idSolic == null)){
+        idd = idSolic
+    }
+    e.preventDefault();
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic/reprovar' + "/" + idd;
+    let fetchData = {
+        method: 'PUT'
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            window.location.replace('index.html');
+        })
+        .catch((error) => {
+            setModalError(modalAlert, 'Ooops ... ocorreu um erro', error);
+        });
 }
 
 const aprovarSolicit = (e) => {
+    if(!(idSolic == null)){
+        idd = idSolic
+    }
     e.preventDefault();
     var urlFindObject = 'http://10.92.198.38:8080/api/solic/aprovar' + "/" + idd;
     let fetchData = {
@@ -808,8 +863,10 @@ function setDescriptionGetOfDatabaseOther(id) {
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
-            // console.log(resposta)
+            console.log(resposta.usuario.nome)
             document.getElementById('description').value = resposta.description;
+            document.getElementById('bgProf').style.display = 'block';
+            document.getElementById('professor').value = resposta.usuario.nome;
         })
         .catch((error) => {
             setModalError(modalAlert, 'Ooops ... ocorreu um erro', error);
@@ -817,7 +874,6 @@ function setDescriptionGetOfDatabaseOther(id) {
 }
 
 function clearBtns() {
-    console.log('batatinha')
     var nav = document.getElementById('bgEvent');
     var navText = document.getElementById('titulo');
     navText.textContent = 'Aprovar Solicitação';
