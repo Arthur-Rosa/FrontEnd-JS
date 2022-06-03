@@ -113,6 +113,8 @@ function formatVerMais(b) {
     return b;
 }
 
+var idSolic = '';
+
 function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     const tbody = document.querySelector('tbody');
     let tr = document.createElement('tr');
@@ -124,6 +126,10 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     let tdDetalhes = document.createElement('td');
     let buttonAdc = document.createElement('button');
     arrumaBtnExibe(buttonAdc);
+
+    if (nomeEvent.length > 40) {
+        nomeEvent = nomeEvent.slice(0, -20) + "...";
+    }
 
     if (status == 2) {
         tdStatus.className = 'status andamento';
@@ -147,7 +153,7 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
     tdData.textContent = formatDateOther(data);
 
     buttonAdc.addEventListener('click', function () {
-        if(false) {
+        if (false) {
             document.getElementById('start').disabled = false;
             document.getElementById('title').disabled = false;
             document.getElementById('description').disabled = false;
@@ -161,6 +167,21 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
             document.getElementById('periodo').disabled = true;
             document.getElementById('btnEliminar').style.display = 'none';
             document.getElementById('btnSalvarEditar').style.display = 'none';
+            if (status == 2) {
+
+                idSolic = id;
+                
+                var reprovar = document.getElementById('btnReprovar');
+                var aprovar = document.getElementById('btnAprovar');
+
+                reprovar.style.display = 'block';
+                aprovar.style.display = 'block';
+
+                
+
+                reprovar.addEventListener('click', reprovarSolicit);
+                aprovar.addEventListener('click', aprovarSolicit);
+            }
         }
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
@@ -187,6 +208,48 @@ function arrumaBtnExibe(b) {
     b.innerHTML = "<i class='bx bx-info-circle'></i>";
     return b;
 }
+
+
+const reprovarSolicit = (e) => {
+    if(!(idSolic == null)){
+        id = idSolic
+    }
+    e.preventDefault();
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic/reprovar' + "/" + id;
+    let fetchData = {
+        method: 'PUT'
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            window.location.replace('listaSolicitacoes.html');
+        })
+        .catch((error) => {
+            console.log(error)
+            exibeErro("Ops... Ocorreu um erro")
+        });
+}
+
+const aprovarSolicit = (e) => {
+    if(!(idSolic == null)){
+        id = idSolic
+    }
+    e.preventDefault();
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic/aprovar' + "/" + id;
+    let fetchData = {
+        method: 'POST'
+    }
+    return fetch(urlFindObject, fetchData)
+        .then((resp) => resp.json())
+        .then((resposta) => {
+            window.location.replace('listaSolicitacoes.html');
+        })
+        .catch((error) => {
+            console.log(error)
+            exibeErro("Ops... Ocorreu um erro")
+        });
+}
+
 
 function formatDateOther(date) {
     var d = new Date(date),

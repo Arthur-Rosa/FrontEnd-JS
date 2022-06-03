@@ -133,6 +133,14 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
         tdStatus.className = 'status reprovado';
         tdStatus.textContent = 'Reprovado';
     }
+
+    if (nomeEvent.length > 40) {
+        nomeEvent = nomeEvent.slice(0, -30) + "...";
+    } else if(nomeEvent.length > 50){
+        nomeEvent = nomeEvent.slice(0, -40) + "...";
+    } else if(nomeEvent.length > 80){
+        nomeEvent = nomeEvent.slice(0, -60) + "...";
+    }
     // let tdBtn = document.createElement('td');
     // let tdBtnDel = document.createElement('td');
 

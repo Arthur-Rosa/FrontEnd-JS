@@ -171,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // events: 'pt-br.usa#holiday@group.v.calendar.google.com',
         dateClick: function (info) {
             var checkDay = new Date(formatDate(info.dateStr, 'yyyy-MM-dd'));
+            
             // checkDay.getDay() == 4
             if (checkDay.getDay() == 5) {
                 exibeErro("Indisponivel aos Domingos");
@@ -186,7 +187,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.value = info.dateStr;
                     // data.value = info.dateStr;
                     myModal.show();
-
                     const btnAction = document.getElementById('btnAction');
                     btnAction.addEventListener('click', criaEvento);
                 } else {
@@ -296,7 +296,6 @@ const editaEvento = (e) => {
                             closeModal();
                             exibeErro("Todo o periodo já está utilizado");
                         }
-
                     });
             })
     }

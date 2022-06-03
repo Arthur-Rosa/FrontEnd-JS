@@ -1,163 +1,215 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}  
+
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins', sans-serif;
+}
+
+
 
 :root {
-    /* ===== Colors ===== */
-    --body-color: #E4E9F7;
-    --sidebar-color: #FFF;
-    --primary-color: #E30613;
-    --primary-color-light: #F6F5FF;
-    --toggle-color: #DDD;
-    --text-color: #707070;
-
-    /* ====== Transition ====== */
-    --tran-03: all 0.2s ease;
-    --tran-03: all 0.3s ease;
-    --tran-04: all 0.3s ease;
-    --tran-05: all 0.3s ease;
+/* ===== Colors ===== */
+--body-color: #E4E9F7;
+--sidebar-color: #FFF;
+--primary-color: #E30613;
+--primary-color-light: #F6F5FF;
+--toggle-color: #DDD;
+--text-color: #707070;
+/* ====== Transition ====== */
+--tran-03: all 0.2s ease;
+--tran-03: all 0.3s ease;
+--tran-04: all 0.3s ease;
+--tran-05: all 0.5s ease;
 }
 
-body{
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
-    background-color: var(--body-color);
-    overflow: hidden;
+
+
+body {
+position: relative;
+min-height: 100vh;
+width: 100%;
+background-color: var(--body-color);
+overflow: hidden;
 }
 
-.sidebar{
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 17%;
-    background-color: var(--sidebar-color);
-    padding: 6px 14px;
-    transition-duration: 0.5s;
+
+
+/* ===== Sidebar ===== */
+.sidebar {
+position: fixed;
+top: 0;
+left: 0;
+height: 100%;
+width: 300px;
+padding: 10px 30px;
+background: var(--sidebar-color);
+transition: var(--tran-05);
+z-index: 100;
 }
 
-.sidebar.active{
-    width: 9%;
+
+
+.sidebar.active {
+width: 10%;
+margin: 0 auto;
 }
 
-.sidebar .logo{
-    display:flex;
-    width: 95%;
-    align-items: center;
-    color: #bababa;
-    margin: 20px 0;
-    
+
+
+/* ===== Reusable code - Here ===== */
+.sidebar li {
+height: 50px;
+list-style: none;
+display: flex;
+justify-content: space-around;
+align-items: center;
+margin-top: 60px;
+
+
+
 }
 
-.sidebar .logo .logoImg{
-    max-width: 100%;
-    border-radius: 4px;
+
+
+.sidebar header .image,
+.sidebar .icon {
+min-width: 60px;
+border-radius: 6px;
 }
 
-.btnFechar{
-    background-color: #FF0000;
-    width: 1.5em;
-    height: 1.5em;
-    border: none;
-    border-radius: 50%; 
-    padding: 2px 0px;
-    position: absolute;
-    right: -5%;
-    font-size: 20px;
-    color: white;
-    box-shadow: 0px 0px 0px 4px var(--body-color);
+
+
+.sidebar .icon {
+min-width: 60px;
+border-radius: 6px;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: space-around;
+font-size: 24px;
 }
 
-.btnFechar:hover{
-    background-color: #ee0000;
+
+
+
+.sidebar .links_name {
+font-size: 17px;
+font-weight: 500;
+white-space: nowrap;
+opacity: 1;
 }
 
-.sidebar.active .logo .btnFechar{
-    right: -10%;
- }
 
-.sidebar.active .logo .btnFechar i{
-   transform: rotate(180deg);
+
+.sidebar.active .links_name {
+opacity: 0;
+transition: var(--tran-05);
 }
 
-.sidebar ul{
-    margin: 50px 15px; 
-    text-align: center;
-} 
-   
-.sidebar ul li{
-    height: 50px;
-    width: 100%;
-    list-style: none;
-    line-height: 50px;
-    margin-top: 2em ;
+
+
+/* =========================== */
+.sidebar .logo {
+display: flex;
+align-items: center;
+margin: 20px 0;
 }
 
-.sidebar ul .sair{
-    position: relative;
-    top: 380px;
-    background-color: #ee0000;
-    border-radius: 12px;
-    cursor: pointer;
+
+
+.sidebar .logo .logoImg {
+max-width: 100%;
+border-radius: 3px;
 }
 
-.sidebar ul .sair li div i, .sidebar ul .sair li div span {
-    color: white;
+
+
+.btnFechar {
+background-color: #FF0000;
+width: 1.5em;
+height: 1.5em;
+border: none;
+border-radius: 50%;
+padding: 2px 0px;
+position: absolute;
+right: -5%;
+font-size: 20px;
+color: white;
+box-shadow: 0px 0px 0px 4px var(--body-color);
+display: flex;
+align-items: center;
+justify-content: center;
 }
+
+
+
+
+.sidebar.active .logo .btnFechar {
+right: -10%;
+}
+
+
+
+.sidebar.active .logo .btnFechar i {
+transform: rotate(180deg);
+}
+
+
+
+.sidebar ul .sair {
+position: relative;
+top: 310px;
+background-color: #ee0000;
+border-radius: 12px;
+color: white;
+}
+
+
 
 .sidebar ul li a {
-    color: black;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    font-size: 20px;
-    transition-duration: 0.5s;
-    border-radius: 12px;
-    font-weight: 400;
-    margin: 20px 0; 
-    border-bottom: 0px solid black;
-    transition-duration: 0.7s;
-    
+transition-duration: 0.5s;
+color: #343a40 ;
+text-decoration: none !important;
 }
 
-.sidebar.active ul li a span{
-    display: none;
-}   
 
-.sidebar ul li a:hover{
-    margin-left: 10px;
+
+.sidebar ul li a:hover {
+margin-left: 10px;
 }
 
-.sidebar ul li a i{
-    height: 50px;
-    min-width: 50px;
-    border-radius: 12px;
-    line-height: 50px;
-    transition-duration: 0.7s;
-    
-    
+
+
+.sidebar ul .sair li a{
+cursor: pointer;
+transition-duration: 0.5s;
+color: white !important;
 }
 
-.sidebar.active ul li a{
-    width: fit-content; 
-    margin: auto;
-    display: flex;
-    
 
+
+.sidebar ul .sair li a:hover {
+margin-left: 20px;
 }
 
-.sidebar.active ul li a i:hover{
-  margin: auto;
-  margin-left: 20px;
+
+
+
+.sidebar.active .sair .links_name {
+display: none;
 }
-/* .sidebar.active .bx-log-out {
-    position: relative;
-    bottom: 20px;
-} */
+/* Prof */
+.sidebar ul .profSair{
+top: 420px !important;
+}
+
+
+
+/* Suporte */
+.sidebar ul .suporteSair{
+top: 200px !important;
+}

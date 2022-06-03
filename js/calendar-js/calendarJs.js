@@ -164,6 +164,9 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         dateClick: function (info) {
             var checkDay = new Date(formatDate(info.dateStr, 'yyyy-MM-dd'));
+            document.getElementById('bgProf').style.display = 'none';
+            document.getElementById('btnReprovar').style.display = 'none';
+            document.getElementById('btnAprovar').style.display = 'none';
             // checkDay.getDay() == 4
             if (checkDay.getDay() == 5) {
                 exibeErro("Indisponivel aos Domingos");
@@ -618,7 +621,7 @@ function setSolicitacoes(id) {
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
-            // console.log(resposta);
+            console.log(resposta);
             return resposta.map((solicitacao) => {
                 const solic = document.querySelector('.solicitacoes');
                 const bloco = document.createElement('div');
@@ -638,7 +641,7 @@ function setSolicitacoes(id) {
                         setOptionSelected(3);
                     } else {
                         setOptionSelected(4);
-                    } */
+                    }  */
                     setToEditEvent();
                     setDescriptionGetOfDatabaseOther(id);
 
@@ -714,12 +717,7 @@ function setSolicitacoes(id) {
         .then((resp) => resp.json())
         .then((resposta) => {
             console.log(resposta)
-            if(resposta.status == 2){
-                o++;
-            }
-            if(o == 0){
-                document.getElementById('ErrorH6').style.display = 'block';
-            }
+
             if (resposta.length == 0) {
                 document.getElementById('ErrorH6').style.display = 'block';
             }
@@ -736,6 +734,7 @@ function setSolicitacoes(id) {
                         var reprovar = document.getElementById('btnReprovar');
                         var aprovar = document.getElementById('btnAprovar');
 
+                        idSolic = bloco.id;
                         reprovar.addEventListener('click', reprovarSolicit);
                         aprovar.addEventListener('click', aprovarSolicit);
 
@@ -822,13 +821,16 @@ const reprovarSolicit = (e) => {
     let fetchData = {
         method: 'PUT'
     }
+    alert(urlFindObject)
+    alert(idd)
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
             window.location.replace('index.html');
         })
         .catch((error) => {
-            setModalError(modalAlert, 'Ooops ... ocorreu um erro', error);
+            console.log(error)
+            exibeErro('Ooops ... ocorreu um erro');
         });
 }
 

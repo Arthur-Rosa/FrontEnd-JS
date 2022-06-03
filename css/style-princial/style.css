@@ -71,7 +71,7 @@ ul {
   background-color: #fff;
   width: 200px;
   height: 250px;
-  border-radius: 10px;
+  border-radius: 5px;
   list-style: none;
   filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
   margin-bottom: 30px;
@@ -124,93 +124,94 @@ ul {
   filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
   padding-bottom: 10px;
 }
-.solicitacoes {
-  overflow-x: hidden;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
-  position: relative;
-  top: 3%;
-  left: 5%;
-  padding-top: 10px;
-  background-color: #fff;
-  width: 200px;
-  height: 306px;
-  border-radius: 5px;
-  filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
-  padding-bottom: 10px;
-}
+
 .matutino {
-  background-color: #FF4F4C;
+  background-color: #d99ca7;
 }
+
 .vespertino {
   background-color: #de0f00;
 }
+
 .noturno {
   background-color: #a60a27;
 }
+
 .todoperiodo {
   background-color: #83818c;
 }
+
 ::-webkit-scrollbar-track {
   background-color: #f4f4f4;
 }
+
 ::-webkit-scrollbar {
   width: 2px;
   background: #f4f4f4;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #e30613;
 }
+
 h2 {
   text-align: center;
   margin-left: 5%;
 }
+
 .solicitacoes h5 {
   border-bottom: #e30613 2px solid;
   padding: 5px;
   margin-left: 30px;
   margin-right: 30px;
 }
+
 .blocos {
-    cursor: pointer;
   display: flex;
+  cursor: pointer;
   margin-top: 10% !important;
   margin: 0 auto;
   background-color: rgb(224, 224, 224);
   width: 90%;
   border-radius: 5px;
   filter: drop-shadow(0px 3px 2px rgba(48, 48, 48, 0.25));
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   max-height: 300px;
   min-height: 50px;
   box-shadow: rgba(122, 121, 121, 0.35) 0px 5px 15px;
+  border-left: rgba(255, 193, 7) 20px solid;
+  transition: 0.3s;
 }
+
 .linha {
+  width: 10px;
   align-items: center;
   display: flex;
   text-align: center;
 }
+
 .linha ul {
   margin-left: 30px;
   list-style: none;
   font-size: small;
 }
+
 .linha ul li {
   max-width: 90%;
-  margin: 0 20px;
-}
-.blocos div {
-  padding-top: 10px;
-  background-color: rgba(255,193,7);
-  width: 20px;
-  max-height: 300px;
-  min-height: 50px;
-  border-bottom-left-radius: 5px;
-  border-top-left-radius: 5px;
-  transition-duration: 0.3s;
+  margin: 0 35px;
+  transition: 0.5s;
 }
 
-.data{
-    font-weight: bold;
+.linha ul {
+  margin: 0 auto;
+  word-wrap: break-word;
+  width: 150px;
 }
+.linha i {
+  margin-left: 100px;
+}
+
+.data {
+  font-weight: bold;
+} 
