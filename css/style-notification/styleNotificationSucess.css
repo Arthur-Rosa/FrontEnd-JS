@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  overflow: hidden;
+}
+
+.alertSuccess.showSuccess {
+  animation: show_slide 1s ease forwards;
+}
+/* ====alertSuccessa Green=== */
+.alertSuccess {
+  z-index: 9000;
+  background: #157c15;
+  padding: 20px 40px;
+  min-width: 420px;
+  margin-left: 0px;
+  width: 400px;
+  position: relative;
+  right: -1500px;
+  /* top: -750px; */
+  border-radius: 4px;
+  border-left: 8px solid #2baf2b;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.alertSuccess {
+  background-color: rgba(81, 202, 44, 0.568) !important;
+  border-left: rgba(103, 224, 66, 0.863) !important;
+}
+
+.alertSuccess.showAlertSuccess {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.alertSuccess.showSuccess {
+  animation: show_slide 1s ease forwards;
+}
+@keyframes show_slide {
+  0% {
+    transform: translateX(100%);
+  }
+
+  40% {
+    transform: translateX(-10%);
+  }
+
+  80% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+.alertSuccess.hideSuccess {
+  animation: hide_slide 1s ease forwards;
+}
+
+@keyframes hide_slide {
+  0% {
+    transform: translateX(-10px);
+  }
+
+  40% {
+    transform: translateX(0%);
+  }
+
+  80% {
+    transform: translateX(-10%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.alertSuccess .fa-exclamation-circle {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 30px;
+}
+
+.alertSuccess .msgSuccess {
+  padding: 0 40px;
+  font-size: 18px;
+  color: white;
+}
+
+.alertSuccess .close-btnSuccess {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #339933;
+  padding: 20px 18px;
+  cursor: pointer;
+}
+
+.alertSuccess .close-btnSuccess:hover {
+  background: #43b643;
+}
+
+.close-btn-success {
+  background: #70d363 !important;
+}
+
+.close-btn-success:hover {
+  background: #7be26e !important;
+}
+
+.alertSuccess .close-btn:hover {
+  background: #52be52;
+}
+
+.alertSuccess .close-btn .fas {
+  color: white;
+  font-size: 22px;
+  line-height: 40px;
+}

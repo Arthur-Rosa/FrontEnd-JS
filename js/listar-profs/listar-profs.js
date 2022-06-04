@@ -7,14 +7,14 @@ const bt_busca = document.getElementById("bt_buscar")
 
 document.getElementById("input-busca").focus()
 
-input_valor = sessionStorage.getItem("input-prof")
+input_valor = sessionStorage.getItem("input")
 if (input_valor != "") {
     input.value = input_valor
 }
 
 
 function buscar() {
-    sessionStorage.setItem("input-prof", input.value);
+    sessionStorage.setItem("input", input.value);
     window.location.reload()
 }
 

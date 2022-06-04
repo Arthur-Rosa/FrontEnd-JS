@@ -16,10 +16,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+    <link rel="stylesheet" href="../../css/style-notification/styleNotificationSucess.css">
   </head>
 
   <style>
     .alert {
+      top: -800px;
+      right: -1500px;
+    }
+    .alertSuccess {
       top: -800px;
       right: -1500px;
     }
@@ -62,6 +67,13 @@
       <span class="fas fa-exclamation-circle"></span>
       <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
       <div class="close-btn">
+        <span class="fas fa-times"></span>
+      </div>
+    </div>
+    <div class="alertSuccess hideSuccess" id="infoSuccess">
+      <span class="fas fa-exclamation-circle"></span>
+      <span class="msgSuccess" id="mensagemSuccess">Warning: This is a warning alert!</span>
+      <div class="close-btnSuccess">
         <span class="fas fa-times"></span>
       </div>
     </div>

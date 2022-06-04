@@ -162,10 +162,11 @@ transform: rotate(180deg);
 
 .sidebar ul .sair {
 position: relative;
-top: 310px;
+top: 250px;
 background-color: #ee0000;
 border-radius: 12px;
 color: white;
+cursor: pointer;
 }
 
 
@@ -204,12 +205,14 @@ display: none;
 }
 /* Prof */
 .sidebar ul .profSair{
-top: 420px !important;
+    cursor: pointer;
+top: 350px !important;
 }
 
 
 
 /* Suporte */
 .sidebar ul .suporteSair{
-top: 200px !important;
+top: 150px !important;
+cursor: pointer;
 }

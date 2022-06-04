@@ -9,7 +9,7 @@ const bt_prosseguir = document.getElementById('bt_prosseguir')
 
 const myHeaders = new Headers();
 const url = 'http://10.92.198.38:8080/api/usuarios/login'
-const urlPrimeiroAcesso ='http://10.92.198.38:8080/api/usuarios/acessar'
+const urlPrimeiroAcesso = 'http://10.92.198.38:8080/api/usuarios/acessar'
 
 myHeaders.append("Content-Type", "application/json");
 let msg = "OPsss"
@@ -29,25 +29,25 @@ bt_acessar?.addEventListener("click", function (e) {
     }
 
     fetch(url, fetchData)
-    .then((resp) => {
-        resp.json().then((resposta) => {
-            sessionStorage.setItem("token", resposta.token);
-            const token = parseJwt(resposta.token);
-            if(token.TipoUser === "professor"){
-                window.location.href = "../prof/index.html";
-            } else if (token.TipoUser === "adm") {
-                window.location.href = "../admin/index.html";
-            } else if (token.TipoUser === "suporte") {
-                window.location.href = "../suporte/index.html";
-            }
-        }).catch((error) => {
-            console.log(error)
-            if (resp.status == 401) {
-                msg = "Usuário ou senha incorretos"
-                exibeErro(msg)
-            }
+        .then((resp) => {
+            resp.json().then((resposta) => {
+                sessionStorage.setItem("token", resposta.token);
+                const token = parseJwt(resposta.token);
+                if (token.TipoUser === "professor") {
+                    window.location.href = "../prof/index.html";
+                } else if (token.TipoUser === "adm") {
+                    window.location.href = "../admin/index.html";
+                } else if (token.TipoUser === "suporte") {
+                    window.location.href = "../suporte/index.html";
+                }
+            }).catch((error) => {
+                console.log(error)
+                if (resp.status == 401) {
+                    msg = "Usuário ou senha incorretos"
+                    exibeErro(msg)
+                }
+            })
         })
-    })
 
 })
 
@@ -68,16 +68,19 @@ bt_prosseguir?.addEventListener("click", function (e) {
 
     fetch(urlPrimeiroAcesso, fetchData).then((resp) => {
         resp.json().then((resposta) => {
+            alert(resposta)
             sessionStorage.setItem("usuario", JSON.stringify(resposta))
             window.location.replace("../../templates/login/cadastro.html");
         }).catch((error) => {
-           
+
             if (resp.status == 409) {
-                msg = "Usuário já cadastrado"   
+                msg = "Usuário já cadastrado"
             } else if (resp.status == 422) {
-                msg = "Matrícula inválida"  
-            } else{
-                msg = "Contante o suporte"
+                msg = "Matrícula inválida"
+            } else if (resp.status == 400) {
+                msg = "Data inválida"
+            } else {
+                msg = "Contate o suporte"
             }
             exibeErro(msg)
         })
@@ -88,12 +91,12 @@ function exibeErro(msg) {
     document.getElementById("mensagem").textContent = msg;
 
     document.getElementById("info").className = 'alert show showAlert';
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById("info").className = 'alert hide showAlert';
     }, 3000);
 
     var btn = document.querySelector(".close-btn");
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', function () {
         document.getElementById("info").className = 'alert hide showAlert';
     });
 }

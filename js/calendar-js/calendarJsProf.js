@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
     nav.className = 'modal-header';
     var calendarEl = document.getElementById('calendar');
     setMyModalCreate(myModal);
+    
 
     setTimeout(function () { 
         var a = document.querySelectorAll('.solict'); 
@@ -53,9 +54,28 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(a[i]); 
             a[i].className = a[i].className + ' lKjaEsdw'; 
             a[i].innerHTML = "<i style='font-size: 12px !important; margin-top: 5px; margin-right: 5px;' class='bx bx-user'></i>" + a[i].textContent; 
-        } 
-    }, 100);
-
+        }
+        document.querySelector('.fc-next-button').addEventListener('click', function () {
+            setTimeout(function () { 
+                var a = document.querySelectorAll('.solict'); 
+                for (let i = 0; i < a.length; i++) { 
+                    console.log(a[i]); 
+                    a[i].className = a[i].className + ' lKjaEsdw'; 
+                    a[i].innerHTML = "<i style='font-size: 12px !important; margin-top: 5px; margin-right: 5px;' class='bx bx-user'></i>" + a[i].textContent; 
+                }
+            }, 100);
+        });
+        document.querySelector('.fc-prev-button').addEventListener('click', function () {
+            setTimeout(function () { 
+                var a = document.querySelectorAll('.solict'); 
+                for (let i = 0; i < a.length; i++) { 
+                    console.log(a[i]); 
+                    a[i].className = a[i].className + ' lKjaEsdw'; 
+                    a[i].innerHTML = "<i style='font-size: 12px !important; margin-top: 5px; margin-right: 5px;' class='bx bx-user'></i>" + a[i].textContent; 
+                }
+            }, 100);
+        });
+    }, 200);
     var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'pt-br',
         navLinks: false,

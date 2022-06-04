@@ -10,12 +10,10 @@ const input_repita = document.getElementById('repita_senha')
 
 var url = 'http://10.92.198.38:8080/api/usuarios'
 
-bt_cadastrar.addEventListener("click", function exec (e) {
+bt_cadastrar.addEventListener("click", function exec(e) {
     e.preventDefault()
     var msg = "Insira uma senha";
     var erro = '';
-
-    
 
     if (input_senha.value == '') {
         msg = "Por favor, digite a Senha !";
@@ -32,7 +30,7 @@ bt_cadastrar.addEventListener("click", function exec (e) {
         exibeErro(msg);
         msg = '';
     } else {
-
+        alert(user.id)
         let usuario1 = {
             id: user.id,
             nome: user.nome,
@@ -51,6 +49,7 @@ bt_cadastrar.addEventListener("click", function exec (e) {
                 'Content-Type': 'application/json', mode: 'no-cors'
             },
         }
+
         // console.log(JSON.stringify(usuario1));
         fetch(url, fetchData)
             .then((resp) => {
@@ -58,12 +57,34 @@ bt_cadastrar.addEventListener("click", function exec (e) {
                     // alert("Conta cadastra com sucesso realize o login")
                     document.querySelector('#bt_cadastrar').disabled = true;
                     document.querySelector('#bt_cadastrar').className = 'colorBotton';
-                    exibeErro("Salvo com sucesso!")
+                    exibeSuccess("Salvo com sucesso!")
                     setTimeout(function () {
-                        window.location.replace("../../templates/login/login.html");
+                        // nome e email
+                        let obj = {
+                            nome: user.nome,
+                            email: user.email
+                        }
+                        let fetchMail = {
+                            method: "POST",
+                            body: JSON.stringify(obj),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                        }
+                        var q = false;
+                        var url = 'https://emailapi-production.up.railway.app/send';
+                        fetch(url, fetchMail).then((resp) => {
+                            console.log(obj)
+                            console.log(resp)
+                        }).catch((err) => {
+                            console.log(err)
+                            exibeErro(err)
+                        })
+
+                        // window.location.replace("../../templates/login/login.html");
                     }, 5000)
 
-                    
+
                 }).catch((error) => {
                     console.log(error)
                     if (resp.status == 401) {
@@ -87,5 +108,20 @@ function exibeErro(msg) {
     btn.className = 'close-btn';
     btn.addEventListener('click', function () {
         document.getElementById("info").className = 'alert hide showAlert';
+    });
+}
+
+function exibeSuccess(msg) {
+    document.getElementById("mensagemSuccess").textContent = msg;
+
+    document.getElementById("infoSuccess").className = 'alertSuccess showSuccess showAlertSuccess';
+    setTimeout(function () {
+        document.getElementById("infoSuccess").className = 'alertSuccess hideSuccess showAlertSuccess';
+    }, 3000);
+
+    var btn = document.querySelector(".close-btnSuccess");
+    btn.className = 'close-btnSuccess';
+    btn.addEventListener('click', function () {
+        document.getElementById("infoSuccess").className = 'alertSuccess hideSuccess showAlertSuccess';
     });
 }

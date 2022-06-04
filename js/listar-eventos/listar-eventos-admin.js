@@ -3,41 +3,21 @@ if (token == null) {
     window.location.replace('../login/login.html')
 }
 const input = document.getElementById("input-busca")
-
 const bt_busca = document.getElementById("bt_buscar")
-
-
 
 document.getElementById("input-busca").focus()
 
-
-
 input_valor = sessionStorage.getItem("input")
-
 if (input_valor != "") {
-
     input.value = input_valor
-
 }
-
-
-
 
 function buscar() {
-
     sessionStorage.setItem("input", input.value);
-
     window.location.reload()
-
 }
 
-
-
 bt_busca.addEventListener('click', buscar)
-
-
-
-
 
 input.addEventListener('keyup', function (e) {
 
@@ -94,17 +74,11 @@ function listenerBack() {
     window.location.href = atributosUrl.toString().replace(/,/g, "?")
 }
 if (input.value != "") {
-
     if (input.value.match(/^\d{2}([./-])\d{2}\1\d{4}$/)) {
-
         url = 'http://10.92.198.38:8080/api/tarefas/buscar/' + FormataStringData(input.value) + '/' + atributosUrl[1]
-
     } else {
-
         url = 'http://10.92.198.38:8080/api/tarefas/buscar/' + input.value + '/' + atributosUrl[1]
-
     }
-
 }
 var idd = '';
 
