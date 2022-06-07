@@ -51,7 +51,6 @@ bt_acessar?.addEventListener("click", function (e) {
 
 })
 
-//Primeiro acesso
 bt_prosseguir?.addEventListener("click", function (e) {
     e.preventDefault();
 

@@ -81,7 +81,7 @@ bt_cadastrar.addEventListener("click", function exec(e) {
                             exibeErro(err)
                         })
 
-                        // window.location.replace("../../templates/login/login.html");
+                        window.location.replace("../../templates/login/login.html");
                     }, 5000)
 
 

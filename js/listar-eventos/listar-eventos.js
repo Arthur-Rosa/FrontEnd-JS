@@ -3,54 +3,23 @@ if (token == null) {
     window.location.replace('../login/login.html')
 }
 const input = document.getElementById("input-busca")
-
 const bt_busca = document.getElementById("bt_buscar")
-
-
-
 document.getElementById("input-busca").focus()
-
-
-
 input_valor = sessionStorage.getItem("input")
-
 if (input_valor != "") {
-
     input.value = input_valor
-
 }
-
-
-
-
 function buscar() {
-
     sessionStorage.setItem("input", input.value);
-
     window.location.reload()
-
 }
-
-
-
 bt_busca.addEventListener('click', buscar)
-
-
-
-
-
 input.addEventListener('keyup', function (e) {
-
     var key = e.which || e.keyCode;
-
     if (key == 13) { // codigo da tecla enter
-
         // colocas aqui a tua função a rodar
-
         buscar()
-
     }
-
 });
 //Método que faz o decode do token
 function parseJwt(token) {
@@ -91,20 +60,14 @@ function listenerNext() {
 
 function listenerBack() {
     atributosUrl[1] = parseInt(atributosUrl[1]) - 1;
-    window.location.href = atributosUrl.toString().replace(/,/g, "?")
+    window.location.href = atributosUrl.toString().replace(/,/g, "?");
 }
 if (input.value != "") {
-
     if (input.value.match(/^\d{2}([./-])\d{2}\1\d{4}$/)) {
-
         url = 'http://10.92.198.38:8080/api/tarefas/buscar/' + FormataStringData(input.value) + '/' + atributosUrl[1]
-
     } else {
-
         url = 'http://10.92.198.38:8080/api/tarefas/buscar/' + input.value + '/' + atributosUrl[1]
-
     }
-
 }
 var idd = '';
 
@@ -147,7 +110,6 @@ function getOfDatabase() {
                     bt_next.removeEventListener('click', listenerNext)
                     bt_back.addEventListener('click', listenerBack)
                     bt_back.style.display = 'block';
-
                 }
                 if (atributosUrl[1] == 1) {
                     bt_back.removeEventListener('click', listenerBack)
@@ -665,36 +627,36 @@ function autocomplete(inp, arr) {
     });
 }
 let array = []
-let array1 = [] 
+let array1 = []
 
 fetch('http://10.92.198.38:8080/api/tarefas/autocomplete')
     .then((resp) => {
         resp.json().then((resposta) => {
             console.log(resposta)
             var arr = resposta.map(function (obj) {
-                return Object.keys(obj).map(function (key) {    
-                   if(!array.includes(obj[key])){
+                return Object.keys(obj).map(function (key) {
+                    if (!array.includes(obj[key])) {
                         array.push(obj[key])
                     }
                     sessionStorage.setItem("input", "");
                     return obj[key];
-                 
+
                 });
             });
-           
-            for(let i = 1; i <= array.length; i++){
-                if(array[i].match(/^\d{4}([./-])\d{2}\1\d{2}$/))
+
+            for (let i = 1; i <= array.length; i++) {
+                if (array[i].match(/^\d{4}([./-])\d{2}\1\d{2}$/))
                     array[i] = formatDateOther(array[i])
-             
+
             }
-            
+
         })
-      
+
     })
 
-   
 
-    console.log(array)
+
+console.log(array)
 /*An array containing all the country names in the world:*/
 
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
@@ -715,10 +677,10 @@ function formatDateOther(date) {
 }
 
 function FormataStringData(data) {
-    var dia  = data.split("/")[0];
-    var mes  = data.split("/")[1];
-    var ano  = data.split("/")[2];
-  
-    return ano + '-' + ("0"+mes).slice(-2) + '-' + ("0"+dia).slice(-2);
+    var dia = data.split("/")[0];
+    var mes = data.split("/")[1];
+    var ano = data.split("/")[2];
+
+    return ano + '-' + ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2);
     // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
-  }
+}

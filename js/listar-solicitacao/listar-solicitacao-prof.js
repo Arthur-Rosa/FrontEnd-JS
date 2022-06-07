@@ -2,6 +2,27 @@ var token = sessionStorage.getItem("token")
 if (token == null) {
     window.location.replace('../login/login.html')
 }
+const input = document.getElementById("input-busca")
+
+const bt_busca = document.getElementById("bt_buscar")
+document.getElementById("input-busca").focus()
+input_valor = sessionStorage.getItem("input")
+
+if (input_valor != "") {
+    input.value = input_valor
+}
+function buscar() {
+    sessionStorage.setItem("input", input.value);
+    window.location.reload()
+}
+bt_busca.addEventListener('click', buscar)
+input.addEventListener('keyup', function (e) {
+    var key = e.which || e.keyCode;
+    if (key == 13) { // codigo da tecla enter
+        // colocas aqui a tua função a rodar
+        buscar()
+    }
+});
 //Método que faz o decode do token
 function parseJwt(token) {
     var base64Url = token.split('.')[1];
@@ -20,7 +41,8 @@ if (token == null) {
 const paginaAtual = window.location.href
 const atributosUrl = paginaAtual.split('?')
 // let url = 'http://localhost:8080/api/tarefas';
-var url = 'http://10.92.198.38:8080/api/solic/buscar/' + payload.id;
+var url = `http://10.92.198.38:8080/api/solic/user/` + payload.id;
+
 var idd = '';
 if (atributosUrl[1] !== undefined) {
 
@@ -43,6 +65,15 @@ function listenerBack() {
     atributosUrl[1] = parseInt(atributosUrl[1]) - 1;
     window.location.href = atributosUrl.toString().replace(/,/g, "?")
 }
+if (input.value != "") {
+    if (input.value.match(/^\d{2}([./-])\d{2}\1\d{4}$/)) {
+        url = `http://10.92.198.38:8080/api/solic/buscar/palavra/${FormataStringData(input.value)}/user/${payload.id}/page/${atributosUrl[1]}`;
+    } else {
+        url = `http://10.92.198.38:8080/api/solic/buscar/palavra/${input.value}/user/${payload.id}/page/${atributosUrl[1]}`
+    }
+}
+
+
 var idd = '';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -136,9 +167,9 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, status, id) {
 
     if (nomeEvent.length > 40) {
         nomeEvent = nomeEvent.slice(0, -30) + "...";
-    } else if(nomeEvent.length > 50){
+    } else if (nomeEvent.length > 50) {
         nomeEvent = nomeEvent.slice(0, -40) + "...";
-    } else if(nomeEvent.length > 80){
+    } else if (nomeEvent.length > 80) {
         nomeEvent = nomeEvent.slice(0, -60) + "...";
     }
     // let tdBtn = document.createElement('td');
@@ -286,6 +317,7 @@ const editarEventoModal = (e) => {
                         if (resp.status == 200) {
                             window.location.replace('listaSolicitacoes.html');
                         }
+                        // 
                         if (resp.status == 226) {
                             closeModal();
                             exibeErro("Todo o Periodo está ocupado");
@@ -492,3 +524,159 @@ function getDataFormatSomOne() {
     const date = new Date().toLocaleDateString();
     return dataAtual = date.slice(6, 10) + "-" + date.slice(3, 5) + "-" + date.slice(0, 2) + 1;
 }
+
+
+function autocomplete(inp, arr) {
+    /*the autocomplete function takes two arguments,
+    the text field element and an array of possible autocompleted values:*/
+    var currentFocus;
+    /*execute a function when someone writes in the text field:*/
+    inp.addEventListener("input", function (e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if (!val) { return false; }
+        currentFocus = -1;
+        /*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(a);
+        /*for each item in the array...*/
+        for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                /*create a DIV element for each matching element:*/
+                b = document.createElement("DIV");
+                /*make the matching letters bold:*/
+                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].substr(val.length);
+                /*insert a input field that will hold the current array item's value:*/
+                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                b.addEventListener("click", function (e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                });
+                a.appendChild(b);
+            }
+        }
+    });
+    /*execute a function presses a key on the keyboard:*/
+    inp.addEventListener("keydown", function (e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+        }
+    }
+    function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+                x[i].parentNode.removeChild(x[i]);
+            }
+        }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+}
+let array = []
+let array1 = [] 
+
+fetch('http://10.92.198.38:8080/api/solic/autocomplete/' + payload.id)
+    .then((resp) => {
+        resp.json().then((resposta) => {
+            console.log(resposta)
+            var arr = resposta.map(function (obj) {
+                return Object.keys(obj).map(function (key) {    
+                   if(!array.includes(obj[key])){
+                        array.push(obj[key])
+                    }
+                    sessionStorage.setItem("input", "");
+                    return obj[key];
+                    
+                });
+            });
+           
+            for(let i = 1; i <= array.length; i++){
+                if(array[i].match(/^\d{4}([./-])\d{2}\1\d{2}$/))
+                    array[i] = formatDateOther(array[i])
+             
+            }
+            
+        })
+      
+    })
+
+   
+
+    console.log(array)
+/*An array containing all the country names in the world:*/
+
+/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+autocomplete(document.getElementById("input-busca"), array);
+
+function formatDateOther(date) {
+
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + (d.getDate() + 1),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+    return [day, month, year].join('/');
+}
+
+function FormataStringData(data) {
+    var dia  = data.split("/")[0];
+    var mes  = data.split("/")[1];
+    var ano  = data.split("/")[2];
+  
+    return ano + '-' + ("0"+mes).slice(-2) + '-' + ("0"+dia).slice(-2);
+    // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
+  }

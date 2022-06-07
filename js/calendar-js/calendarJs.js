@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 setOptionSelected(4);
             }
             setToEditEvent();
-            
+
 
             var b = document.getElementById('btnEliminar');
             b.style.display = 'block';
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('periodo').disabled = true;
                 getOnNone(document.getElementById('btnEliminar'));
                 clearBtns();
-                
+
                 idSolic = idd;
 
                 setDescriptionGetOfDatabaseOther(idSolic);
@@ -366,7 +366,7 @@ const criaEvento = (e) => {
             .then((resp) => {
                 // console.log(resp.status)
                 resp.json().then((resposta) => {
-                    console.log(resposta)
+                    // console.log(resposta)
                     window.location.replace('index.html');
                 })
                     .catch((error) => {
@@ -610,7 +610,7 @@ function exibeErro(msg) {
 
 var o = 0;
 function setSolicitacoes(id) {
-    var urlFindObject = 'http://10.92.198.38:8080/api/solic/buscar' + "/" + id;
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic/status/2';
 
     const bsq = new Headers();
     bsq.append("Content-Type", "application/json");
@@ -623,6 +623,7 @@ function setSolicitacoes(id) {
         .then((resposta) => {
             console.log(resposta);
             return resposta.map((solicitacao) => {
+                
                 const solic = document.querySelector('.solicitacoes');
                 const bloco = document.createElement('div');
                 bloco.className = 'blocos';
@@ -633,15 +634,6 @@ function setSolicitacoes(id) {
                     id = idd;
                     var data = document.getElementById('start');
 
-                    /* if (a == 1) {
-                        setOptionSelected(1);
-                    } else if (a == 2) {
-                        setOptionSelected(2);
-                    } else if (a == 3) {
-                        setOptionSelected(3);
-                    } else {
-                        setOptionSelected(4);
-                    }  */
                     setToEditEvent();
                     setDescriptionGetOfDatabaseOther(id);
 
@@ -691,21 +683,16 @@ function setSolicitacoes(id) {
             })
         })
         .catch((error) => {
-            const solic = document.querySelector('.solicitacoes');
-            const errorDiv = document.createElement('h6');
-            errorDiv.style.padding = '10px';
-            errorDiv.style.marginLeft = '10px';
-            errorDiv.textContent = 'Sem Solicitações...';
-            solic.appendChild(errorDiv);
-            exibeErro('Ooops ... ocorreu um erro');
+
         });
 }
 
 let idd = '';
+var o = 0;
 
 function setSolicitacoes(id) {
     // buscar where andamento = 2
-    var urlFindObject = 'http://10.92.198.38:8080/api/solic';
+    var urlFindObject = 'http://10.92.198.38:8080/api/solic/status/2';
 
     const bsq = new Headers();
     bsq.append("Content-Type", "application/json");
@@ -716,13 +703,11 @@ function setSolicitacoes(id) {
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
-            console.log(resposta)
-
-            if (resposta.length == 0) {
+            if(resposta.length == 0){
                 document.getElementById('ErrorH6').style.display = 'block';
             }
             return resposta.map((solicitacao) => {
-                if (solicitacao.status == '2') {
+                if (solicitacao.status == 2) {
                     const solic = document.querySelector('.solicitacoes');
                     const bloco = document.createElement('div');
                     bloco.className = 'blocos';
@@ -803,17 +788,12 @@ function setSolicitacoes(id) {
             })
         })
         .catch((error) => {
-            const solic = document.querySelector('.solicitacoes');
-            const errorDiv = document.createElement('h6');
-            errorDiv.style.padding = '5px';
-            errorDiv.textContent = 'Sem Solicitações';
-            errorDiv.style.textAlign = 'center';
-            solic.appendChild(errorDiv);
+            document.getElementById('ErrorH6').style.display = 'block';
         });
 }
 
 const reprovarSolicit = (e) => {
-    if(!(idSolic == null)){
+    if (!(idSolic == null)) {
         idd = idSolic
     }
     e.preventDefault();
@@ -821,8 +801,8 @@ const reprovarSolicit = (e) => {
     let fetchData = {
         method: 'PUT'
     }
-    alert(urlFindObject)
-    alert(idd)
+    // alert(urlFindObject)
+    // alert(idd)
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
@@ -835,7 +815,7 @@ const reprovarSolicit = (e) => {
 }
 
 const aprovarSolicit = (e) => {
-    if(!(idSolic == null)){
+    if (!(idSolic == null)) {
         idd = idSolic
     }
     e.preventDefault();

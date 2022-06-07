@@ -239,7 +239,7 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, userProf, id) {
         btnDel.disabled = true;
         btnDel.className = "deletee";
 
-        arrumaBtnExibe(btnEdit);
+        arrumaBtnExibe(btnEdit);  
     }
 
     tr.appendChild(tdNomeProf);
