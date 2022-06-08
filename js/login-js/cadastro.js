@@ -30,7 +30,7 @@ bt_cadastrar.addEventListener("click", function exec(e) {
         exibeErro(msg);
         msg = '';
     } else {
-        alert(user.id)
+        // alert(user.id)
         let usuario1 = {
             id: user.id,
             nome: user.nome,
@@ -64,27 +64,10 @@ bt_cadastrar.addEventListener("click", function exec(e) {
                             nome: user.nome,
                             email: user.email
                         }
-                        let fetchMail = {
-                            method: "POST",
-                            body: JSON.stringify(obj),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                        }
-                        var q = false;
-                        var url = 'https://emailapi-production.up.railway.app/send';
-                        fetch(url, fetchMail).then((resp) => {
-                            console.log(obj)
-                            console.log(resp)
-                        }).catch((err) => {
-                            console.log(err)
-                            exibeErro(err)
-                        })
-
-                        window.location.replace("../../templates/login/login.html");
-                    }, 5000)
-
-
+                        sendMail(obj);
+                        
+                    }, 1000)
+                    
                 }).catch((error) => {
                     console.log(error)
                     if (resp.status == 401) {
@@ -95,6 +78,29 @@ bt_cadastrar.addEventListener("click", function exec(e) {
     }
 
 })
+
+async function sendMail(obj) {
+    let fetchMail = {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }
+    var q = false;
+    var url = 'https://emailapi-production.up.railway.app/send';
+    await fetch(url, fetchMail).then((resp) => {
+        console.log(obj)
+        console.log(resp)
+        window.location.replace("../../templates/login/login.html");
+
+    }).catch((err) => {
+        console.log(err)
+        exibeErro(err)
+        window.location.replace("../../templates/login/login.html");
+
+    })
+}
 
 function exibeErro(msg) {
     document.getElementById("mensagem").textContent = msg;

@@ -116,6 +116,9 @@
             <i class='bx bx-search' style="color:#ffffff"></i>
             </a>
             </div>
+
+            <button id="novoProf" class="btn btn-success">Novo Professor</button>
+
             
             <div class="pagination">
             <a href="#"><div class="left" id="bt_back" style="display: none;"><i class='bx bx-left-arrow-alt'></i></div></a>
@@ -163,8 +166,8 @@
 
     </div>   
   </div>
-  <!-- Alert -->
-  <div class="alert hide" id="info">
+   <!-- Alert -->
+   <div class="alert hide" id="info">
     <span class="fas fa-exclamation-circle"></span>
     <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
     <div class="close-btn">
@@ -183,7 +186,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-warning" id="bgEvent">
-        <h5 class="modal-title" id="titulo">Editar Eventos</h5>
+        <h5 class="modal-title" id="titulo">Editar Professor/a</h5>
         <button
           type="button"
           class="btn-close"
@@ -200,7 +203,7 @@
                 <input type="hidden" id="id" name="id" />
                 <input
                   id="email"
-                  type="text"
+                  type="email"
                   class="form-control"
                   name="email"
                   required
@@ -208,7 +211,7 @@
                 <label for="email">E-mail</label>
               </div>
             </div>
-            <div class="col-md-12" onclick="debug()">
+            <div class="col-md-12" >
               <div class="form-floating mb-3">
                 <input
                   id="nome"
@@ -220,7 +223,7 @@
                 <label for="nome">Nome</label>
               </div>
             </div>
-            <div class="col-md-12" onclick="debug()">
+            <div class="col-md-12" >
               <div class="form-floating mb-3">
                 <input
                   id="matricula"
@@ -232,7 +235,7 @@
                 <label for="matricula">Matricula</label>
               </div>
             </div>
-            <div class="col-md-12" onclick="debug()">
+            <div class="col-md-12" id="senha1">
               <div class="form-floating mb-3">
                 <input
                   id="senha"
@@ -244,7 +247,7 @@
                 <label for="senha">Senha</label>
               </div>
             </div>
-            <div class="col-md-12" onclick="debug()">
+            <div class="col-md-12" id="senha2">
               <div class="form-floating mb-3">
                 <input
                   id="senha-cnf"
@@ -256,7 +259,18 @@
                 <label for="senha-cnf">Confime a senha</label>
               </div>
             </div>
-
+            <div class="col-md-12" id="data">
+              <div class="form-floating mb-3">
+                <input
+                  id="data-input"
+                  type="date"
+                  class="form-control"
+                  name="data-input"
+                  required
+                />
+                <label for="senha-cnf">Data de Nascimento</label>
+              </div>
+            </div>
         </div>
         <div class="modal-footer">
           <button
@@ -276,6 +290,13 @@
             id="btnSalvarEditar"
           >
             Salvar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="btnSalvarProf"
+          >
+            Criar
           </button>
         </div>
       </form>

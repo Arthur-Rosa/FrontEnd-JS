@@ -67,7 +67,7 @@ bt_prosseguir?.addEventListener("click", function (e) {
 
     fetch(urlPrimeiroAcesso, fetchData).then((resp) => {
         resp.json().then((resposta) => {
-            alert(resposta)
+            // alert(resposta)
             sessionStorage.setItem("usuario", JSON.stringify(resposta))
             window.location.replace("../../templates/login/cadastro.html");
         }).catch((error) => {

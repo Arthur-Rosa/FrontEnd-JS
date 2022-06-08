@@ -20,7 +20,7 @@ function buscar() {
 
 bt_busca.addEventListener('click', buscar);
 
-let url = 'http://10.92.198.38:8080/api/usuarios';
+let url = 'http://10.92.198.38:8080/api/usuarios/pageAdms';
 
 input.addEventListener('keyup', function (e) {
     var key = e.which || e.keyCode;
@@ -50,7 +50,7 @@ const atributosUrl = paginaAtual.split('?')
 var idd = '';
 if (atributosUrl[1] !== undefined) {
     document.getElementById('numPage').textContent = atributosUrl[1];
-    url = url + "/page/" + atributosUrl[1]
+    url = url + "/" + atributosUrl[1]
 } else {
     window.location.href = paginaAtual + "?1"
 }
@@ -67,9 +67,9 @@ function listenerBack() {
     window.location.href = atributosUrl.toString().replace(/,/g, "?")
 }
 if (input.value != "") {
-    url = 'http://10.92.198.38:8080/api/usuarios/buscar/' + input.value + '/' + 1
+    url = 'http://10.92.198.38:8080/api/usuarios/buscarAdm/' + input.value + '/' + 1
 } else {
-    let url = 'http://10.92.198.38:8080/api/usuarios';
+    let url = 'http://10.92.198.38:8080/api/usuarios/pageAdms/' + atributosUrl[1];
 }
 var idd = '';
 var globalTipo = '';
@@ -700,10 +700,11 @@ function autocomplete(inp, arr) {
         closeAllLists(e.target);
     });
 }
-let array = []
+let array = []  
 
-fetch('http://10.92.198.38:8080/api/usuarios/autocomplete')
+fetch('http://10.92.198.38:8080/api/usuarios/autocompleteAdm')
     .then((resp) => {
+        console.log(array)
         resp.json().then((resposta) => {
             var arr = resposta.map(function (obj) {
                 return Object.keys(obj).map(function (key) {

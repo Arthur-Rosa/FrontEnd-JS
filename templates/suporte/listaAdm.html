@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+
+<head>
+<meta charset="utf-8" />
+
+
+<title>Calendar</title>
+
+<link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+<!-- CSS Nav -->
+<link rel="stylesheet" href="../../css/style-sidebar/sideBarTeste.css">
+
+
+<!-- CSS Lista-->
+<link rel="stylesheet" href="../../css/style-lista/styleLista.css">
+<link rel="stylesheet" href="../../css/style-lista-prof/styleListaProf.css">
+<link rel="stylesheet" href="../../css/style-notification/styleNotification.css">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+/>
+</head>
+
+
+
+<style>
+.alert {
+top: 100px;
+right: -1310px;
+}
+</style>
+<body>
+<div class="t">
+<div class="sidebar">
+<header class="logo">
+<img
+class="logoImg"
+src="../../img/logo-senai22.png"
+alt="Logo Senai"
+/>
+
+
+
+<button class="btnFechar" id="btMenu">
+<i class="bx bxs-chevron-left" style="color: #ffffff"></i>
+</button>
+</header>
+
+
+
+<ul class="nav_list">
+<li>
+<a href="index.html">
+<i class="bx bxs-calendar icon"></i>
+<span class="links_name">Calendário</span>
+</a>
+</li>
+
+
+
+<li>
+<a href="listaAdm.html">
+<i class='bx bx-user-circle icon'></i>
+<span class="links_name">Administradores</span>
+</a>
+</li>
+<li>
+<a href="listaProf.html">
+<i class="bx bx-user icon"></i>
+<span class="links_name">Professores</span>
+</a>
+</li>
+<li>
+<a href="listaEventos.html">
+<i class="bx bx-calendar-event icon"></i>
+<span class="links_name">Eventos</span>
+</a>
+</li>
+<li>
+<a href="listaSolicitacoes.html">
+<i class="bx bx-bell icon"></i>
+<span class="links_name">Solicitações</span>
+</a>
+</li>
+<div id="bt_sair" class="sair suporteSair" >
+<li>
+<a>
+<i class="bx bx-log-out"></i>
+
+
+
+<span class="links_name">Sair</span>
+</a>
+</li>
+</div>
+</ul>
+</div>
+
+
+
+<div class="bg-lista">
+
+
+
+<div class="principal">
+<div class="boxModelLista">
+
+<div class="head">
+    <div class="titulo">
+        <h2>Administradores</h2>
+        </div>
+        
+        <div class="boxPesquisa">
+          <div class="autocomplete" style="width:100%;">
+
+            <input  id="input-busca" type="text" class="pesquisa" placeholder="Buscar..."></div>
+
+        <a   id="bt_buscar" href="#" class="btnPesquisar">
+        <i class='bx bx-search' style="color:#ffffff"></i>
+        </a>
+        </div>
+
+        <button id="novoProf" class="btn btn-success">Novo Administrador</button>
+        
+        <div class="pagination">
+            <a href="#"><div class="left" id="bt_back" style="display: none;"><i class='bx bx-left-arrow-alt'></i></div></a>
+            
+            <div class="contaPagina selecionada">
+            <span class="numeroPagina" id="numPage">1</span>
+            </div>
+            
+            <a href="#"><div class="right" id="bt_next" style="display: none;"><i class='bx bx-right-arrow-alt'></i></div></a>
+        </div>
+</div>
+
+
+
+<div class="listaTarefa">
+
+
+
+<table>
+
+
+
+<thead>
+<tr>
+<th>Nome</th>
+<th>Número da Matricula</th>
+<th>Email</th>
+<th>Situação</th>
+<th>Editar</th>
+<th>Excluir</th>
+</tr>
+</thead>
+
+
+
+<tbody>
+
+<!-- <tr>
+<td>Arthur Rosa Alves Andrade</td>
+<td>464165121351</td>
+<td>chile@gmail.com</td>
+<td><button class="edit"><i class='bx bx-edit'></i></button></td>
+<td><button class="delete"><i class='bx bx-trash' ></i></button></td>
+</tr> -->
+
+<!--
+<tr>
+<td>Arthur Rosa Alves Andrade</td>
+<td>464165121351</td>
+<td>chile@gmail.com</td>
+<td>aa</td>
+<td><button class="edit"><i class='bx bx-edit'></i></button></td>
+<td><button class="delete"><i class='bx bx-trash' ></i></button></td>
+</tr> -->
+
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+</div>
+
+
+
+
+
+</div>
+</div>
+   <!-- Alert -->
+   <div class="alert hide" id="info">
+    <span class="fas fa-exclamation-circle"></span>
+    <span class="msg" id="mensagem">Warning: This is a warning alert!</span>
+    <div class="close-btn">
+      <span class="fas fa-times"></span>
+    </div>
+  </div>
+</div>
+<!-- MODAL -->
+<div
+  class="modal fade"
+  id="myModal"
+  tabindex="-1"
+  aria-labelledby="Label"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning" id="bgEvent">
+        <h5 class="modal-title" id="titulo">Editar Professor/a</h5>
+        <button
+          type="button"
+          class="btn-close"
+          id="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form id="formulario" autocomplete="off" method="post">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-floating mb-3">
+                <input type="hidden" id="id" name="id" />
+                <input
+                  id="email"
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  required
+                />
+                <label for="email">E-mail</label>
+              </div>
+            </div>
+            <div class="col-md-12" >
+              <div class="form-floating mb-3">
+                <input
+                  id="nome"
+                  type="text"
+                  class="form-control"
+                  name="nome"
+                  required
+                />
+                <label for="nome">Nome</label>
+              </div>
+            </div>
+            <div class="col-md-12" >
+              <div class="form-floating mb-3">
+                <input
+                  id="matricula"
+                  type="text"
+                  class="form-control"
+                  name="matricula"
+                  required
+                />
+                <label for="matricula">Matricula</label>
+              </div>
+            </div>
+            <div class="col-md-12" id="senha1">
+              <div class="form-floating mb-3">
+                <input
+                  id="senha"
+                  type="password"
+                  class="form-control"
+                  name="senha"
+                  required
+                />
+                <label for="senha">Senha</label>
+              </div>
+            </div>
+            <div class="col-md-12" id="senha2">
+              <div class="form-floating mb-3">
+                <input
+                  id="senha-cnf"
+                  type="password"
+                  class="form-control"
+                  name="senha-cnf"
+                  required
+                />
+                <label for="senha-cnf">Confime a senha</label>
+              </div>
+            </div>
+            <div class="col-md-12" id="data">
+              <div class="form-floating mb-3">
+                <input
+                  id="data-input"
+                  type="date"
+                  class="form-control"
+                  name="data-input"
+                  required
+                />
+                <label for="senha-cnf">Data de Nascimento</label>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="btn-cancel"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-danger" id="btnEliminar">
+            Excluir
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="btnSalvarEditar"
+          >
+            Salvar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="btnSalvarProf"
+          >
+            Criar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="../../bootstrap/js/bootstrap.bundle.js"></script>
+<script src="../../js/sidebar/sideBarLogica.js"></script>
+<script src="../../js/listar-adm/listar-adm.js"></script>
+<script>
+const body = document.querySelector('body'),
+sidebar = body.querySelector('nav'),
+toggle = body.querySelector(".toggle"),
+modeSwitch = body.querySelector(".toggle-switch"),
+modeText = body.querySelector(".mode-text");
+
+
+
+
+toggle.addEventListener("click", () => {
+sidebar.classList.toggle("close");
+})
+
+
+
+searchBtn.addEventListener("click", () => {
+sidebar.classList.remove("close");
+})
+
+
+
+modeSwitch.addEventListener("click", () => {
+body.classList.toggle("dark");
+
+
+
+if (body.classList.contains("dark")) {
+modeText.innerText = "Light mode";
+} else {
+modeText.innerText = "Dark mode";
+
+
+
+}
+});
+</script>
+</body>
+</html>
