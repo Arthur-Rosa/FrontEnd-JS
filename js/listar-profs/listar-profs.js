@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let btnSalvar = document.getElementById('btnSalvarEditar');
         btnSalvar.removeEventListener('click', editarProfModal);
         let btnProf = document.getElementById('btnSalvarProf');
-        btnProf.removeEventListener('click',);
+        btnProf.removeEventListener('click', );
     });
 });
 
@@ -286,17 +286,18 @@ document.getElementById('novoProf').addEventListener('click', function () {
     document.getElementById('btnSalvarProf').addEventListener('click', criarProfessor);
 });
 
+var msg = '';
+
 const criarProfessor = (e) => {
+    e.preventDefault();
     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
 
-    let email = document.getElementById('email').value;
-    let nome = document.getElementById('nome').value;
-    let mat = document.getElementById('matricula').value;
-    let data = document.getElementById('data-input').value;
+    let email = document.getElementById('email');
+    let nome = document.getElementById('nome');
+    let mat = document.getElementById('matricula');
+    let data = document.getElementById('data-input');
 
     var erro = '';
-    var msg = '';
-
     if (email.value == '') {
         msg = "Por favor, digite o email !";
         erro++;
@@ -320,13 +321,15 @@ const criarProfessor = (e) => {
         myHeaders.append("Content-Type", "application/json");
 
         let usuario_criar = {
-            nome,
-            email,
-            matricula: mat,
-            dataNascimento: data,
-            ativo: 0,
-            tipoUsuario: 0
+            nome: nome.value,
+            email: email.value,
+            matricula: mat.value,
+            dataNascimento: data.value,
+            ativo: false,
+            tipoUsuario: 'PROFESSOR'
         }
+
+        console.log(usuario_criar)
 
         myModal.dispose();
         url = 'http://10.92.198.38:8080/api/usuarios/cadastrar';
@@ -336,6 +339,9 @@ const criarProfessor = (e) => {
             body: JSON.stringify(usuario_criar),
             headers: myHeaders
         }
+
+        // alert('disparou')
+        closeModal();
 
         fetch(url, fetchData)
             .then((resp) => {
@@ -349,6 +355,7 @@ const criarProfessor = (e) => {
                     }
                 })
                     .catch((error) => {
+                        console.log("error : " + error)
                         console.log("catch : " + resp.status)
                         if (resp.status == 201) {
                             window.location.replace('listaProf.html');

@@ -150,6 +150,10 @@ function getOfDatabase() {
 function arrumaBtnExibe(b) {
     b.className = 'info';
     b.innerHTML = "<i class='bx bx-info-circle'></i>";
+    b.id = 'btnInfo';
+
+    
+
     return b;
 }
 
@@ -166,6 +170,8 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, userProf, id) {
     let tdPeriodo = document.createElement('td');
     let tdBtn = document.createElement('td');
     let tdBtnDel = document.createElement('td');
+
+    
 
     if (nomeEvent.length > 40) {
         nomeEvent = nomeEvent.slice(0, -20) + "...";
@@ -196,7 +202,25 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, userProf, id) {
     console.log(formatDateOther(data))
     tdPeriodo.innerText = periodo;
 
+    const btnDel = document.createElement('button');
+    arrumaExclBtn(btnDel);
+    btnDel.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (data > getDataFormat()) {
+            deletaEvento(id);
+        } else {
+            exibeErro('Evento Antigo');
+        }
+    });
 
+
+    if (!(data > getDataFormat())) {
+        btnEdit.className = "editt";
+        btnDel.disabled = true;
+        btnDel.className = "deletee";
+
+        arrumaBtnExibe(btnEdit); 
+    }
     btnEdit.addEventListener('click', function (e) {
         usuario = userProf;
         var myModal = new bootstrap.Modal(document.getElementById('myModal'));
@@ -211,36 +235,34 @@ function criarLinha(nome, nomeEvent, desc, data, periodo, userProf, id) {
         nm.style.display = 'block';
         console.log(payload)
 
-        idd = id;
-
         const btnSalvar = document.getElementById('btnSalvarEditar');
-        btnSalvar.addEventListener('click', editarEventoModal);
 
         const btnDeletar = document.getElementById('btnEliminar');
+
+        idd = id;
+        if(btnEdit.id == 'btnInfo'){
+            myModal.show();
+            document.getElementById('title').disabled = true;
+            document.getElementById('description').disabled = true;
+            document.getElementById('periodo').disabled = true;
+            btnSalvar.style.display = 'none';
+            btnDeletar.style.display = 'none';
+
+        } else {
+            myModal.show();
+            document.getElementById('title').disabled = false;
+            document.getElementById('description').disabled = false;
+            document.getElementById('periodo').disabled = false;
+            btnSalvar.style.display = 'block';
+            btnDeletar.style.display = 'block';
+        }
+
+        
+        btnSalvar.addEventListener('click', editarEventoModal);
+
+        
         btnDeletar.addEventListener('click', deletarEventoModal);
     });
-
-    const btnDel = document.createElement('button');
-    arrumaExclBtn(btnDel);
-    btnDel.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (data > getDataFormat()) {
-            deletaEvento(id);
-        } else {
-            exibeErro('Evento Antigo');
-        }
-    });
-
-    if (data > getDataFormat()) {
-
-    } else {
-        btnEdit.disabled = true;
-        btnEdit.className = "editt";
-        btnDel.disabled = true;
-        btnDel.className = "deletee";
-
-        arrumaBtnExibe(btnEdit);  
-    }
 
     tr.appendChild(tdNomeProf);
     tr.appendChild(tdNomeEvento);

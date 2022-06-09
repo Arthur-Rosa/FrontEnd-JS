@@ -7,7 +7,7 @@
   font-family: 'Poppins', sans-serif;
 }
 body{
-  overflow: hidden;
+  overflow: hidden !important;
 }
 .alert{
   z-index: 9000;
@@ -108,4 +108,46 @@ body{
   color: white ;
   font-size: 22px;
   line-height: 40px;
+}
+
+@media screen and (max-width: 1800px) {
+  .alert{
+    right: -1330px;
+  
+  }
+}
+
+@media screen and (max-width: 1700px) {
+  .alert{
+    right: -1120px;
+  
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .alert{
+    right: -500px;
+  
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .alert{
+    right: -865px;
+  
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .alert{
+    right: -200px;
+   
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .alert{
+    right: -500px;
+    top: -100px;
+  }
 }

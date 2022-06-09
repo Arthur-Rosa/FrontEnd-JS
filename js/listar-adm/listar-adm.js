@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let btnSalvar = document.getElementById('btnSalvarEditar');
         btnSalvar.removeEventListener('click', editarProfModal);
         let btnProf = document.getElementById('btnSalvarProf');
-        btnProf.removeEventListener('click',);
+        btnProf.removeEventListener('click', criarProfessor);
     });
 });
 
@@ -103,9 +103,9 @@ function getOfDatabase() {
         .then((resp) => {
             resp.json().then((info) => {
                 let profs = info.content;
-                console.log(info)
-                if (info.length == 0) {
-                    document.getElementById("error").style.display = "block";
+                console.log(info.content)
+                if (info.content == 0) {
+                    document.getElementById("notEvent").style.display = "block";
                 }
                 if (info.totalPages > atributosUrl[1]) {
                     bt_next.addEventListener('click', listenerNext)
@@ -254,13 +254,13 @@ function getElementsByEdit(id) {
 }
 
 function editNavToCreate() {
-    document.getElementById('titulo').textContent = 'Criar Professor'
+    document.getElementById('titulo').textContent = 'Criar Administrador'
     document.getElementById('titulo').style.color = 'white';
     document.getElementById('bgEvent').className = 'modal-header bg-success';
 }
 
 function editNavToEdit() {
-    document.getElementById('titulo').textContent = 'Editar Professor'
+    document.getElementById('titulo').textContent = 'Editar Administrador'
     document.getElementById('titulo').style.color = 'black';
     document.getElementById('bgEvent').className = 'modal-header bg-warning';
 }
@@ -287,16 +287,17 @@ document.getElementById('novoProf').addEventListener('click', function () {
 });
 
 const criarProfessor = (e) => {
+    e.preventDefault()
     var myModal = new bootstrap.Modal(document.getElementById('myModal'));
 
-    let email = document.getElementById('email').value;
-    let nome = document.getElementById('nome').value;
-    let mat = document.getElementById('matricula').value;
-    let data = document.getElementById('data-input').value;
+    let email = document.getElementById('email');
+    let nome = document.getElementById('nome');
+    let mat = document.getElementById('matricula');
+    let data = document.getElementById('data-input');
 
     var erro = '';
     var msg = '';
-
+    
     if (email.value == '') {
         msg = "Por favor, digite o email !";
         erro++;
@@ -320,13 +321,15 @@ const criarProfessor = (e) => {
         myHeaders.append("Content-Type", "application/json");
 
         let usuario_criar = {
-            nome,
-            email,
-            matricula: mat,
-            dataNascimento: data,
-            ativo: 0,
-            tipoUsuario: 0
+            nome: nome.value,
+            email: email.value,
+            matricula: mat.value,
+            dataNascimento: data.value,
+            ativo: false,
+            tipoUsuario: 'ADMINISTRADOR'
         }
+
+        console.log(usuario_criar)
 
         myModal.dispose();
         url = 'http://10.92.198.38:8080/api/usuarios/cadastrar';
@@ -340,18 +343,20 @@ const criarProfessor = (e) => {
         fetch(url, fetchData)
             .then((resp) => {
                 resp.json().then((resposta) => {
+                    console.log(resposta)
                     if (resp.status == 409) {
                         closeModal();
                         exibeErro("");
                     }
                     if (resp.status == 200) {
-                        window.location.replace('listaProf.html');
+                        window.location.replace('listaAdm.html');
                     }
                 })
                     .catch((error) => {
                         console.log("catch : " + resp.status)
+                        console.log("error : " + error)
                         if (resp.status == 201) {
-                            window.location.replace('listaProf.html');
+                            window.location.replace('listaAdm.html');
                         }
                         if (resp.status == 409) {
                             exibeErro("Matricula ja utilizada");
@@ -360,7 +365,7 @@ const criarProfessor = (e) => {
                             exibeErro("E-mail ja utilizado");
                         }
                         if (resp.status == 200) {
-                            window.location.replace('listaProf.html');
+                            window.location.replace('listaAdm.html');
                         }
                         if (resp.status == 226) {
                             closeModal();
@@ -372,7 +377,7 @@ const criarProfessor = (e) => {
                         }
 
                     });
-            })
+            }) 
     }
 }
 
@@ -429,7 +434,7 @@ const editarProfModal = (e) => {
                         exibeErro("");
                     }
                     if (resp.status == 200) {
-                        window.location.replace('listaProf.html');
+                        window.location.replace('listaAdm.html');
                     }
                 })
                     .catch((error) => {
@@ -439,7 +444,7 @@ const editarProfModal = (e) => {
                             exibeErro("");
                         }
                         if (resp.status == 200) {
-                            window.location.replace('listaProf.html');
+                            window.location.replace('listaAdm.html');
                         }
                         if (resp.status == 226) {
                             closeModal();
@@ -481,7 +486,7 @@ function deletarProfModalUnique(id) {
         .then((resposta) => {
             // exibeErro("Excluido com sucesso !")
             setTimeout(function () {
-                window.location.replace('listaProf.html');
+                window.location.replace('listaAdm.html');
             }, 0);
         })
         .catch((error) => {
@@ -510,7 +515,7 @@ const deletarProfModal = (e) => {
         .then((resposta) => {
             // exibeErro("Excluido com sucesso !")
             setTimeout(function () {
-                window.location.replace('listaProf.html')
+                window.location.replace('listaAdm.html')
             }, 0);
         })
         .catch((error) => {
@@ -543,11 +548,11 @@ function setOptionSelected(z) {
 function closeModal() {
     var btn = document.getElementById("btn-cancel");
     btn.addEventListener('click', function () {
-        window.location.replace('listaProf.html');
+        window.location.replace('listaAdm.html');
     })
     var btn1 = document.getElementById("btn-close");
     btn1.addEventListener("click", function () {
-        window.location.replace('listaProf.html');
+        window.location.replace('listaAdm.html');
     });
 }
 
