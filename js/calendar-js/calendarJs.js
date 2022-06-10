@@ -818,11 +818,17 @@ const aprovarSolicit = (e) => {
     if (!(idSolic == null)) {
         idd = idSolic
     }
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let fetchData = {
+        method: 'POST',
+        headers: myHeaders
+    }
+
     e.preventDefault();
     var urlFindObject = 'http://10.92.198.38:8080/api/solic/aprovar' + "/" + idd;
-    let fetchData = {
-        method: 'POST'
-    }
+   
     return fetch(urlFindObject, fetchData)
         .then((resp) => resp.json())
         .then((resposta) => {
