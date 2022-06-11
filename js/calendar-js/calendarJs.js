@@ -55,6 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
         eventClick: function (info) {
             console.log(info.el.className)
 
+            console.log(info.event)
+
             var myModal = new bootstrap.Modal(document.getElementById('myModal'));
             let idd = info.event.id;
             id = idd;
@@ -239,7 +241,6 @@ const editaEvento = (e) => {
             start: data.value,
             description: description.value,
             color,
-            usuario: payload
         }
 
         myModal.dispose();
